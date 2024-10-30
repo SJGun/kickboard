@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import BlueButton from '../../components/blueButton';
 import { collectorLogin } from '../../services/api';
+import kickboardCollector from '../../assets/kickboard_collector.webp';
 
 const Login = () => {
   const [id, setId] = useState('');
@@ -23,10 +24,16 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <div className="mb-12 text-center">
-        <p className="text-2xl">수거업체신가요?</p>
-        <p className="text-2xl">로그인을 먼저 해주세요.</p>
+    <div className="relative flex min-h-screen flex-col items-center justify-center">
+      <img
+        src={kickboardCollector}
+        alt="kickboardcollector"
+        className="absolute left-0 top-0 mb-12 h-full w-full object-cover opacity-30 -z-10"
+      />
+
+      <div className="mb-12 text-center font-bold text-[#264471]">
+        <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">수거업체신가요?</p>
+        <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">로그인을 먼저 해주세요.</p>
       </div>
 
       {/* Error message container */}
@@ -40,7 +47,7 @@ const Login = () => {
         </div>
       )}
 
-      <div className="flex w-full max-w-xs flex-col items-center border border-black bg-[rgba(220,220,220,0.4)] p-5">
+      <div className="flex w-full max-w-xs flex-col rounded-md items-center border border-black bg-[#f9f9f9e0] p-5">
         <div className="w-full sm:max-w-sm">
           <form className="w-full space-y-6">
             <div>
