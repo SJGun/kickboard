@@ -28,4 +28,15 @@ export const collectorLogin = async (id: string, password: string) => {
   }
 };
 
+// 수거업체 수거 리스트 받기위해 백엔드로 요청
+export const fetchCoordinates = async (area: string) => {
+  try {
+    const response = await api.get(`/coordinates`, { params: { area } });
+    return response.data;
+  } catch (error) {
+    console.error('수거 리스트 받지 못함: ', error);
+    throw error;
+  }
+};
+
 export default api;

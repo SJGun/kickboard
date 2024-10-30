@@ -33,9 +33,9 @@ function App() {
           <Route
             path="/collectlist"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <CollectList />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
         </Routes>
