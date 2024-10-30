@@ -28,5 +28,4 @@ export const collectorLogin = async (id: string, password: string) => {
   }
 };
 
-
 export default api;

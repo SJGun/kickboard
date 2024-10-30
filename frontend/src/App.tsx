@@ -23,7 +23,10 @@ function App() {
           <Route
             path="/collectors"
             element={
-              <Navigate to={isLoggedIn ? '/collectlist' : '/collector-login'} replace />
+              <Navigate
+                to={isLoggedIn ? '/collectlist' : '/collector-login'}
+                replace
+              />
             }
           />
           <Route path="/collector-login" element={<Login />} />

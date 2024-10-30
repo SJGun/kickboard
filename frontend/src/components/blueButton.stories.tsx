@@ -13,7 +13,9 @@ export default {
   },
 } as Meta;
 
-const Template: StoryFn<ButtonProps> = (args: ButtonProps) => <BlueButton {...args} />;
+const Template: StoryFn<ButtonProps> = (args: ButtonProps) => (
+  <BlueButton {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
