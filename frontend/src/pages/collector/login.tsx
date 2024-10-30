@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import BlueButton from '../../components/blueButton';
 import { collectorLogin } from '../../services/api';
