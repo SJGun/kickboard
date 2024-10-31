@@ -17,10 +17,19 @@ import CollectList from './pages/collector/collectList';
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
+  const AppDiv = (
+    <div>
+      <p>Hello!!!</p>
+    </div>
+  )
   return (
     <Router>
       <PhoneScreenContainer>
         <Routes>
+          <Route
+            path="/"
+            element={AppDiv}
+          />
           <Route
             path="/collectors"
             element={
