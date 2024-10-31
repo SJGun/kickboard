@@ -29,7 +29,7 @@ export const collectorLogin = async (id: string, password: string) => {
 };
 
 // 수거업체 수거 리스트 받기위해 백엔드로 요청
-export const fetchCoordinates = async (area: string) => {
+export const fetchCollectLists = async (area: string) => {
   try {
     const response = await api.get(`/coordinates`, { params: { area } });
     return response.data;

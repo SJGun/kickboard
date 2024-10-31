@@ -6,7 +6,7 @@ declare global {
 }
 
 import { useEffect, useRef, useState } from 'react';
-import { fetchCoordinates } from '../../services/api';
+import { fetchCollectLists } from '../../services/api';
 import ChooseArea from '../../components/chooseArea';
 
 const CollectList = () => {
@@ -16,6 +16,8 @@ const CollectList = () => {
   const [markers, setMarkers] = useState<any[]>([]);
   // map의 리렌더링을 막기위해 map reference 저장
   const mapRef = useRef<any>(null);
+  // 수거리스트
+  const [collectList, setCollectList] = useState<any[]>([])
 
   
   // 마커 설정할 임시 위도경도 (마커 잘 표시되나 확인용)
@@ -85,7 +87,10 @@ const CollectList = () => {
     // 지도가 있고 지역이 골라졌으면 백에서 수거리스트 위도경도 받아오기
     if (mapRef.current && selectedArea) {
       try {
-        const coordinates = await fetchCoordinates(selectedArea);
+        // 이것들 이름은 실제 response에 따라 바꿔야함
+        const response = await fetchCollectLists(selectedArea);
+        const coordinates = response.coordinates
+        setCollectList(response.list)
         // 받아온 위도경도 마커표시
         addMarkers(coordinates);
       } catch (error) {
@@ -112,6 +117,9 @@ const CollectList = () => {
 
       {/* 지도 띄우기 */}
       <div id="map" className="mb-12 h-[360px] w-full"></div>
+
+      {/* 수거리스트 띄우기 */}
+      
     </div>
   );
 };
