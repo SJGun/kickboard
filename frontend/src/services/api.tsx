@@ -39,4 +39,9 @@ export const fetchCollectLists = async (area: string) => {
   }
 };
 
+// 수거업체 쪽에서 관리자한테 수거 시작한다고 알림 보내기
+
+// 수거업체 쪽에서 처리 완료했다고 알림 보내기
+
+
 export default api;
