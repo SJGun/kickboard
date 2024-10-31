@@ -13,42 +13,35 @@ import './App.css';
 
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
+import AdminMainPage from './pages/admin/adminMainPage';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const AppDiv = (
-    <div>
-      <p>Hello!!!</p>
-    </div>
-  )
+
   return (
     <Router>
-      <PhoneScreenContainer>
-        <Routes>
-          <Route
-            path="/"
-            element={AppDiv}
-          />
-          <Route
-            path="/collectors"
-            element={
-              <Navigate
-                to={isLoggedIn ? '/collectlist' : '/collector-login'}
-                replace
-              />
-            }
-          />
-          <Route path="/collector-login" element={<Login />} />
-          <Route
-            path="/collectlist"
-            element={
-              <ProtectedRoute>
-                <CollectList />
-              </ProtectedRoute>
-            }
-          />
+      <Routes>
+
+        <Route
+          path="/collectors"
+          element={
+            <PhoneScreenContainer>
+              <Navigate to={isLoggedIn ? '/collectlist' : '/collector-login'} replace />
+            </PhoneScreenContainer>
+          }
+        />
+        <Route path="/collector-login" element={<PhoneScreenContainer><Login /></PhoneScreenContainer>} />
+        <Route
+          path="/collectlist"
+          element={
+            <PhoneScreenContainer>
+              <CollectList />
+            </PhoneScreenContainer>
+          }
+        />
+
+          <Route path="/adminMainPage" element={<AdminMainPage />} />
         </Routes>
-      </PhoneScreenContainer>
     </Router>
   );
 }
