@@ -16,39 +16,41 @@ import CollectList from './pages/collector/collectList';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const AppDiv = (
-    <div>
-      <p>Hello!!!</p>
-    </div>
-  )
+
   return (
     <Router>
-      <PhoneScreenContainer>
-        <Routes>
-          <Route
-            path="/"
-            element={AppDiv}
-          />
-          <Route
-            path="/collectors"
-            element={
+      <Routes>
+        <Route path="/" />
+        <Route
+          path="/collectors"
+          element={
+            <PhoneScreenContainer>
               <Navigate
                 to={isLoggedIn ? '/collectlist' : '/collector-login'}
                 replace
               />
-            }
-          />
-          <Route path="/collector-login" element={<Login />} />
-          <Route
-            path="/collectlist"
-            element={
+            </PhoneScreenContainer>
+          }
+        />
+        <Route
+          path="/collector-login"
+          element={
+            <PhoneScreenContainer>
+              <Login />
+            </PhoneScreenContainer>
+          }
+        />
+        <Route
+          path="/collectlist"
+          element={
+            <PhoneScreenContainer>
               <ProtectedRoute>
                 <CollectList />
               </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </PhoneScreenContainer>
+            </PhoneScreenContainer>
+          }
+        />
+      </Routes>
     </Router>
   );
 }
