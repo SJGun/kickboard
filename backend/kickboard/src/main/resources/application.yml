@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: kickboard-violation-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kb
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  modulith:
+    events:
+      enabled: true
+      jdbc:
+        schema-initialization:
+          enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
