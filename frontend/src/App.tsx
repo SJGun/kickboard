@@ -12,6 +12,7 @@ import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
 // import AdminMainPage from './pages/admin/adminMainPage';
 import ReportPage from './pages/report/ReportPage';
+import Header from './components/basic/Header';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -51,7 +52,8 @@ function App() {
           path="/"
           element={
             <PhoneScreenContainer>
-              <ReportPage></ReportPage>
+              <Header title={'전동 킥보드 주정차 위반 신고'} />
+              <ReportPage />
             </PhoneScreenContainer>
           }
         ></Route>
