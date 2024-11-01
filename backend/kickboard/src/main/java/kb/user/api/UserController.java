@@ -15,6 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 유저 컨트롤러
+ * @since JDK21
+ * @author 채기훈
+ */
 @Tag(name = "User", description = "사용자 API")
 @RestController
 @RequestMapping("/api/v1/users")
@@ -33,9 +38,9 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일")
     })
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(
+    public ResponseEntity<?> createUser(
             @Valid @RequestBody UserCreateRequest request) {
-        return ResponseEntity.ok(userService.createUser(request));
+        return ResponseEntity.ok(kb.core.dto.ApiResponse.success(userService.createUser(request)));
     }
 
     @Operation(summary = "사용자 조회", description = "사용자 키로 사용자 정보를 조회합니다.")
@@ -47,11 +52,11 @@ public class UserController {
             ),
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음")
     })
-    @GetMapping("/{key}")
-    public ResponseEntity<UserResponse> getUser(
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(
             @Parameter(description = "사용자 키", required = true)
-            @PathVariable String key) {
-        return ResponseEntity.ok(userService.findUserByKey(key));
+            @PathVariable int id) {
+        return ResponseEntity.ok(kb.core.dto.ApiResponse.success(userService.findUser(id)));
     }
 }
 

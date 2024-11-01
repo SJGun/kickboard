@@ -2,6 +2,7 @@
 package kb.user.internal.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AccessLevel;
@@ -17,9 +18,16 @@ import lombok.AccessLevel;
 public class Location {
     @Id
     @Column(name = "locationId")
-    private String locationId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int locationId;
 
     @Column(name = "locationName")
     private String name;  // 구역 정보
+
+    @Builder
+    public Location(int locationId, String name) {
+        this.locationId = locationId;
+        this.name = name;
+    }
 }
 

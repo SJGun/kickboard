@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since JDK21
  * @author 채기훈
  */
-public interface LocationRepository extends JpaRepository<Location, String> {
+public interface LocationRepository extends JpaRepository<Location, Integer> {
 }

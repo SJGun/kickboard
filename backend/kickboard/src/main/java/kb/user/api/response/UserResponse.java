@@ -21,9 +21,6 @@ public record UserResponse(
         @Schema(description = "사용자 역할")
         UserRole role,
 
-        @Schema(description = "사용자 키")
-        String key,
-
         @Schema(description = "지역 정보")
         LocationResponse location
 ) {
@@ -32,7 +29,6 @@ public record UserResponse(
                 user.getUserId(),
                 user.getEmail(),
                 user.getRole(),
-                user.getKey(),
                 user.getLocation() != null ? new LocationResponse(
                         user.getLocation().getLocationId(),
                         user.getLocation().getName()

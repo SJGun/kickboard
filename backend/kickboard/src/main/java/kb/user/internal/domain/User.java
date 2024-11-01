@@ -9,7 +9,6 @@ import lombok.*;
  * @since JDK21
  * @author 채기훈
  */
-// kb/user/internal/domain/User.java
 @Entity
 @Table(name = "users")
 @Getter
@@ -20,8 +19,6 @@ public class User extends BaseEntity {
     @Column(name = "userId")
     private Long userId;
 
-    @Column(name = "Key", nullable = false, unique = true)
-    private String key;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -34,14 +31,14 @@ public class User extends BaseEntity {
     private UserRole role;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "locationId", referencedColumnName = "locationId", insertable = false, updatable = false)
+    @JoinColumn(name = "locationId", referencedColumnName = "locationId")
     private Location location;
 
     @Builder
-    public User(String email, String password, UserRole role, String key) {
+    public User(String email, String password, UserRole role, Location location) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.key = key;
+        this.location = location;
     }
 }
