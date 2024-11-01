@@ -14,6 +14,11 @@ import CollectList from './pages/collector/collectList';
 import ReportPage from './pages/report/ReportPage';
 import Header from './components/basic/Header';
 import Navbar from './components/basic/Navbar';
+import AdminMainPage from './pages/admin/AdminMainPage';
+import AdminInfoPage from './pages/admin/AdminInfoPage';
+import AdminMapPage from './pages/admin/AdminMap';
+import AccountManagePage from './pages/admin/AccountManage';
+import AdminLoginPage from './pages/admin/AdminLogin';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -60,8 +65,15 @@ function App() {
           }
         ></Route>
 
+
         {/* <Route path="/adminMainPage" element={<AdminMainPage />} /> */}
       </Routes>
+          <Route path="/adminMainPage" element={<AdminMainPage />} />
+          <Route path="/admininfo" element={<AdminInfoPage />} />
+          <Route path="/adminmap" element={<AdminMapPage />} />
+          <Route path="/accountmanage" element={<AccountManagePage />} />
+          <Route path="/adminlogin" element={<AdminLoginPage />} />
+        </Routes>
     </Router>
   );
 }
