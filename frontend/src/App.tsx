@@ -13,6 +13,7 @@ import CollectList from './pages/collector/collectList';
 // import AdminMainPage from './pages/admin/adminMainPage';
 import ReportPage from './pages/report/ReportPage';
 import Header from './components/basic/Header';
+import Navbar from './components/basic/Navbar';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -54,6 +55,7 @@ function App() {
             <PhoneScreenContainer>
               <Header title={'전동 킥보드 주정차 위반 신고'} />
               <ReportPage />
+              <Navbar />
             </PhoneScreenContainer>
           }
         ></Route>
