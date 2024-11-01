@@ -11,9 +11,9 @@ const AdminNavBar: React.FC = () => {
                 {/* Desktop Menu */}
                 <div className="hidden md:flex space-x-8 ml-10">
                     <a href="/adminMainPage" className="text-gray-700 hover:text-gray-900">신고현황</a>
-                    <a href="/adminMap" className="text-gray-700 hover:text-gray-900">지도</a>
-                    <a href="#" className="text-gray-700 hover:text-gray-900">계정관리</a>
-                    <a href="#" className="text-gray-700 hover:text-gray-900">공지사항</a>
+                    <a href="/adminmap" className="text-gray-700 hover:text-gray-900">지도</a>
+                    <a href="/accountmanage" className="text-gray-700 hover:text-gray-900">계정관리</a>
+                    <a href="/admininfo" className="text-gray-700 hover:text-gray-900">공지사항</a>
                 </div>
 
                 {/* Mobile Menu Button */}
