@@ -13,7 +13,7 @@ import './App.css';
 
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
-import AdminMainPage from './pages/admin/adminMainPage';
+import AdminMainPage from './pages/admin/AdminMainPage';
 import AdminInfoPage from './pages/admin/AdminInfoPage';
 import AdminMapPage from './pages/admin/AdminMap';
 import AccountManagePage from './pages/admin/AccountManage';
