@@ -13,7 +13,7 @@ import './App.css';
 
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
-import AdminMainPage from './pages/admin/adminMainPage';
+import AdminMainPage from './pages/admin2/adminMainPage';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
