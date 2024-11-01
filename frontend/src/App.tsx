@@ -65,15 +65,13 @@ function App() {
           }
         ></Route>
 
-
         {/* <Route path="/adminMainPage" element={<AdminMainPage />} /> */}
+        <Route path="/adminMainPage" element={<AdminMainPage />} />
+        <Route path="/admininfo" element={<AdminInfoPage />} />
+        <Route path="/adminmap" element={<AdminMapPage />} />
+        <Route path="/accountmanage" element={<AccountManagePage />} />
+        <Route path="/adminlogin" element={<AdminLoginPage />} />
       </Routes>
-          <Route path="/adminMainPage" element={<AdminMainPage />} />
-          <Route path="/admininfo" element={<AdminInfoPage />} />
-          <Route path="/adminmap" element={<AdminMapPage />} />
-          <Route path="/accountmanage" element={<AccountManagePage />} />
-          <Route path="/adminlogin" element={<AdminLoginPage />} />
-        </Routes>
     </Router>
   );
 }
