@@ -11,6 +11,7 @@ import PhoneScreenContainer from './components/phoneScreenContainer';
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
 // import AdminMainPage from './pages/admin/adminMainPage';
+import ReportPage from './pages/report/ReportPage';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -45,6 +46,15 @@ function App() {
             </PhoneScreenContainer>
           }
         />
+        {/* 사용자 페이지 -------------------------------------*/}
+        <Route
+          path="/"
+          element={
+            <PhoneScreenContainer>
+              <ReportPage></ReportPage>
+            </PhoneScreenContainer>
+          }
+        ></Route>
 
         {/* <Route path="/adminMainPage" element={<AdminMainPage />} /> */}
       </Routes>
