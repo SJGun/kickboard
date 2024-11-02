@@ -1,131 +1,380 @@
+import React, { useState, useMemo, useEffect } from 'react';
+import { TiArrowUnsorted, TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
 
-import React from 'react';
-import NavBar from './AdminNavBar';
+// Card Components
+const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
+  children, 
+  className = '' 
+}) => (
+  <div className={`bg-white rounded-lg shadow-sm ${className}`}>
+    {children}
+  </div>
+);
 
-interface Report {
-    id: number;
-    location: string;
-    details: string;
-    status: '신고접수' | '처리중' | '처리완료';
-}
+const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
+  children, 
+  className = '' 
+}) => (
+  <div className={`p-4 ${className}`}>
+    {children}
+  </div>
+);
 
-const AdminMainPage: React.FC = () => {
-    const reports: Report[] = [
-        { id: 1, location: '광주광역시 광산구 월계동 1-24', details: '횡단보도 3m 이내에 주차', status: '신고접수' },
-        { id: 2, location: '광주광역시 광산구 월계동 2-24', details: '횡단보도 3m 이내에 주차', status: '처리중' },
-        { id: 3, location: '광주광역시 광산구 월계동 3-24', details: '횡단보도 3m 이내에 주차', status: '처리완료' },
-        { id: 4, location: '광주광역시 광산구 월계동 4-24', details: '횡단보도 3m 이내에 주차', status: '신고접수' },
-        { id: 5, location: '광주광역시 광산구 월계동 5-24', details: '횡단보도 3m 이내에 주차', status: '처리중' },
-        { id: 6, location: '광주광역시 광산구 월계동 6-24', details: '횡단보도 3m 이내에 주차', status: '처리완료' },
-        // 더 많은 항목 추가 가능
-    ];
+// Select Components
+const Select: React.FC<{
+  value: string;
+  onValueChange: (value: string) => void;
+  children: React.ReactNode;
+}> = ({ value, onValueChange, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-    const reported = reports.filter(report => report.status === '신고접수');
-    const inProgress = reports.filter(report => report.status === '처리중');
-    const completed = reports.filter(report => report.status === '처리완료');
-
-    return (
-        <div className="bg-gray-100 min-h-screen">
-            {/* NavBar Component */}
-            <NavBar />
-
-            {/* Main Content */}
-            <div className="p-8">
-                <div className="mt-8 grid grid-cols-3 gap-4">
-                    {/* Map and Image */}
-                    <div className="bg-white p-6 rounded-md col-span-1">
-                        <div className="bg-gray-300 h-48 w-full mb-4 rounded-md">
-                            <p className="text-center text-gray-500 pt-20">Map Placeholder</p>
-                        </div>
-                        <p className="text-center text-gray-700">(처리 전) 광주광역시 광산구</p>
-                    </div>
-                    
-                    <div className="bg-white p-6 rounded-md col-span-1">
-                        <div className="bg-gray-300 h-48 w-full rounded-md">
-                            <p className="text-center text-gray-500 pt-20">Image Placeholder</p>
-                        </div>
-                    </div>
-
-                    {/* Report Details */}
-                    <div className="bg-white p-6 rounded-md col-span-1 space-y-4">
-                      
-                    <div className="flex justify-center items-center bg-gray-100">
-                    <div className="flex justify-center items-center bg-gray-100">
-    <div className="bg-white p-6 rounded-md w-full max-w-md">
-        <div className="grid grid-cols-[1fr_2fr] text-center">
-            <div className="text-gray-500 font-semibold p-4">현재 상태</div>
-            <div className="text-red-500 font-semibold p-4">신고접수</div>
-            <div className="text-gray-500 font-semibold p-4">신고 일시</div>
-            <div className="p-4">2024.10.29</div>
-            <div className="text-gray-500 font-semibold p-4">신고자 정보</div>
-            <div className="p-4">BEAM</div>
-            <div className="text-gray-500 font-semibold p-4">신고 구분</div>
-            <div className="p-4">어린이 보호구역 주차</div>
-            <div className="text-gray-500 font-semibold p-4">신고 내용</div>
-            <div className="col-span-1 p-4 h-24">어린이 보호구역 주차를 신고합니다. 신속히 처리해주세요. 부탁합니다</div>
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-[180px] flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50"
+      >
+        {value === 'all' ? '전체' : value}
+        <TiArrowSortedDown className="w-4 h-4" />
+      </button>
+      {isOpen && (
+        <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-50">
+          <div className="py-1">
+            {React.Children.map(children, child => {
+              if (React.isValidElement(child)) {
+                return React.cloneElement(child as React.ReactElement<any>, {
+                  onClick: () => {
+                    onValueChange(child.props.value);
+                    setIsOpen(false);
+                  }
+                });
+              }
+              return child;
+            })}
+          </div>
         </div>
-        <button className="mt-4 w-full bg-gray-300 py-2 rounded-md text-gray-700">수정하기</button>
+      )}
     </div>
-</div>
-
-</div>
-
-
-
-                    
-                    </div>
-                </div>
-
-                {/* Report Summary and List */}
-                <div className="mt-8">
-                    <div className="flex justify-around bg-gray-200 py-4 rounded-md">
-                        <div className="text-red-500">신고접수 <span className="font-semibold">{reported.length}</span> 건</div>
-                        <div className="text-orange-500">처리중 <span className="font-semibold">{inProgress.length}</span> 건</div>
-                        <div className="text-green-500">처리완료 <span className="font-semibold">{completed.length}</span> 건</div>
-                    </div>
-
-                    {/* Status-based Column Layout */}
-                    <div className="mt-4 grid grid-cols-3 gap-4">
-                        {/* 신고접수 Column */}
-                        <div>
-                            <h2 className="text-red-500 font-semibold mb-4">신고접수</h2>
-                            {reported.map(report => (
-                                <div key={report.id} className="bg-white p-4 rounded-md shadow-md mb-4">
-                                    <p className="text-gray-700 font-semibold">{report.location}</p>
-                                    <p className="text-red-500 text-sm">{report.details}</p>
-                                    <button className="mt-2 w-full bg-gray-300 py-2 rounded-md text-gray-700">내용보기</button>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* 처리중 Column */}
-                        <div>
-                            <h2 className="text-orange-500 font-semibold mb-4">처리중</h2>
-                            {inProgress.map(report => (
-                                <div key={report.id} className="bg-white p-4 rounded-md shadow-md mb-4">
-                                    <p className="text-gray-700 font-semibold">{report.location}</p>
-                                    <p className="text-orange-500 text-sm">{report.details}</p>
-                                    <button className="mt-2 w-full bg-gray-300 py-2 rounded-md text-gray-700">내용보기</button>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* 처리완료 Column */}
-                        <div>
-                            <h2 className="text-green-500 font-semibold mb-4">처리완료</h2>
-                            {completed.map(report => (
-                                <div key={report.id} className="bg-white p-4 rounded-md shadow-md mb-4">
-                                    <p className="text-gray-700 font-semibold">{report.location}</p>
-                                    <p className="text-green-500 text-sm">{report.details}</p>
-                                    <button className="mt-2 w-full bg-gray-300 py-2 rounded-md text-gray-700">내용보기</button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+  );
 };
 
-export default AdminMainPage;
+const SelectItem: React.FC<{
+  value: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+}> = ({ children, onClick }) => (
+  <div
+    className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+    onClick={onClick}
+  >
+    {children}
+  </div>
+);
+
+// Navigation Bar Component
+const AdminNavBar: React.FC = () => (
+  <nav className="bg-white shadow">
+    <div className="max-w-6xl mx-auto px-4 py-4">
+      <h1 className="text-xl font-semibold">관리자 대시보드</h1>
+    </div>
+  </nav>
+);
+
+type SortDirection = 'asc' | 'desc' | null;
+type SortField = 'date' | 'board' | 'category' | 'content' | 'status' | null;
+
+interface IncidentReport {
+  id: string;
+  date: string;
+  board: string;
+  category: string;
+  content: string;
+  status: '대기 중' | '수거 중' | '수거 완료';
+  location: string;
+  details: {
+    state: string;
+    reportDate: string;
+    boardInfo: string;
+    category: string;
+    description: string;
+  };
+}
+
+interface StatusItem {
+  label: string;
+  count: number;
+  color: string;
+  value: '대기 중' | '수거 중' | '수거 완료';
+}
+const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) => (
+    <div className={`animate-pulse bg-gray-200 rounded ${className}`}></div>
+  );
+  
+  const TableSkeleton: React.FC = () => (
+    <div className="space-y-4">
+      {[...Array(5)].map((_, i) => (
+        <div key={i} className="flex space-x-4 py-2">
+          <Skeleton className="h-6 w-28" />
+          <Skeleton className="h-6 w-24" />
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-6 flex-grow" />
+          <Skeleton className="h-6 w-20" />
+        </div>
+      ))}
+    </div>
+  );
+  
+const AdminMain: React.FC = () => {
+    const [isLoading, setIsLoading] = useState(true);
+  const [selectedIncident, setSelectedIncident] = useState<IncidentReport | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sortField, setSortField] = useState<SortField>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+
+  const statusItems: StatusItem[] = [
+    { label: "대기중", count: 10, color: "red", value: "대기 중" },
+    { label: "수거중", count: 10, color: "green", value: "수거 중" },
+    { label: "수거완료", count: 10, color: "blue", value: "수거 완료" }
+  ];
+
+  const generateSampleData = (count: number): IncidentReport[] => {
+    return Array.from({ length: count }, (_, index) => ({
+      id: `${index + 1}`,
+      date: "2024.11.01 11:00",
+      board: "BEAM",
+      category: "어빈이 보호구역 주차",
+      content: "어빈이 보호구역 주차지 신고합니다.\n되도록 빨리 처리해주세요",
+      status: index % 3 === 0 ? "대기 중" : index % 3 === 1 ? "수거 중" : "수거 완료",
+      location: `(처리 ${index % 3 === 0 ? '전' : index % 3 === 1 ? '중' : '완료'}) 광주광역시 광산구`,
+      details: {
+        state: index % 3 === 0 ? "신고접수" : index % 3 === 1 ? "처리중" : "처리완료",
+        reportDate: "2024.10.29",
+        boardInfo: "BEAM",
+        category: "어빈이 보호구역 주차",
+        description: "어빈이 보호구역 주차 신고합니다.\n되도록 빨리 처리해주세요"
+      }
+    }));
+  };
+
+  const incidentData = generateSampleData(50);
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else if (sortDirection === 'desc') {
+        setSortField(null);
+        setSortDirection(null);
+      }
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) return <TiArrowUnsorted className="inline ml-2 w-4 h-4" />;
+    if (sortDirection === 'asc') return <TiArrowSortedUp className="inline ml-2 w-4 h-4" />;
+    if (sortDirection === 'desc') return <TiArrowSortedDown className="inline ml-2 w-4 h-4" />;
+    return null;
+  };
+
+  const sortedAndFilteredIncidents = useMemo(() => {
+    let filtered = statusFilter === 'all'
+      ? incidentData
+      : incidentData.filter(incident => incident.status === statusFilter);
+
+    if (sortField && sortDirection) {
+      filtered = [...filtered].sort((a, b) => {
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+        if (sortDirection === 'asc') {
+          return aValue > bValue ? 1 : -1;
+        } else {
+          return aValue < bValue ? 1 : -1;
+        }
+      });
+    }
+
+    return filtered;
+  }, [statusFilter, sortField, sortDirection]);
+
+  const handleRowClick = (incident: IncidentReport) => {
+    setSelectedIncident(incident);
+  };
+
+  const TableHeader: React.FC<{
+    field: SortField;
+    children: React.ReactNode;
+  }> = ({ field, children }) => (
+    <th 
+      className="sticky top-0 p-2 text-left bg-gray-50 z-10 cursor-pointer hover:bg-gray-100 transition-colors"
+      onClick={() => handleSort(field)}
+    >
+      <div className="flex items-center">
+        {children}
+        {getSortIcon(field)}
+      </div>
+    </th>
+  );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const truncateText = (text: string, maxLength: number = 50) => {
+    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+  };
+
+  return (
+    <div className="w-full">
+      <AdminNavBar />
+      <div className="max-w-6xl mx-auto p-4">
+        {/* Status Indicators */}
+        <div className="bg-white rounded-lg shadow mb-4">
+          <div className="flex justify-end p-2 gap-4">
+            {isLoading ? (
+              <div className="flex gap-4">
+                {[...Array(3)].map((_, i) => (
+                  <Skeleton key={i} className="h-6 w-24" />
+                ))}
+              </div>
+            ) : (
+              statusItems.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full bg-${item.color}-500`}></div>
+                  <span>{item.label} {item.count}</span>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Map Section */}
+          <Card className="p-4">
+            {isLoading ? (
+              <Skeleton className="h-64 w-full" />
+            ) : (
+              <>
+                <div className="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-500">지도 영역</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-600">
+                  {selectedIncident?.location || "(위치를 선택해주세요)"}
+                </p>
+              </>
+            )}
+          </Card>
+
+          {/* Details Section */}
+          <Card className="p-4">
+            {isLoading ? (
+              <div className="space-y-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="flex">
+                    <Skeleton className="h-6 w-24" />
+                    <Skeleton className="h-6 w-full ml-4" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {selectedIncident ? (
+                  <>
+                    <div className="flex">
+                      <div className="w-24 text-gray-600">현재 상태</div>
+                      <div className="flex-1">{selectedIncident.details.state}</div>
+                    </div>
+                    <div className="flex">
+                      <div className="w-24 text-gray-600">신고 일시</div>
+                      <div className="flex-1">{selectedIncident.details.reportDate}</div>
+                    </div>
+                    <div className="flex">
+                      <div className="w-24 text-gray-600">킥보드 정보</div>
+                      <div className="flex-1">{selectedIncident.details.boardInfo}</div>
+                    </div>
+                    <div className="flex">
+                      <div className="w-24 text-gray-600">신고 구분</div>
+                      <div className="flex-1">{selectedIncident.details.category}</div>
+                    </div>
+                    <div className="flex">
+                      <div className="w-24 text-gray-600">신고 내용</div>
+                      <div className="flex-1">{selectedIncident.details.description}</div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-gray-500 text-center">신고 내역을 선택해주세요</div>
+                )}
+              </div>
+            )}
+          </Card>
+        </div>
+
+        {/* Table Section */}
+        <Card className="mt-4">
+          <CardContent>
+            <div className="flex justify-end mb-4">
+              <Select
+                value={statusFilter}
+                onValueChange={setStatusFilter}
+              >
+                <SelectItem value="all">전체</SelectItem>
+                {statusItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+            <div className="relative">
+              <div className="overflow-hidden border rounded-lg">
+                <table className="w-full border-collapse">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <TableHeader field="date" className="w-32">신고 일시</TableHeader>
+                      <TableHeader field="board" className="w-28">킥보드 정보</TableHeader>
+                      <TableHeader field="category" className="w-36">신고 구분</TableHeader>
+                      <TableHeader field="content">신고 내용</TableHeader>
+                      <TableHeader field="status" className="w-24">현재 상태</TableHeader>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {isLoading ? (
+                      <tr>
+                        <td colSpan={5}>
+                          <TableSkeleton />
+                        </td>
+                      </tr>
+                    ) : (
+                      sortedAndFilteredIncidents.map((incident) => (
+                        <tr 
+                          key={incident.id}
+                          onClick={() => handleRowClick(incident)}
+                          className={`border-t cursor-pointer hover:bg-gray-50 ${
+                            selectedIncident?.id === incident.id ? 'bg-blue-50' : ''
+                          }`}
+                        >
+                          <td className="p-2">{incident.date}</td>
+                          <td className="p-2">{incident.board}</td>
+                          <td className="p-2">{incident.category}</td>
+                          <td className="p-2">{truncateText(incident.content, 50)}</td>
+                          <td className="p-2">{incident.status}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default AdminMain;
