@@ -9,7 +9,7 @@ import { useAuthStore } from './store/authStore';
 import PhoneScreenContainer from './components/phoneScreenContainer';
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
-import ReportPage from './pages/report/ReportPage';
+import ReportPage from './pages/user/ReportPage';
 import Header from './components/basic/Header';
 import Navbar from './components/basic/Navbar';
 import AdminMainPage from './pages/admin/AdminMainPage';
@@ -17,8 +17,8 @@ import AdminInfoPage from './pages/admin/AdminInfoPage';
 import AdminMapPage from './pages/admin/AdminMap';
 import AccountManagePage from './pages/admin/AccountManage';
 import AdminLoginPage from './pages/admin/AdminLogin';
-import ReportListPage from './pages/report/ReportListPage';
-import NoticePage from './pages/report/NoticePage';
+import ReportListPage from './pages/user/ReportListPage';
+import NoticePage from './pages/user/NoticePage';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
