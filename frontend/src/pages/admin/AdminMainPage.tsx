@@ -1,23 +1,23 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { TiArrowUnsorted, TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti';
+import {
+  TiArrowUnsorted,
+  TiArrowSortedUp,
+  TiArrowSortedDown,
+} from 'react-icons/ti';
 
 // Card Components
-const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
-  children, 
-  className = '' 
+const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className = '',
 }) => (
-  <div className={`bg-white rounded-lg shadow-sm ${className}`}>
-    {children}
-  </div>
+  <div className={`rounded-lg bg-white shadow-sm ${className}`}>{children}</div>
 );
 
-const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
-  children, 
-  className = '' 
-}) => (
-  <div className={`p-4 ${className}`}>
-    {children}
-  </div>
+const CardContent: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className = '' }) => (
+  <div className={`p-4 ${className}`}>{children}</div>
 );
 
 // Select Components
@@ -32,21 +32,21 @@ const Select: React.FC<{
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-[180px] flex items-center justify-between px-3 py-2 text-sm border rounded-md bg-white hover:bg-gray-50"
+        className="flex w-[180px] items-center justify-between rounded-md border bg-white px-3 py-2 text-sm hover:bg-gray-50"
       >
         {value === 'all' ? '전체' : value}
-        <TiArrowSortedDown className="w-4 h-4" />
+        <TiArrowSortedDown className="h-4 w-4" />
       </button>
       {isOpen && (
-        <div className="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-50">
+        <div className="absolute z-50 mt-1 w-full rounded-md border bg-white shadow-lg">
           <div className="py-1">
-            {React.Children.map(children, child => {
+            {React.Children.map(children, (child) => {
               if (React.isValidElement(child)) {
                 return React.cloneElement(child as React.ReactElement<any>, {
                   onClick: () => {
                     onValueChange(child.props.value);
                     setIsOpen(false);
-                  }
+                  },
                 });
               }
               return child;
@@ -64,7 +64,7 @@ const SelectItem: React.FC<{
   onClick?: () => void;
 }> = ({ children, onClick }) => (
   <div
-    className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+    className="cursor-pointer px-3 py-2 text-sm hover:bg-gray-100"
     onClick={onClick}
   >
     {children}
@@ -74,7 +74,7 @@ const SelectItem: React.FC<{
 // Navigation Bar Component
 const AdminNavBar: React.FC = () => (
   <nav className="bg-white shadow">
-    <div className="max-w-6xl mx-auto px-4 py-4">
+    <div className="mx-auto max-w-6xl px-4 py-4">
       <h1 className="text-xl font-semibold">관리자 대시보드</h1>
     </div>
   </nav>
@@ -107,52 +107,60 @@ interface StatusItem {
   value: '대기 중' | '수거 중' | '수거 완료';
 }
 const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) => (
-    <div className={`animate-pulse bg-gray-200 rounded ${className}`}></div>
-  );
-  
-  const TableSkeleton: React.FC = () => (
-    <div className="space-y-4">
-      {[...Array(5)].map((_, i) => (
-        <div key={i} className="flex space-x-4 py-2">
-          <Skeleton className="h-6 w-28" />
-          <Skeleton className="h-6 w-24" />
-          <Skeleton className="h-6 w-32" />
-          <Skeleton className="h-6 flex-grow" />
-          <Skeleton className="h-6 w-20" />
-        </div>
-      ))}
-    </div>
-  );
-  
+  <div className={`animate-pulse rounded bg-gray-200 ${className}`}></div>
+);
+
+const TableSkeleton: React.FC = () => (
+  <div className="space-y-4">
+    {[...Array(5)].map((_, i) => (
+      <div key={i} className="flex space-x-4 py-2">
+        <Skeleton className="h-6 w-28" />
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-6 flex-grow" />
+        <Skeleton className="h-6 w-20" />
+      </div>
+    ))}
+  </div>
+);
+
 const AdminMain: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(true);
-  const [selectedIncident, setSelectedIncident] = useState<IncidentReport | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedIncident, setSelectedIncident] =
+    useState<IncidentReport | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [sortField, setSortField] = useState<SortField>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
 
   const statusItems: StatusItem[] = [
-    { label: "대기중", count: 10, color: "red", value: "대기 중" },
-    { label: "수거중", count: 10, color: "green", value: "수거 중" },
-    { label: "수거완료", count: 10, color: "blue", value: "수거 완료" }
+    { label: '대기중', count: 10, color: 'red', value: '대기 중' },
+    { label: '수거중', count: 10, color: 'green', value: '수거 중' },
+    { label: '수거완료', count: 10, color: 'blue', value: '수거 완료' },
   ];
 
   const generateSampleData = (count: number): IncidentReport[] => {
     return Array.from({ length: count }, (_, index) => ({
       id: `${index + 1}`,
-      date: "2024.11.01 11:00",
-      board: "BEAM",
-      category: "어빈이 보호구역 주차",
-      content: "어빈이 보호구역 주차지 신고합니다.\n되도록 빨리 처리해주세요",
-      status: index % 3 === 0 ? "대기 중" : index % 3 === 1 ? "수거 중" : "수거 완료",
+      date: '2024.11.01 11:00',
+      board: 'BEAM',
+      category: '어빈이 보호구역 주차',
+      content: '어빈이 보호구역 주차지 신고합니다.\n되도록 빨리 처리해주세요',
+      status:
+        index % 3 === 0 ? '대기 중' : index % 3 === 1 ? '수거 중' : '수거 완료',
       location: `(처리 ${index % 3 === 0 ? '전' : index % 3 === 1 ? '중' : '완료'}) 광주광역시 광산구`,
       details: {
-        state: index % 3 === 0 ? "신고접수" : index % 3 === 1 ? "처리중" : "처리완료",
-        reportDate: "2024.10.29",
-        boardInfo: "BEAM",
-        category: "어빈이 보호구역 주차",
-        description: "어빈이 보호구역 주차 신고합니다.\n되도록 빨리 처리해주세요"
-      }
+        state:
+          index % 3 === 0
+            ? '신고접수'
+            : index % 3 === 1
+              ? '처리중'
+              : '처리완료',
+        reportDate: '2024.10.29',
+        boardInfo: 'BEAM',
+        category: '어빈이 보호구역 주차',
+        description:
+          '어빈이 보호구역 주차 신고합니다.\n되도록 빨리 처리해주세요',
+      },
     }));
   };
 
@@ -173,16 +181,20 @@ const AdminMain: React.FC = () => {
   };
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <TiArrowUnsorted className="inline ml-2 w-4 h-4" />;
-    if (sortDirection === 'asc') return <TiArrowSortedUp className="inline ml-2 w-4 h-4" />;
-    if (sortDirection === 'desc') return <TiArrowSortedDown className="inline ml-2 w-4 h-4" />;
+    if (sortField !== field)
+      return <TiArrowUnsorted className="ml-2 inline h-4 w-4" />;
+    if (sortDirection === 'asc')
+      return <TiArrowSortedUp className="ml-2 inline h-4 w-4" />;
+    if (sortDirection === 'desc')
+      return <TiArrowSortedDown className="ml-2 inline h-4 w-4" />;
     return null;
   };
 
   const sortedAndFilteredIncidents = useMemo(() => {
-    let filtered = statusFilter === 'all'
-      ? incidentData
-      : incidentData.filter(incident => incident.status === statusFilter);
+    let filtered =
+      statusFilter === 'all'
+        ? incidentData
+        : incidentData.filter((incident) => incident.status === statusFilter);
 
     if (sortField && sortDirection) {
       filtered = [...filtered].sort((a, b) => {
@@ -207,8 +219,8 @@ const AdminMain: React.FC = () => {
     field: SortField;
     children: React.ReactNode;
   }> = ({ field, children }) => (
-    <th 
-      className="sticky top-0 p-2 text-left bg-gray-50 z-10 cursor-pointer hover:bg-gray-100 transition-colors"
+    <th
+      className="sticky top-0 z-10 cursor-pointer bg-gray-50 p-2 text-left transition-colors hover:bg-gray-100"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center">
@@ -225,16 +237,18 @@ const AdminMain: React.FC = () => {
   }, []);
 
   const truncateText = (text: string, maxLength: number = 50) => {
-    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    return text.length > maxLength
+      ? `${text.substring(0, maxLength)}...`
+      : text;
   };
 
   return (
     <div className="w-full">
       <AdminNavBar />
-      <div className="max-w-6xl mx-auto p-4">
+      <div className="mx-auto max-w-6xl p-4">
         {/* Status Indicators */}
-        <div className="bg-white rounded-lg shadow mb-4">
-          <div className="flex justify-end p-2 gap-4">
+        <div className="mb-4 rounded-lg bg-white shadow">
+          <div className="flex justify-end gap-4 p-2">
             {isLoading ? (
               <div className="flex gap-4">
                 {[...Array(3)].map((_, i) => (
@@ -244,8 +258,12 @@ const AdminMain: React.FC = () => {
             ) : (
               statusItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full bg-${item.color}-500`}></div>
-                  <span>{item.label} {item.count}</span>
+                  <div
+                    className={`h-2 w-2 rounded-full bg-${item.color}-500`}
+                  ></div>
+                  <span>
+                    {item.label} {item.count}
+                  </span>
                 </div>
               ))
             )}
@@ -253,18 +271,18 @@ const AdminMain: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* Map Section */}
           <Card className="p-4">
             {isLoading ? (
               <Skeleton className="h-64 w-full" />
             ) : (
               <>
-                <div className="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
+                <div className="flex h-64 items-center justify-center rounded-lg bg-gray-100">
                   <span className="text-gray-500">지도 영역</span>
                 </div>
                 <p className="mt-2 text-sm text-gray-600">
-                  {selectedIncident?.location || "(위치를 선택해주세요)"}
+                  {selectedIncident?.location || '(위치를 선택해주세요)'}
                 </p>
               </>
             )}
@@ -277,7 +295,7 @@ const AdminMain: React.FC = () => {
                 {[...Array(5)].map((_, i) => (
                   <div key={i} className="flex">
                     <Skeleton className="h-6 w-24" />
-                    <Skeleton className="h-6 w-full ml-4" />
+                    <Skeleton className="ml-4 h-6 w-full" />
                   </div>
                 ))}
               </div>
@@ -287,27 +305,39 @@ const AdminMain: React.FC = () => {
                   <>
                     <div className="flex">
                       <div className="w-24 text-gray-600">현재 상태</div>
-                      <div className="flex-1">{selectedIncident.details.state}</div>
+                      <div className="flex-1">
+                        {selectedIncident.details.state}
+                      </div>
                     </div>
                     <div className="flex">
                       <div className="w-24 text-gray-600">신고 일시</div>
-                      <div className="flex-1">{selectedIncident.details.reportDate}</div>
+                      <div className="flex-1">
+                        {selectedIncident.details.reportDate}
+                      </div>
                     </div>
                     <div className="flex">
                       <div className="w-24 text-gray-600">킥보드 정보</div>
-                      <div className="flex-1">{selectedIncident.details.boardInfo}</div>
+                      <div className="flex-1">
+                        {selectedIncident.details.boardInfo}
+                      </div>
                     </div>
                     <div className="flex">
                       <div className="w-24 text-gray-600">신고 구분</div>
-                      <div className="flex-1">{selectedIncident.details.category}</div>
+                      <div className="flex-1">
+                        {selectedIncident.details.category}
+                      </div>
                     </div>
                     <div className="flex">
                       <div className="w-24 text-gray-600">신고 내용</div>
-                      <div className="flex-1">{selectedIncident.details.description}</div>
+                      <div className="flex-1">
+                        {selectedIncident.details.description}
+                      </div>
                     </div>
                   </>
                 ) : (
-                  <div className="text-gray-500 text-center">신고 내역을 선택해주세요</div>
+                  <div className="text-center text-gray-500">
+                    신고 내역을 선택해주세요
+                  </div>
                 )}
               </div>
             )}
@@ -317,11 +347,8 @@ const AdminMain: React.FC = () => {
         {/* Table Section */}
         <Card className="mt-4">
           <CardContent>
-            <div className="flex justify-end mb-4">
-              <Select
-                value={statusFilter}
-                onValueChange={setStatusFilter}
-              >
+            <div className="mb-4 flex justify-end">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectItem value="all">전체</SelectItem>
                 {statusItems.map((item) => (
                   <SelectItem key={item.value} value={item.value}>
@@ -331,15 +358,23 @@ const AdminMain: React.FC = () => {
               </Select>
             </div>
             <div className="relative">
-              <div className="overflow-hidden border rounded-lg">
+              <div className="overflow-hidden rounded-lg border">
                 <table className="w-full border-collapse">
                   <thead className="bg-gray-50">
                     <tr>
-                      <TableHeader field="date" className="w-32">신고 일시</TableHeader>
-                      <TableHeader field="board" className="w-28">킥보드 정보</TableHeader>
-                      <TableHeader field="category" className="w-36">신고 구분</TableHeader>
+                      <TableHeader field="date" className="w-32">
+                        신고 일시
+                      </TableHeader>
+                      <TableHeader field="board" className="w-28">
+                        킥보드 정보
+                      </TableHeader>
+                      <TableHeader field="category" className="w-36">
+                        신고 구분
+                      </TableHeader>
                       <TableHeader field="content">신고 내용</TableHeader>
-                      <TableHeader field="status" className="w-24">현재 상태</TableHeader>
+                      <TableHeader field="status" className="w-24">
+                        현재 상태
+                      </TableHeader>
                     </tr>
                   </thead>
                   <tbody>
@@ -351,17 +386,21 @@ const AdminMain: React.FC = () => {
                       </tr>
                     ) : (
                       sortedAndFilteredIncidents.map((incident) => (
-                        <tr 
+                        <tr
                           key={incident.id}
                           onClick={() => handleRowClick(incident)}
-                          className={`border-t cursor-pointer hover:bg-gray-50 ${
-                            selectedIncident?.id === incident.id ? 'bg-blue-50' : ''
+                          className={`cursor-pointer border-t hover:bg-gray-50 ${
+                            selectedIncident?.id === incident.id
+                              ? 'bg-blue-50'
+                              : ''
                           }`}
                         >
                           <td className="p-2">{incident.date}</td>
                           <td className="p-2">{incident.board}</td>
                           <td className="p-2">{incident.category}</td>
-                          <td className="p-2">{truncateText(incident.content, 50)}</td>
+                          <td className="p-2">
+                            {truncateText(incident.content, 50)}
+                          </td>
                           <td className="p-2">{incident.status}</td>
                         </tr>
                       ))
