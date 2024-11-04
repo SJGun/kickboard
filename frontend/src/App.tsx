@@ -5,41 +5,94 @@ import {
   Navigate,
 } from 'react-router-dom';
 
-import PhoneScreenContainer from './components/phoneScreenContainer';
-import ProtectedRoute from './components/protectedRoute';
 import { useAuthStore } from './store/authStore';
-
-import './App.css';
-
+import PhoneScreenContainer from './components/phoneScreenContainer';
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
+import Header from './components/basic/Header';
+import Navbar from './components/basic/Navbar';
+import AdminMainPage from './pages/admin/AdminMainPage';
+import AdminInfoPage from './pages/admin/AdminInfoPage';
+import AdminMapPage from './pages/admin/AdminMap';
+import AccountManagePage from './pages/admin/AccountManage';
+import AdminLoginPage from './pages/admin/AdminLogin';
+import ReportPage from './pages/user/ReportPage';
+import ReportListPage from './pages/user/ReportListPage';
+import NoticePage from './pages/user/NoticePage';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
   return (
     <Router>
-      <PhoneScreenContainer>
-        <Routes>
-          <Route
-            path="/collectors"
-            element={
+      <Routes>
+        <Route
+          path="/collectors"
+          element={
+            <PhoneScreenContainer>
               <Navigate
                 to={isLoggedIn ? '/collectlist' : '/collector-login'}
                 replace
               />
-            }
-          />
-          <Route path="/collector-login" element={<Login />} />
-          <Route
-            path="/collectlist"
-            element={
-              <ProtectedRoute>
-                <CollectList />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </PhoneScreenContainer>
+            </PhoneScreenContainer>
+          }
+        />
+        <Route
+          path="/collector-login"
+          element={
+            <PhoneScreenContainer>
+              <Login />
+            </PhoneScreenContainer>
+          }
+        />
+        <Route
+          path="/collectlist"
+          element={
+            <PhoneScreenContainer>
+              <CollectList />
+            </PhoneScreenContainer>
+          }
+        />
+        {/* 사용자 페이지 -------------------------------------*/}
+        <Route
+          path="/"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <ReportPage />
+              <Navbar />
+            </PhoneScreenContainer>
+          }
+        />
+
+        <Route
+          path="/list"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <ReportListPage />
+              <Navbar />
+            </PhoneScreenContainer>
+          }
+        />
+
+        <Route
+          path="/notice"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <NoticePage />
+              <Navbar />
+            </PhoneScreenContainer>
+          }
+        />
+        {/* 사용자 페이지 -------------------------------------*/}
+        <Route path="/adminMainPage" element={<AdminMainPage />} />
+        <Route path="/admininfo" element={<AdminInfoPage />} />
+        <Route path="/adminmap" element={<AdminMapPage />} />
+        <Route path="/accountmanage" element={<AccountManagePage />} />
+        <Route path="/adminlogin" element={<AdminLoginPage />} />
+      </Routes>
     </Router>
   );
 }
