@@ -19,6 +19,7 @@ import AdminLoginPage from './pages/admin/AdminLogin';
 import ReportPage from './pages/user/ReportPage';
 import ReportListPage from './pages/user/ReportListPage';
 import NoticePage from './pages/user/NoticePage';
+import MainContainer from './components/MainContainer';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -59,7 +60,9 @@ function App() {
           element={
             <PhoneScreenContainer>
               <Header />
-              <ReportPage />
+              <MainContainer>
+                <ReportPage />
+              </MainContainer>
               <Navbar />
             </PhoneScreenContainer>
           }
@@ -70,7 +73,9 @@ function App() {
           element={
             <PhoneScreenContainer>
               <Header />
-              <ReportListPage />
+              <MainContainer>
+                <ReportListPage />
+              </MainContainer>
               <Navbar />
             </PhoneScreenContainer>
           }
@@ -81,7 +86,9 @@ function App() {
           element={
             <PhoneScreenContainer>
               <Header />
-              <NoticePage />
+              <MainContainer>
+                <NoticePage />
+              </MainContainer>
               <Navbar />
             </PhoneScreenContainer>
           }
