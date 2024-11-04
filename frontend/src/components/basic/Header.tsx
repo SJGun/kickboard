@@ -1,17 +1,14 @@
-import React from 'react';
 import RightArrowIcon from '../../assets/RightArrowIcon';
 import { useNavigate } from 'react-router-dom';
+import { useStateStore } from '../../store/StateStore';
 
-interface HeaderProps {
-  title: string;
-}
-
-const Header: React.FC<HeaderProps> = ({ title }) => {
+const Header = () => {
   const navigate = useNavigate();
-
   const handleBackClick = () => {
     navigate(-1); // -1은 이전 페이지로 이동
   };
+
+  const title = useStateStore((state) => state.title);
 
   return (
     <>
