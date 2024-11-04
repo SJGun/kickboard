@@ -23,11 +23,11 @@ public record UserCreateRequest(
         @NotBlank(message = "비밀번호는 필수입니다.")
         String password,
 
-        @Schema(description = "사용자 역할", example = "GOVERNMENT_OFFICIAL")
+        @Schema(description = "사용자 역할", example = "공무원")
         @NotNull(message = "역할은 필수입니다.")
         UserRole role,
 
-        @Schema(description = "지역 키", example = "GANGNAM")
+        @Schema(description = "지역 키", example = "1")
         @NotNull(message = "지역은 필수입니다.")
-        String locationKey
+        int locationId
 ) {}

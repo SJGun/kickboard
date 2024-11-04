@@ -1,6 +1,6 @@
 package kb.core.domain;
 
-import jakarta.persistence.Entity;
+
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

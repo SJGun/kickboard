@@ -6,13 +6,40 @@
   <component name="ChangeListManager">
     <list default="true" id="b186b70b-7c01-4427-91df-f5759d3a20be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/KbApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/KbApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/request/UserCreateRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/request/UserCreateRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/response/LocationResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/response/LocationResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/response/UserResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/api/response/UserResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/config/JwtTokenProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/config/JwtTokenProvider.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/domain/Location.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/domain/Location.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/domain/User$UserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/domain/User$UserBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/domain/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/domain/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/repository/LocationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/repository/LocationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/repository/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/kb/user/internal/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/KbApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/KbApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/core/domain/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/core/domain/BaseEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/api/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/api/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/api/request/UserCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/api/request/UserCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/api/response/LocationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/api/response/LocationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/api/response/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/api/response/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/internal/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/internal/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/internal/domain/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/internal/domain/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/internal/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/internal/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/internal/repository/LocationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/internal/repository/LocationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/internal/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/internal/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kb/user/internal/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kb/user/internal/service/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +73,8 @@
       <list>
         <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -154,7 +181,7 @@
       <option name="presentableId" value="Default" />
       <updated>1730334755809</updated>
       <workItem from="1730334756909" duration="12291000" />
-      <workItem from="1730422224783" duration="228000" />
+      <workItem from="1730422224783" duration="6663000" />
     </task>
     <servers />
   </component>
