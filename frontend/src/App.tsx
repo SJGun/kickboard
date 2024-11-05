@@ -11,7 +11,6 @@ import PhoneScreenContainer from './components/phoneScreenContainer';
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
 // import AdminMainPage from './pages/admin/adminMainPage';
-import ReportPage from './pages/report/ReportPage';
 import Header from './components/basic/Header';
 import Navbar from './components/basic/Navbar';
 import AdminMainPage from './pages/admin/AdminMainPage';
