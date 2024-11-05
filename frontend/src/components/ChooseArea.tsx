@@ -21,7 +21,10 @@ export default function ChooseArea({ onSelect }: ChooseAreaProps) {
       <div>
         <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
           {selectedArea}
-          <ChevronDownIcon aria-hidden="true" className="-mr-1 h-5 w-5 text-gray-400" />
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="-mr-1 h-5 w-5 text-gray-400"
+          />
         </Menu.Button>
       </div>
 
@@ -34,7 +37,7 @@ export default function ChooseArea({ onSelect }: ChooseAreaProps) {
                   onClick={() => handleSelect(area)}
                   className={`${
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                  } block w-full text-left px-4 py-2 text-sm`}
+                  } block w-full px-4 py-2 text-left text-sm`}
                 >
                   {area}
                 </button>

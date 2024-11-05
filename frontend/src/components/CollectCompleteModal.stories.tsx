@@ -1,6 +1,8 @@
 // src/components/CollectCompleteModal.stories.tsx
 import { Meta, StoryFn } from '@storybook/react';
-import CollectCompleteModal, { CollectCompleteModalProps } from './CollectCompleteModal';
+import CollectCompleteModal, {
+  CollectCompleteModalProps,
+} from './CollectCompleteModal';
 import { useState } from 'react';
 
 export default {
@@ -30,7 +32,10 @@ const Template: StoryFn<CollectCompleteModalProps> = (args) => {
           onSubmit={handleSubmit}
         />
       )}
-      <button onClick={() => setIsOpen(true)} className="mt-4 bg-blue-500 p-2 text-white">
+      <button
+        onClick={() => setIsOpen(true)}
+        className="mt-4 bg-blue-500 p-2 text-white"
+      >
         Open Modal
       </button>
     </>

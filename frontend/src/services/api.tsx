@@ -65,7 +65,11 @@ export const updateReportStatus = async (
   processType?: string
 ) => {
   try {
-    const data: { status: string; completionImages?: string; processType?: string } = {
+    const data: {
+      status: string;
+      completionImages?: string;
+      processType?: string;
+    } = {
       status,
     };
 
@@ -73,13 +77,15 @@ export const updateReportStatus = async (
     if (completionImages) data.completionImages = completionImages;
     if (processType) data.processType = processType;
 
-    const response = await api.patch(`/kickboard/collector/reports/${reportId}`, data);
+    const response = await api.patch(
+      `/kickboard/collector/reports/${reportId}`,
+      data
+    );
     return response.data;
   } catch (error) {
     console.error('수거 status 업데이트 실패:', error);
     throw error;
   }
 };
-
 
 export default api;
