@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import Location from '../../components/report/Location';
 import ViolationTypeSelector from '../../components/report/ViolationTypeSelector';
+import Photo from '../../components/report/Photo';
 
 const ReportPage: React.FC = () => {
   const { title, setTitle, setReport } = useStateStore();
@@ -16,6 +17,8 @@ const ReportPage: React.FC = () => {
       <Location />
       <hr className="my-4" />
       <ViolationTypeSelector />
+      <hr className="my-4" />
+      <Photo />
       <hr className="my-4" />
     </>
   );

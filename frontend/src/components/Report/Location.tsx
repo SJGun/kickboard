@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 const Location: React.FC = () => {
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-2">
-        <p className="border border-black px-4 py-2 font-bold">
+      <div className="flex flex-col items-center justify-center gap-4">
+        <p className="my-border px-4 py-2 font-bold">
           주소 광산구 댜추나려트베호asefsaefas
         </p>
         <Link
