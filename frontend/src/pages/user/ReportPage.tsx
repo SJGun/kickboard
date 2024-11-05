@@ -3,6 +3,7 @@ import { useStateStore } from '../../store/StateStore';
 import Location from '../../components/report/Location';
 import ViolationTypeSelector from '../../components/report/ViolationTypeSelector';
 import Photo from '../../components/report/Photo';
+import ReportContent from '../../components/report/ReportContent';
 
 const ReportPage: React.FC = () => {
   const { title, setTitle, setReport } = useStateStore();
@@ -19,6 +20,8 @@ const ReportPage: React.FC = () => {
       <ViolationTypeSelector />
       <hr className="my-4" />
       <Photo />
+      <hr className="my-4" />
+      <ReportContent />
       <hr className="my-4" />
     </>
   );
