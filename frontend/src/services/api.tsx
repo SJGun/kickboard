@@ -1,5 +1,6 @@
 // src/services/api.tsx
 import axios from 'axios';
+import { useCollectorAuthStore } from '../store/CollectorAuthStore';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -14,11 +15,23 @@ const api = axios.create({
 
 // 필요한 api function들 만들기
 
+// (수거업체) 로그인한 순간부터는 Bearer 토큰 같이 보내자
+api.interceptors.request.use(
+  (config) => {
+    const accessToken = useCollectorAuthStore.getState().accessToken;
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 // 수거업체 로그인
-export const collectorLogin = async (id: string, password: string) => {
+export const collectorLogin = async (email: string, password: string) => {
   try {
-    const response = await api.post('/수거업체 로그인 백엔드 링크', {
-      id,
+    const response = await api.post('/kickboard/collector/login', {
+      email,
       password,
     });
     return response.data;
@@ -27,5 +40,46 @@ export const collectorLogin = async (id: string, password: string) => {
     throw error;
   }
 };
+
+// 수거업체 수거 리스트 받기위해 백엔드로 요청
+export const fetchCollectLists = async () => {
+  try {
+    const response = await api.get(`/kickboard/collector/reports`);
+    return response;
+  } catch (error) {
+    console.error('수거 리스트 받지 못함: ', error);
+    throw error;
+  }
+};
+
+// 수거업체 쪽에서 관리자한테 수거 시작 & 처리 완료 알림 보내기
+// patch
+// `/kickboard/collector/reports${reportId}`
+// 보내줘야할 것 : status : string, completionImages : string, processType: string (처리 카테고리)
+// status 종류 : 수거접수(COLLECT_RECEIVED), 수거중(COLLECT_PROGRESS), 수거완료(COLLECT_COMPLETED)
+// processType 처리 종류 : 없음(NOT_EXIST), 이동(MOVE), 견인(TOW), 세움(PARK)
+export const updateReportStatus = async (
+  reportId: string,
+  status: 'COLLECT_RECEIVED' | 'COLLECT_PROGRESS' | 'COLLECT_COMPLETED',
+  completionImages?: string,
+  processType?: string
+) => {
+  try {
+    const data: { status: string; completionImages?: string; processType?: string } = {
+      status,
+    };
+
+    // 이미지와 처리 유형이 포함되었을 경우에만 같이 보내기
+    if (completionImages) data.completionImages = completionImages;
+    if (processType) data.processType = processType;
+
+    const response = await api.patch(`/kickboard/collector/reports/${reportId}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('수거 status 업데이트 실패:', error);
+    throw error;
+  }
+};
+
 
 export default api;
