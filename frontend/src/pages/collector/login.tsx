@@ -28,12 +28,16 @@ const Login = () => {
       <img
         src={kickboardCollector}
         alt="kickboardcollector"
-        className="absolute left-0 top-0 mb-12 h-full w-full object-cover opacity-30 -z-10"
+        className="absolute left-0 top-0 -z-10 mb-12 h-full w-full object-cover opacity-30"
       />
 
       <div className="mb-12 text-center font-bold text-[#264471]">
-        <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">수거업체신가요?</p>
-        <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">로그인을 먼저 해주세요.</p>
+        <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">
+          수거업체신가요?
+        </p>
+        <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">
+          로그인을 먼저 해주세요.
+        </p>
       </div>
 
       {/* Error message container */}
@@ -47,7 +51,7 @@ const Login = () => {
         </div>
       )}
 
-      <div className="flex w-full max-w-xs flex-col rounded-md items-center border border-black bg-[#f9f9f9e0] p-5">
+      <div className="flex w-full max-w-xs flex-col items-center rounded-md border border-black bg-[#f9f9f9e0] p-5">
         <div className="w-full sm:max-w-sm">
           <form className="w-full space-y-6">
             <div>
