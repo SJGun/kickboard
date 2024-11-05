@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import NavBar from './AdminNavBar';
 
-const AccountSignUp: React.FC = () => {
+const CompanyIdManage: React.FC = () => {
   const [formData, setFormData] = useState({
     area: '',
     email: '',
     password: '',
-    role: 'admin',
+    role: 'collector', // 기본값을 'collector'로 고정
   });
   const [responseMessage, setResponseMessage] = useState('');
 
@@ -46,11 +46,12 @@ const AccountSignUp: React.FC = () => {
       {/* NavBar Component */}
       <NavBar />
       <div className="container mx-auto p-4">
-        <h1 className="mb-6 mt-8 text-center text-3xl font-bold">계정 생성</h1>
+        <h1 className="mb-6 mt-8 text-center text-3xl font-bold">계정 수정</h1>
         <form
           onSubmit={handleSubmit}
           className="mx-auto max-w-md rounded bg-white p-8 shadow-md"
         >
+          {/* 역할 선택 필드 - 'collector'로 고정 */}
           <div className="mb-4">
             <label className="mb-2 block" htmlFor="role">
               역할
@@ -61,11 +62,12 @@ const AccountSignUp: React.FC = () => {
               value={formData.role}
               onChange={handleChange}
               className="w-full rounded border p-2"
+              disabled // role 필드를 고정된 값으로 만들기 위해 비활성화
             >
-              <option value="admin">관리자</option>
               <option value="collector">수거업체</option>
             </select>
           </div>
+
           <div className="mb-4">
             <label className="mb-2 block" htmlFor="area">
               지역
@@ -88,6 +90,7 @@ const AccountSignUp: React.FC = () => {
               <option value="북구">북구</option>
             </select>
           </div>
+
           <div className="mb-4">
             <label className="mb-2 block" htmlFor="email">
               이메일
@@ -99,10 +102,11 @@ const AccountSignUp: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="exam@naver.com"
+              placeholder="kickboard@naver.com"  // 예시 이메일
               className="w-full rounded border p-2"
             />
           </div>
+
           <div className="mb-4">
             <label className="mb-2 block" htmlFor="password">
               비밀번호
@@ -114,18 +118,19 @@ const AccountSignUp: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="mypass12345"
+              placeholder="kick12345*&^"  // 예시 비밀번호
               className="w-full rounded border p-2"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full rounded bg-blue-500 p-2 text-white transition duration-200 hover:bg-blue-600"
+            className="w-full rounded bg-green-500 p-2 text-white transition duration-200 hover:bg-blue-600"
           >
-            회원가입
+            수정하기
           </button>
         </form>
+
         {responseMessage && (
           <p className="mt-4 text-center text-red-500">{responseMessage}</p>
         )}
@@ -134,4 +139,4 @@ const AccountSignUp: React.FC = () => {
   );
 };
 
-export default AccountSignUp;
+export default CompanyIdManage;
