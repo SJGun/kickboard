@@ -1,6 +1,6 @@
 
 import React from 'react';
-import NavBar from './AdminNavBar';
+import NavBar from './components/AdminNavBar';
 
 
 const AccountManage: React.FC = () => {

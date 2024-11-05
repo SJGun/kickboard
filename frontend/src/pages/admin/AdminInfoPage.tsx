@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import NavBar from './AdminNavBar';
+import NavBar from './components/AdminNavBar';
 
 interface Notice {
     id: number;
