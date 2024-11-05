@@ -52,7 +52,7 @@ const CollectCompleteModal = ({
         {/* 해당 킥보드 주소와 신고 유형 */}
         {address && category && (
           <div className="mb-4">
-            <p className='font-bold'>{address}</p>
+            <p className="font-bold">{address}</p>
             <p className="text-red-500">{category}</p>
           </div>
         )}
