@@ -52,22 +52,36 @@ const AdminNavBar: React.FC = () => {
         </div>
 
         {/* Logo or Title */}
-        <div className="mr-10 text-xl font-semibold">관리자 님</div>
+        <div className="mr-10 text-xl font-semibold">
+          <a href="#">관리자님</a>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
         <div className="mt-2 space-y-2 md:hidden">
-          <a href="#" className="block text-gray-700 hover:text-gray-900">
+          <a
+            href="/adminMainPage"
+            className="block text-gray-700 hover:text-gray-900"
+          >
             신고현황
           </a>
-          <a href="#" className="block text-gray-700 hover:text-gray-900">
+          <a
+            href="/adminmap"
+            className="block text-gray-700 hover:text-gray-900"
+          >
             지도
           </a>
-          <a href="#" className="block text-gray-700 hover:text-gray-900">
+          <a
+            href="/accountmanage"
+            className="block text-gray-700 hover:text-gray-900"
+          >
             계정관리
           </a>
-          <a href="#" className="block text-gray-700 hover:text-gray-900">
+          <a
+            href="/admininfo"
+            className="block text-gray-700 hover:text-gray-900"
+          >
             공지사항
           </a>
         </div>

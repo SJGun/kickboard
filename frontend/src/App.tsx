@@ -7,8 +7,11 @@ import {
 
 import { useAuthStore } from './store/authStore';
 import PhoneScreenContainer from './components/phoneScreenContainer';
+// import ProtectedRoute from './components/protectedRoute';
 import Login from './pages/collector/login';
 import CollectList from './pages/collector/collectList';
+// import AdminMainPage from './pages/admin/adminMainPage';
+import ReportPage from './pages/report/ReportPage';
 import Header from './components/basic/Header';
 import Navbar from './components/basic/Navbar';
 import AdminMainPage from './pages/admin/AdminMainPage';
@@ -22,6 +25,9 @@ import NoticePage from './pages/user/NoticePage';
 import MainContainer from './components/MainContainer';
 import ReportMapPage from './pages/user/ReportMapPage';
 import MainContainer1 from './components/MainContainer1';
+import InfoWritePage from './pages/admin/InfoWrite';
+import InfoEditPage from './pages/admin/InfoEdit';
+import AccountSignUp from './pages/admin/AccountSignUp';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -68,7 +74,7 @@ function App() {
               <Navbar />
             </PhoneScreenContainer>
           }
-        />
+        ></Route>
 
         <Route
           path="/list"
@@ -113,6 +119,9 @@ function App() {
         <Route path="/adminmap" element={<AdminMapPage />} />
         <Route path="/accountmanage" element={<AccountManagePage />} />
         <Route path="/adminlogin" element={<AdminLoginPage />} />
+        <Route path="/infowrite" element={<InfoWritePage />} />
+        <Route path="/infoedit" element={<InfoEditPage />} />
+        <Route path="/accountsignup" element={<AccountSignUp />} />
       </Routes>
     </Router>
   );
