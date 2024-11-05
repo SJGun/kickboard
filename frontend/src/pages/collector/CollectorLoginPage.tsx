@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import BlueButton from '../../components/blueButton';
-import { collectorLogin } from '../../services/api';
+import BlueButton from '../../components/BlueButton';
+import { collectorLogin } from '../../services/Api';
 import kickboardCollector from '../../assets/kickboard_collector.webp';
+import { useCollectorAuthStore } from '../../store/CollectorAuthStore';
 
-const Login = () => {
-  const [id, setId] = useState('');
+const CollectorLoginPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -13,8 +14,14 @@ const Login = () => {
   // 로그인 함수 나중에 만들기
   const onClick = async () => {
     try {
-      const data = await collectorLogin(id, password);
-      console.log('로그인 성공: ', data);
+      const response = await collectorLogin(email, password);
+      if (response.success) {
+        const { accessToken, role, area } = response.data;
+        useCollectorAuthStore.getState().setAuthData(accessToken, role, area);
+        console.log('로그인 성공: ', response);
+      } else {
+        setErrorMessage(response.error.message);
+      }
     } catch (error) {
       console.error('로그인 실패: ', error);
       setErrorMessage(
@@ -56,20 +63,20 @@ const Login = () => {
           <form className="w-full space-y-6">
             <div>
               <label
-                htmlFor="id"
+                htmlFor="email"
                 className="block text-sm font-bold text-gray-900"
               >
                 아이디
               </label>
               <div className="mt-2">
                 <input
-                  id="id"
-                  name="id"
-                  type="text"
+                  id="email"
+                  name="email"
+                  type="email"
                   required
-                  autoComplete="username" // Changed autocomplete to match a generic username
-                  value={id}
-                  onChange={(e) => setId(e.target.value)}
+                  autoComplete="email" // Changed autocomplete to match a generic username
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 />
               </div>
@@ -133,4 +140,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default CollectorLoginPage;

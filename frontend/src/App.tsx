@@ -5,11 +5,17 @@ import {
   Navigate,
 } from 'react-router-dom';
 
-import { useAuthStore } from './store/authStore';
+import './App.css';
+
+// 핸드폰 사이즈 조절
 import PhoneScreenContainer from './components/phoneScreenContainer';
-// import ProtectedRoute from './components/protectedRoute';
-import Login from './pages/collector/login';
-import CollectList from './pages/collector/collectList';
+
+// 수거업체 관련
+import ProtectedRoute from './components/ProtectedRoute';
+import { useCollectorAuthStore } from './store/CollectorAuthStore';
+import CollectorLoginPage from './pages/collector/CollectorLoginPage';
+import CollectList from './pages/collector/CollectListPage';
+
 // import AdminMainPage from './pages/admin/adminMainPage';
 import Header from './components/basic/Header';
 import Navbar from './components/basic/Navbar';
@@ -32,11 +38,12 @@ import CompanyIdMagage from './pages/admin/CompanyIdManage';
 import AdminIdManage from './pages/admin/AdminIdManage';
 
 function App() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isLoggedIn = useCollectorAuthStore((state) => state.isLoggedIn);
 
   return (
     <Router>
       <Routes>
+        {/* 수거업체 관련 */}
         <Route
           path="/collectors"
           element={
@@ -52,7 +59,7 @@ function App() {
           path="/collector-login"
           element={
             <PhoneScreenContainer>
-              <Login />
+              <CollectorLoginPage />
             </PhoneScreenContainer>
           }
         />
@@ -60,7 +67,9 @@ function App() {
           path="/collectlist"
           element={
             <PhoneScreenContainer>
-              <CollectList />
+              <ProtectedRoute>
+                <CollectList />
+              </ProtectedRoute>
             </PhoneScreenContainer>
           }
         />
