@@ -46,6 +46,24 @@ spring:
         schema-initialization:
           enabled: true
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: 8xlazlrqhem
+    stack:
+      auto: false
+
+
 #logging:
 #  level:
 #    root: INFO
