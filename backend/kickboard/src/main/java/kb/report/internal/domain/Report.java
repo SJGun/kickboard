@@ -1,4 +1,4 @@
-package kb.report.domain;// kb/report/internal/domain/Report.java
+package kb.report.internal.domain;// kb/report/internal/domain/Report.java
 
 
 import jakarta.persistence.*;
@@ -53,5 +53,9 @@ public class Report extends BaseEntity {
         this.photoUrl = photoUrl;
         this.status = status;
         this.content = content;
+    }
+
+    public void updateStatus(ReportStatus status) {
+        this.status = status;
     }
 }

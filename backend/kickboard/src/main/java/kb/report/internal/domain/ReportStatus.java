@@ -1,4 +1,4 @@
-package kb.report.domain;
+package kb.report.internal.domain;
 /**
  * 리포트 상태 Enum
  * @since JDK21

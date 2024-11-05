@@ -1,4 +1,4 @@
-package kb.report.domain;
+package kb.report.internal.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
