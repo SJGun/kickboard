@@ -35,10 +35,10 @@ const CollectorLoginPage = () => {
       <img
         src={kickboardCollector}
         alt="kickboardcollector"
-        className="absolute left-0 top-0 -z-10 mb-12 h-full w-full object-cover opacity-30"
+        className="absolute left-0 top-0 z-0 mb-12 h-full w-full object-cover opacity-30"
       />
 
-      <div className="mb-12 text-center font-bold text-[#264471]">
+      <div className="z-10 mb-12 text-center font-bold text-[#264471]">
         <p className="text-2xl [text-shadow:_1px_1px_2px_white,-1px_-1px_2px_white]">
           수거업체신가요?
         </p>
@@ -49,7 +49,7 @@ const CollectorLoginPage = () => {
 
       {/* Error message container */}
       {errorMessage && (
-        <div className="mb-4 text-center font-bold text-red-600">
+        <div className="z-10 mb-4 text-center font-bold text-red-600">
           <div className="mb-4 text-center font-bold text-red-600">
             <span>로그인에 실패했습니다.</span>
             <br />
@@ -58,7 +58,7 @@ const CollectorLoginPage = () => {
         </div>
       )}
 
-      <div className="flex w-full max-w-xs flex-col items-center rounded-md border border-black bg-[#f9f9f9e0] p-5">
+      <div className="z-10 flex w-full max-w-xs flex-col items-center rounded-md border border-black bg-[#f9f9f9e0] p-5">
         <div className="w-full sm:max-w-sm">
           <form className="w-full space-y-6">
             <div>
@@ -126,7 +126,7 @@ const CollectorLoginPage = () => {
             </div>
           </form>
 
-          <div className="mt-6">
+          <div className="z-10 mt-6">
             <BlueButton
               width="100%"
               height="36px"
