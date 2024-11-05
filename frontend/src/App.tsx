@@ -5,17 +5,17 @@ import {
   Navigate,
 } from 'react-router-dom';
 
-import PhoneScreenContainer from './components/phoneScreenContainer';
-import ProtectedRoute from './components/protectedRoute';
-import { useAuthStore } from './store/authStore';
+import PhoneScreenContainer from './components/PhoneScreenContainer';
+import ProtectedRoute from './components/ProtectedRoute';
+import { useCollectorAuthStore } from './store/CollectorAuthStore';
 
 import './App.css';
 
-import Login from './pages/collector/login';
-import CollectList from './pages/collector/collectList';
+import CollectorLoginPage from './pages/collector/CollectorLoginPage';
+import CollectList from './pages/collector/CollectListPage';
 
 function App() {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const isLoggedIn = useCollectorAuthStore((state) => state.isLoggedIn);
 
   return (
     <Router>
@@ -36,7 +36,7 @@ function App() {
           path="/collector-login"
           element={
             <PhoneScreenContainer>
-              <Login />
+              <CollectorLoginPage />
             </PhoneScreenContainer>
           }
         />
@@ -44,9 +44,9 @@ function App() {
           path="/collectlist"
           element={
             <PhoneScreenContainer>
-              <ProtectedRoute>
-                <CollectList />
-              </ProtectedRoute>
+              {/* <ProtectedRoute> */}
+              <CollectList />
+              {/* </ProtectedRoute> */}
             </PhoneScreenContainer>
           }
         />
