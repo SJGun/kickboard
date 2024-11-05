@@ -20,6 +20,8 @@ import ReportPage from './pages/user/ReportPage';
 import ReportListPage from './pages/user/ReportListPage';
 import NoticePage from './pages/user/NoticePage';
 import MainContainer from './components/MainContainer';
+import ReportMapPage from './pages/user/ReportMapPage';
+import MainContainer1 from './components/MainContainer1';
 
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -90,6 +92,18 @@ function App() {
                 <NoticePage />
               </MainContainer>
               <Navbar />
+            </PhoneScreenContainer>
+          }
+        />
+
+        <Route
+          path="/map"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <MainContainer1>
+                <ReportMapPage />
+              </MainContainer1>
             </PhoneScreenContainer>
           }
         />
