@@ -28,6 +28,9 @@ import InfoWritePage from './pages/admin/InfoWrite';
 import InfoEditPage from './pages/admin/InfoEdit';
 import AccountSignUp from './pages/admin/AccountSignUp';
 
+import CompanyIdMagage from './pages/admin/CompanyIdManage';
+import AdminIdManage from './pages/admin/AdminIdManage';
+
 function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
@@ -121,6 +124,8 @@ function App() {
         <Route path="/infowrite" element={<InfoWritePage />} />
         <Route path="/infoedit" element={<InfoEditPage />} />
         <Route path="/accountsignup" element={<AccountSignUp />} />
+        <Route path="/companyID" element={<CompanyIdMagage />} />
+        <Route path="/adminID" element={<AdminIdManage />} />
       </Routes>
     </Router>
   );
