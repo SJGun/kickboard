@@ -19,6 +19,12 @@ import AdminInfoPage from './pages/admin/AdminInfoPage';
 import AdminMapPage from './pages/admin/AdminMap';
 import AccountManagePage from './pages/admin/AccountManage';
 import AdminLoginPage from './pages/admin/AdminLogin';
+import ReportPage from './pages/user/ReportPage';
+import ReportListPage from './pages/user/ReportListPage';
+import NoticePage from './pages/user/NoticePage';
+import MainContainer from './components/MainContainer';
+import ReportMapPage from './pages/user/ReportMapPage';
+import MainContainer1 from './components/MainContainer1';
 import InfoWritePage from './pages/admin/InfoWrite';
 import InfoEditPage from './pages/admin/InfoEdit';
 import AccountSignUp from './pages/admin/AccountSignUp';
@@ -61,14 +67,53 @@ function App() {
           path="/"
           element={
             <PhoneScreenContainer>
-              <Header title={'전동 킥보드 주정차 위반 신고'} />
-              <ReportPage />
+              <Header />
+              <MainContainer>
+                <ReportPage />
+              </MainContainer>
               <Navbar />
             </PhoneScreenContainer>
           }
         ></Route>
 
-        {/* <Route path="/adminMainPage" element={<AdminMainPage />} /> */}
+        <Route
+          path="/list"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <MainContainer>
+                <ReportListPage />
+              </MainContainer>
+              <Navbar />
+            </PhoneScreenContainer>
+          }
+        />
+
+        <Route
+          path="/notice"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <MainContainer>
+                <NoticePage />
+              </MainContainer>
+              <Navbar />
+            </PhoneScreenContainer>
+          }
+        />
+
+        <Route
+          path="/map"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <MainContainer1>
+                <ReportMapPage />
+              </MainContainer1>
+            </PhoneScreenContainer>
+          }
+        />
+        {/* 사용자 페이지 -------------------------------------*/}
         <Route path="/adminMainPage" element={<AdminMainPage />} />
         <Route path="/admininfo" element={<AdminInfoPage />} />
         <Route path="/adminmap" element={<AdminMapPage />} />

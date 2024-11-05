@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import { useStateStore } from '../../store/StateStore';
+import Location from '../../components/report/Location';
+import ViolationTypeSelector from '../../components/report/ViolationTypeSelector';
+import Photo from '../../components/report/Photo';
 
 const ReportPage: React.FC = () => {
   const { title, setTitle, setReport } = useStateStore();
+
   useEffect(() => {
     setTitle('전동 킥보드 주정차 위반 신고');
     setReport();
@@ -10,9 +14,12 @@ const ReportPage: React.FC = () => {
 
   return (
     <>
-      <div className="min-h-[calc(100vh-40px-65px)] overflow-y-auto">
-        <div>hi</div>
-      </div>
+      <Location />
+      <hr className="my-4" />
+      <ViolationTypeSelector />
+      <hr className="my-4" />
+      <Photo />
+      <hr className="my-4" />
     </>
   );
 };
