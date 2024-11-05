@@ -6,9 +6,9 @@ package kb.collection.internal.domain;
  * @author 채기훈
  */
 public enum CollectionStatus {
-    RECEIVED("접수"),
-    IN_PROGRESS("수거중"),
-    COMPLETED("수거완료");
+    COLLECT_RECEIVED("접수"),
+    COLLECT_PROGRESS("수거중"),
+    COLLECT_COMPLETED("수거완료");
 
     private final String description;
 

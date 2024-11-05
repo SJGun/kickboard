@@ -43,14 +43,14 @@ public class CollectionRequest extends BaseEntity {
     @Builder
     public CollectionRequest(Report report, String photoUrl) {
         this.report = report;
-        this.status = CollectionStatus.RECEIVED;
+        this.status = CollectionStatus.COLLECT_RECEIVED;
         this.photoUrl = photoUrl;
         this.requestedCreatedAt = LocalDateTime.now();
     }
 
     public void updateStatus(CollectionStatus newStatus) {
         this.status = newStatus;
-        if (newStatus == CollectionStatus.COMPLETED) {
+        if (newStatus == CollectionStatus.COLLECT_COMPLETED) {
             this.completedUpdatedAt = LocalDateTime.now();
         }
     }
