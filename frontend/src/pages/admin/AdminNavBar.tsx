@@ -4,7 +4,7 @@ const AdminNavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-300 p-4 ">
+    <nav className="bg-gray-300 p-4">
       <div className="container mx-auto flex items-center justify-between">
         {/* Desktop Menu */}
         <div className="ml-10 hidden space-x-8 md:flex">

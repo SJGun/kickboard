@@ -102,7 +102,7 @@ const CompanyIdManage: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="kickboard@naver.com"  // 예시 이메일
+              placeholder="kickboard@naver.com" // 예시 이메일
               className="w-full rounded border p-2"
             />
           </div>
@@ -118,7 +118,7 @@ const CompanyIdManage: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="kick12345*&^"  // 예시 비밀번호
+              placeholder="kick12345*&^" // 예시 비밀번호
               className="w-full rounded border p-2"
             />
           </div>
