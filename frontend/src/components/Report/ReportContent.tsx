@@ -14,9 +14,8 @@ const ReportContent: React.FC = () => {
         onChange={handleChange}
         placeholder="신고할 내용을 입력하세요."
         className="my-button h-40 w-full"
-      >
-        {reportContent}
-      </textarea>
+        defaultValue={reportContent}
+      />
     </div>
   );
 };

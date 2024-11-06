@@ -8,7 +8,7 @@ import { useReportStore } from '../../store/ReportInfoStore';
 
 const ReportPage: React.FC = () => {
   const { title, setTitle, setReport } = useStateStore();
-  const { location, violationType, photo, reportContent } = useReportStore();
+  const { location, violationType, photos, reportContent } = useReportStore();
 
   useEffect(() => {
     setTitle('전동 킥보드 주정차 위반 신고');
@@ -23,7 +23,10 @@ const ReportPage: React.FC = () => {
     formData.append('location', location);
     formData.append('violationType', violationType);
     formData.append('reportContent', reportContent);
-    if (photo) formData.append('photo', photo);
+    formData.append('firstPhoto', photos.firstPhoto);
+    formData.append('secondPhoto', photos.secondPhoto);
+
+  
 
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);

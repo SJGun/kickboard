@@ -68,12 +68,14 @@ const Photo: React.FC = () => {
       </div>
       <div className="flex items-center justify-center gap-4">
         <button
+          type="button"
           onClick={handleCapture}
           className="my-button w-40 rounded-lg border px-6 py-2 text-sm font-medium"
         >
           촬영
         </button>
         <button
+          type="button"
           onClick={handleDelete}
           className="my-button w-40 rounded-lg border px-6 py-2 text-sm font-medium"
         >
