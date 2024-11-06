@@ -5,7 +5,6 @@ import kb.company.domain.Kickboard;
 import kb.company.repository.KickboardRepository;
 import kb.core.service.FileService;
 import kb.report.api.request.ReportCreateRequest;
-import kb.report.api.response.ReportResponse;
 import kb.report.internal.domain.Report;
 import kb.report.internal.domain.ReportCategory;
 import kb.report.internal.domain.ReportStatus;
@@ -15,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,8 +30,8 @@ public class ReportService {
 
 
     @Transactional
-    public ReportResponse createReport(ReportCreateRequest reportRequest, MultipartFile[] images) {
-
+    public String createReport(ReportCreateRequest reportRequest, MultipartFile[] images) {
+        // 킥보드 정보를 가져오거나 없을 경우 예외 처리
         Kickboard kickboard = kickboardRepository.findBySerialNumber(reportRequest.getSerialNumber())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 킥보드가 존재하지 않습니다."));
 
@@ -37,6 +39,8 @@ public class ReportService {
         ReportCategory category = reportCategoryRepository.findById(reportRequest.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 신고 카테고리가 존재하지 않습니다."));
 
+        // 주소에서 '구' 정보를 추출하여 key에 설정
+        String district = extractDistrict(reportRequest.getAddress());
 
         // 이미지 URL 처리
         String photoUrl = processImages(images);
@@ -44,7 +48,7 @@ public class ReportService {
         // 신고 생성 및 저장
         Report report = Report.builder()
                 .kickboard(kickboard)
-                .key(reportRequest.getSerialNumber())  // 예시로 serialNumber를 key로 사용
+                .key(district)  // '구' 정보로 key 설정
                 .category(category)
                 .address(reportRequest.getAddress())
                 .longitude(reportRequest.getLongitude())
@@ -57,8 +61,15 @@ public class ReportService {
         Report savedReport = reportRepository.save(report);
 
         // 응답 생성
-        return ReportResponse.from(savedReport);
+        return "정상 신고 처리되었습니다.";
     }
+
+    private String extractDistrict(String address) {
+        Pattern pattern = Pattern.compile("([가-힣]+구)"); // '구'를 포함하는 패턴 정의
+        Matcher matcher = pattern.matcher(address);
+        return matcher.find() ? matcher.group(1) : "알수없음"; // '구' 정보가 없으면 기본값 반환
+    }
+
 
     private String processImages(MultipartFile[] images) {
         if (images == null || images.length == 0) {
@@ -77,4 +88,7 @@ public class ReportService {
 
         return photoUrlBuilder.toString(); // URL이 하나 또는 두 개 합쳐진 결과 반환
     }
+
+
+
 }

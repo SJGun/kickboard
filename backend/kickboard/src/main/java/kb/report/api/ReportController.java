@@ -41,8 +41,7 @@ public class ReportController {
             @RequestPart(value = "image", required = false) MultipartFile[] images) {
 
 
-        reportService.createReport(report, images);
-        String response = "정상 신고되었습니다.";
+        String response = reportService.createReport(report, images);
         return ResponseEntity.ok(kb.core.dto.ApiResponse.success(response));
     }
 
