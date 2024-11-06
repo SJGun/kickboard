@@ -2,19 +2,20 @@ package kb.report.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kb.report.api.request.ReportCreateRequest;
 import kb.report.api.response.ReportResponse;
 import kb.report.internal.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/kickboard/reports")
@@ -39,7 +40,9 @@ public class ReportController {
             @Parameter(description = "신고 사진 (최대 2장)", required = false)
             @RequestPart(value = "image", required = false) MultipartFile[] images) {
 
-        ReportResponse response = reportService.createReport(report, images);
+
+        reportService.createReport(report, images);
+        String response = "정상 신고되었습니다.";
         return ResponseEntity.ok(kb.core.dto.ApiResponse.success(response));
     }
 

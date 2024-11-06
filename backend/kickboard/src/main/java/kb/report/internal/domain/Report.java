@@ -31,6 +31,8 @@ public class Report extends BaseEntity {
     @JoinColumn(name = "categoryId")
     private ReportCategory category;
 
+    private String address;
+
     private Double longitude;
     private Double latitude;
 
@@ -42,12 +44,13 @@ public class Report extends BaseEntity {
     private String content;
 
     @Builder
-    public Report(Kickboard kickboard, String key, ReportCategory category,
+    public Report(Kickboard kickboard, String key, ReportCategory category, String address,
                   Double longitude, Double latitude, String photoUrl,
                   ReportStatus status, String content) {
         this.kickboard = kickboard;
         this.key = key;
         this.category = category;
+        this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
         this.photoUrl = photoUrl;

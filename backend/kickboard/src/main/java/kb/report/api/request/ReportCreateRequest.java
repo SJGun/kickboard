@@ -2,7 +2,9 @@ package kb.report.api.request;
 
 import lombok.Data;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 
+@Getter
 public class ReportCreateRequest {
 
     @NotNull(message = "회사 이름은 필수 입력 사항입니다.")
@@ -21,7 +23,7 @@ public class ReportCreateRequest {
     private String address;  // 주소
 
     @NotNull(message = "신고 카테고리는 필수 입력 사항입니다.")
-    private Long category;  // 신고 카테고리의 ID
+    private Long categoryId;  // 신고 카테고리의 ID
 
     private String description;  // 신고 내용 (선택 사항)
 }
