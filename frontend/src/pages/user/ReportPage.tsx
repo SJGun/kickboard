@@ -43,7 +43,7 @@ const ReportPage: React.FC = () => {
 
   // location과 photo가 비어있으면 버튼 비활성화
   // const isButtonDisabled = !location || !photo;
-  const isButtonDisabled = false
+  const isButtonDisabled = false;
   return (
     <>
       <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">

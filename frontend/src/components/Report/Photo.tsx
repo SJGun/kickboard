@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { useReportStore } from '../../store/ReportInfoStore';
 
 const Photo: React.FC = () => {
-  const { photo, setPhoto } = useReportStore();
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setPhoto(file);
-  };
+  const { photos, setPhotos } = useReportStore();
 
   const [photo1, setPhoto1] = useState<string | null>(null);
   const [photo2, setPhoto2] = useState<string | null>(null);
@@ -31,6 +26,9 @@ const Photo: React.FC = () => {
         setPhoto2(imageUrl);
       }
 
+      setPhotos(imageUrl);
+      console.log(imageUrl);
+
       stream.getTracks().forEach((track) => track.stop()); // Stop the video stream
     } catch (error) {
       console.error('Camera access denied or error:', error);
@@ -38,17 +36,17 @@ const Photo: React.FC = () => {
   };
 
   const handleDelete = () => {
-    setPhoto1(null);
-    setPhoto2(null);
+    setPhotos('');
+    setPhotos('');
   };
 
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       <div className="flex items-center justify-center gap-4">
         <div className="my-border flex h-40 w-40 items-center justify-center border text-lg">
-          {photo1 ? (
+          {photos.firstPhoto ? (
             <img
-              src={photo1}
+              src={photos.firstPhoto}
               alt="Captured"
               className="h-full w-full object-cover"
             />
@@ -57,9 +55,9 @@ const Photo: React.FC = () => {
           )}
         </div>
         <div className="my-border flex h-40 w-40 items-center justify-center border text-lg">
-          {photo2 ? (
+          {photos.secondPhoto ? (
             <img
-              src={photo2}
+              src={photos.secondPhoto}
               alt="Captured"
               className="h-full w-full object-cover"
             />
