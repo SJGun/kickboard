@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
+import { useReportStore } from '../../store/ReportInfoStore';
 
 const Photo: React.FC = () => {
+  const { photo, setPhoto } = useReportStore();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    setPhoto(file);
+  };
+
   const [photo1, setPhoto1] = useState<string | null>(null);
   const [photo2, setPhoto2] = useState<string | null>(null);
 
