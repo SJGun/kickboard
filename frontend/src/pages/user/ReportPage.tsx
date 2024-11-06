@@ -26,8 +26,6 @@ const ReportPage: React.FC = () => {
     formData.append('firstPhoto', photos.firstPhoto);
     formData.append('secondPhoto', photos.secondPhoto);
 
-  
-
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
