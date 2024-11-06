@@ -5,6 +5,8 @@ import kb.company.domain.Kickboard;
 import kb.company.repository.KickboardRepository;
 import kb.core.service.FileService;
 import kb.report.api.request.ReportCreateRequest;
+import kb.report.api.response.ReportDetailResponse;
+import kb.report.api.response.ReportResponse;
 import kb.report.internal.domain.Report;
 import kb.report.internal.domain.ReportCategory;
 import kb.report.internal.domain.ReportStatus;
@@ -15,9 +17,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+/**
+ * 신고 서비스
+ * @since JDK21
+ * @author 지예찬
+ */
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -30,7 +40,7 @@ public class ReportService {
 
 
     @Transactional
-    public String createReport(ReportCreateRequest reportRequest, MultipartFile[] images) {
+    public ReportResponse createReport(ReportCreateRequest reportRequest, MultipartFile[] images) {
         // 킥보드 정보를 가져오거나 없을 경우 예외 처리
         Kickboard kickboard = kickboardRepository.findBySerialNumber(reportRequest.getSerialNumber())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 킥보드가 존재하지 않습니다."));
@@ -61,7 +71,7 @@ public class ReportService {
         Report savedReport = reportRepository.save(report);
 
         // 응답 생성
-        return "정상 신고 처리되었습니다.";
+        return ReportResponse.from(report);
     }
 
     private String extractDistrict(String address) {
@@ -90,5 +100,28 @@ public class ReportService {
     }
 
 
+    public List<ReportResponse> getReportsByArea(String area) {
+        // 담당 구역에 해당하는 신고 리스트 조회
+        List<Report> reports = reportRepository.findByKey(area);
 
+        // Report 리스트를 ReportResponse 리스트로 변환하여 반환
+        return reports.stream()
+                .map(ReportResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public ReportDetailResponse getReportDetail(Long reportId) {
+        // reportId로 해당 Report를 조회, 없을 경우 예외 처리
+        Report report = reportRepository.findById(reportId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 신고를 찾을 수 없습니다."));
+
+        // 신고 상태가 "처리완료"일 경우, 처리완료 사진만 반환
+        // 로직 추가해야함. 아직 미완
+        List<String> images = Arrays.asList(report.getPhotoUrl().split(","));
+        if (report.getStatus() == ReportStatus.REPORT_COMPLETED) {
+            images = List.of("처리완료 사진 URL"); // 처리완료 사진으로 변경 => 로직 추가해야함
+        }
+
+        return ReportDetailResponse.from(report, images);
+    }
 }

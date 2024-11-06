@@ -4,6 +4,11 @@ import lombok.Data;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
+/**
+ * 신고 요청 DTO
+ * @since JDK21
+ * @author 지예찬
+ */
 @Getter
 public class ReportCreateRequest {
 
