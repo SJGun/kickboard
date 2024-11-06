@@ -32,6 +32,3 @@ const Location: React.FC = () => {
 };
 
 export default Location;
-function ReportInfoStore(): { Location: any } {
-  throw new Error('Function not implemented.');
-}
