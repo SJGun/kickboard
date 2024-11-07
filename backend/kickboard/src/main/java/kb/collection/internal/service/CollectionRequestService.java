@@ -50,7 +50,7 @@ public class CollectionRequestService {
                 .photoUrl(photoUrl)
                 .build();
 
-        report.updateStatus(ReportStatus.COLLECTION_REQUESTED);
+        report.updateStatus(ReportStatus.COLLECT_RECEIVED);
 
         return CollectionRequestResponse.from(collectionRequestRepository.save(collectionRequest));
     }
@@ -78,7 +78,7 @@ public class CollectionRequestService {
 
 
         if (updateRequest.collectionStatus() == CollectionStatus.COLLECT_COMPLETED) {
-            request.getReport().updateStatus(ReportStatus.COMPLETED);
+            request.getReport().updateStatus(ReportStatus.COLLECT_COMPLETED);
         }
 
         return CollectionRequestResponse.from(request);
