@@ -31,6 +31,9 @@ public class CollectionRequest extends BaseEntity {
 
     private String photoUrl;
 
+    @Column(name = "processType")
+    private CollectionProcessStatus processType;
+
     @Column(name = "requestedCreatedAt")
     private LocalDateTime requestedCreatedAt;
 
@@ -48,12 +51,18 @@ public class CollectionRequest extends BaseEntity {
         this.requestedCreatedAt = LocalDateTime.now();
     }
 
-    public void updateStatus(CollectionStatus newStatus) {
+    public void updateCollectionStatus(CollectionStatus newStatus) {
         this.status = newStatus;
         if (newStatus == CollectionStatus.COLLECT_COMPLETED) {
             this.completedUpdatedAt = LocalDateTime.now();
         }
     }
+
+    public void updateCollectionProcessStatus(CollectionProcessStatus newStatus) {
+        this.processType = newStatus;
+        this.completedUpdatedAt = LocalDateTime.now();
+    }
+
 
     public void updatePhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
