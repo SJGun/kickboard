@@ -22,29 +22,30 @@ import java.util.List;
  */
 @Tag(name = "Collection", description = "수거 요청 API")
 @Controller
-@RequestMapping("/api/v1/collections")
+@RequestMapping("/kickboard/collections")
 @RequiredArgsConstructor
 public class CollectionController {
     private final CollectionRequestService collectionRequestService;
 
     @Operation(summary = "수거 요청 생성")
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,value = "/{reportId}")
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> createRequest(
+            @PathVariable Long reportId,
             @ModelAttribute CollectionRequestCreateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(
-                collectionRequestService.createRequest(request)));
+                collectionRequestService.createRequest(reportId,request)));
     }
 
     @Operation(summary = "수거 요청 상태 업데이트")
-    @PutMapping(
-            value = "/{requestId}/status",
+    @PatchMapping(
+            value = "/{requestId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> updateStatus(
             @PathVariable Long requestId,
             @ModelAttribute CollectionStatusUpdateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(
-                collectionRequestService.updateStatus(request)));
+                collectionRequestService.updateStatus(requestId,request)));
     }
 
     @Operation(summary = "수거 요청 조회")

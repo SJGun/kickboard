@@ -36,8 +36,8 @@ public class CollectionRequestService {
     private final FileService fileService;  // 파일 업로드 서비스
 
     @Transactional
-    public CollectionRequestResponse createRequest(CollectionRequestCreateRequest request) {
-        Report report = reportRepository.findById(request.reportId())
+    public CollectionRequestResponse createRequest(Long requestId,CollectionRequestCreateRequest request) {
+        Report report = reportRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 신고입니다."));
 
         String photoUrl = null;
@@ -61,8 +61,8 @@ public class CollectionRequestService {
             maxAttempts = 3,
             backoff = @Backoff(delay = 500)
     )
-    public CollectionRequestResponse updateStatus(CollectionStatusUpdateRequest updateRequest) {
-        CollectionRequest request = collectionRequestRepository.findByIdWithOptimisticLock(updateRequest.reportId())
+    public CollectionRequestResponse updateStatus(Long requestId,CollectionStatusUpdateRequest updateRequest) {
+        CollectionRequest request = collectionRequestRepository.findByIdWithOptimisticLock(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수거 요청입니다."));
 
         String photoUrl = null;
@@ -72,10 +72,12 @@ public class CollectionRequestService {
 
         }
 
-        request.updateStatus(updateRequest.status());
+        request.updateCollectionStatus(updateRequest.collectionStatus());
         request.updatePhotoUrl(photoUrl);
+        request.updateCollectionProcessStatus(updateRequest.processStatus());
 
-        if (updateRequest.status() == CollectionStatus.COLLECT_COMPLETED) {
+
+        if (updateRequest.collectionStatus() == CollectionStatus.COLLECT_COMPLETED) {
             request.getReport().updateStatus(ReportStatus.COMPLETED);
         }
 
