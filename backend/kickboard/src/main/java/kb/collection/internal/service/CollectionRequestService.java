@@ -2,6 +2,7 @@
 package kb.collection.internal.service;
 
 import kb.collection.api.request.CollectionRequestCreateRequest;
+import kb.collection.api.request.CollectionStatusUpdateRequest;
 import kb.collection.api.response.CollectionRequestResponse;
 import kb.collection.internal.domain.CollectionRequest;
 import kb.collection.internal.domain.CollectionStatus;
@@ -60,13 +61,21 @@ public class CollectionRequestService {
             maxAttempts = 3,
             backoff = @Backoff(delay = 500)
     )
-    public CollectionRequestResponse updateStatus(Long requestId, CollectionStatus newStatus) {
-        CollectionRequest request = collectionRequestRepository.findByIdWithOptimisticLock(requestId)
+    public CollectionRequestResponse updateStatus(CollectionStatusUpdateRequest updateRequest) {
+        CollectionRequest request = collectionRequestRepository.findByIdWithOptimisticLock(updateRequest.reportId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수거 요청입니다."));
 
-        request.updateStatus(newStatus);
+        String photoUrl = null;
 
-        if (newStatus == CollectionStatus.COMPLETED) {
+        if(updateRequest.photo() != null) {
+        photoUrl = fileService.uploadFile(updateRequest.photo());
+
+        }
+
+        request.updateStatus(updateRequest.status());
+        request.updatePhotoUrl(photoUrl);
+
+        if (updateRequest.status() == CollectionStatus.COLLECT_COMPLETED) {
             request.getReport().updateStatus(ReportStatus.COMPLETED);
         }
 

@@ -1,5 +1,6 @@
 package kb.collection.api.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 public record CollectionRequestCreateRequest(
         @NotNull(message = "신고 ID는 필수입니다.")
         Long reportId,
-
+        @Schema(type = "string", format = "binary")
         MultipartFile photo
 ) {}

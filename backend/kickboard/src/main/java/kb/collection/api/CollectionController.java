@@ -9,7 +9,9 @@ import kb.collection.internal.domain.CollectionStatus;
 import kb.collection.internal.service.CollectionRequestService;
 import kb.core.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,14 +21,14 @@ import java.util.List;
  * @author 채기훈
  */
 @Tag(name = "Collection", description = "수거 요청 API")
-@RestController
+@Controller
 @RequestMapping("/api/v1/collections")
 @RequiredArgsConstructor
 public class CollectionController {
     private final CollectionRequestService collectionRequestService;
 
     @Operation(summary = "수거 요청 생성")
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> createRequest(
             @ModelAttribute CollectionRequestCreateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(
@@ -34,12 +36,15 @@ public class CollectionController {
     }
 
     @Operation(summary = "수거 요청 상태 업데이트")
-    @PutMapping("/{requestId}/status")
+    @PutMapping(
+            value = "/{requestId}/status",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> updateStatus(
             @PathVariable Long requestId,
-            @RequestBody CollectionStatusUpdateRequest request) {
+            @ModelAttribute CollectionStatusUpdateRequest request) {
         return ResponseEntity.ok(ApiResponse.success(
-                collectionRequestService.updateStatus(requestId, request.status())));
+                collectionRequestService.updateStatus(request)));
     }
 
     @Operation(summary = "수거 요청 조회")
