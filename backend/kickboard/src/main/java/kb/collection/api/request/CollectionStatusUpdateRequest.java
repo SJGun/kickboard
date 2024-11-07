@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public record CollectionStatusUpdateRequest(
         @NotNull(message = "상태는 필수입니다.") CollectionStatus collectionStatus,
-        @NotNull(message = "신고 ID는 필수입니다.") Long reportId,
         @NotNull(message = "처리상태는 필수입니다.") CollectionProcessStatus processStatus,
         @Schema(type = "string", format = "binary")
         MultipartFile photo

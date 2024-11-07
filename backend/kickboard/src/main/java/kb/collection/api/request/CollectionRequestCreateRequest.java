@@ -10,8 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
  * @author 채기훈
  */
 public record CollectionRequestCreateRequest(
-        @NotNull(message = "신고 ID는 필수입니다.")
-        Long reportId,
         @Schema(type = "string", format = "binary")
         MultipartFile photo
 ) {}
