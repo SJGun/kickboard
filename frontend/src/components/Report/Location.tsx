@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useReportStore } from '../../store/ReportInfoStore';
 
 const Location: React.FC = () => {
+  const { location, setLocation } = useReportStore();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-4">
-        <p className="my-border px-4 py-2 font-bold">
-          주소 광산구 댜추나려트베호asefsaefas
-        </p>
+        <input
+          className="my-border px-4 py-2 font-bold"
+          onChange={handleChange}
+          value={location}
+          disabled
+        />
+
         <Link
           to="/map"
           type="button"

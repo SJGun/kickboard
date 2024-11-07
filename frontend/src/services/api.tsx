@@ -95,7 +95,6 @@ export const updateReportStatus = async (
         },
       }
     );
-
     return response.data;
   } catch (error) {
     console.error('수거 status 업데이트 실패:', error);

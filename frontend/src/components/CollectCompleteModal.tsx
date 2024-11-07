@@ -43,7 +43,7 @@ const CollectCompleteModal = ({
         {/* Display Address and Category */}
         {address && category && (
           <div className="mb-4">
-            <p className='font-bold'>{address}</p>
+            <p className="font-bold">{address}</p>
             <p className="text-red-500">{category}</p>
           </div>
         )}
