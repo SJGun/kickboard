@@ -7,7 +7,7 @@ type MainContainerProps = {
 const MainContainer1: React.FC<MainContainerProps> = ({ children }) => {
   return (
     <>
-      <div className="min-h-[calc(100vh-40px)] w-full overflow-y-auto border border-black px-8 pt-8">
+      <div className="h-full w-full overflow-y-auto border border-black">
         {children}
       </div>
     </>

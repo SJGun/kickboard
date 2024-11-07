@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useReportStore } from '../../store/ReportInfoStore';
 
-const Location: React.FC = () => {
-  const { location, setLocation } = useReportStore();
+const Address: React.FC = () => {
+  const { address, setAddress } = useReportStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocation(e.target.value);
+    setAddress(e.target.value);
   };
 
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-4">
         <input
-          className="my-border px-4 py-2 font-bold"
+          className="my-border px-4 py-2 font-bold w-full"
           onChange={handleChange}
-          value={location}
+          value={address ?? '위치를 확인해주세요'}
           disabled
         />
 
@@ -31,4 +31,4 @@ const Location: React.FC = () => {
   );
 };
 
-export default Location;
+export default Address;
