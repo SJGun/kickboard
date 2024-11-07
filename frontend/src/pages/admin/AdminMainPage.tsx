@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import AdminNavBar from './components/AdminNavBar';
 import { Card, CardContent } from './components/Card';
-import { Select, SelectItem } from './components/Select';
 import { TableSkeleton, Skeleton } from './components/Skeleton';
+import beam from './components/beam.png';
+
 import {
   TiArrowUnsorted,
   TiArrowSortedUp,
@@ -23,10 +24,11 @@ const AdminMain: React.FC = () => {
   );
 
   const statusItems = [
-    { label: '신고접수', count: 10, color: 'red', value: '신고접수' },
-    { label: '수거중', count: 10, color: 'blue', value: '수거중' },
-    { label: '수거완료', count: 10, color: 'blue', value: '수거완료' },
+    { label: '신고접수', count: 10, colorClass: 'bg-red-500', value: '신고접수' },
+    { label: '수거중', count: 10, colorClass: 'bg-yellow-500', value: '수거중' },
+    { label: '수거완료', count: 10, colorClass: 'bg-green-500', value: '수거완료' },
   ];
+  
 
   const companies = ['BEAM', 'DEER', 'SWING', 'KICK GOING', 'LIME'];
   const addresses = [
@@ -79,7 +81,7 @@ const AdminMain: React.FC = () => {
       address: addresses[index % addresses.length],
       adminStatus:
         adminStatuses[Math.floor(Math.random() * adminStatuses.length)], // 타입이 호환되는 값으로 설정
-      images: [`/api/placeholder/400/320?text=Report${index + 1}`],
+      images: [beam],
       createdAt: new Date(
         Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)
       )
@@ -183,25 +185,7 @@ const AdminMain: React.FC = () => {
     <div className="w-full">
       <AdminNavBar />
       <div className="mx-auto max-w-7xl p-4">
-        {/* Status Indicators */}
-        <div className="mb-4 rounded-lg bg-white shadow">
-          <div className="flex justify-end gap-4 p-2">
-            {isLoading ? (
-              <div className="flex gap-4">
-                {[...Array(2)].map((_, i) => (
-                  <Skeleton key={i} className="h-6 w-24" />
-                ))}
-              </div>
-            ) : (
-              statusItems.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full bg-${item.color}-500`}></div>
-                  <span>{item.label} {item.count}</span>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
+       
 
         <div className="space-y-4">
           {/* Map, Images, and Details in one row */}
