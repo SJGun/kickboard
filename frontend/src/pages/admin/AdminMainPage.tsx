@@ -164,6 +164,8 @@ const AdminMain: React.FC = () => {
   }> = ({ field, children }) => (
     <th
       className="sticky top-0 z-10 cursor-pointer bg-gray-50 p-2 text-left transition-colors hover:bg-gray-100"
+    <th
+      className="sticky top-0 z-10 cursor-pointer bg-gray-50 p-2 text-left transition-colors hover:bg-gray-100"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center">
