@@ -61,25 +61,39 @@ export const fetchCollectLists = async () => {
 export const updateReportStatus = async (
   reportId: string,
   status: 'COLLECT_RECEIVED' | 'COLLECT_PROGRESS' | 'COLLECT_COMPLETED',
-  completionImages?: string,
+  completionImages?: File, // Update to File type
   processType?: string
 ) => {
   try {
-    const data: {
-      status: string;
-      completionImages?: string;
-      processType?: string;
-    } = {
-      status,
-    };
+    // Create FormData and append required fields
+    const formData = new FormData();
+    formData.append('status', status);
 
-    // 이미지와 처리 유형이 포함되었을 경우에만 같이 보내기
-    if (completionImages) data.completionImages = completionImages;
-    if (processType) data.processType = processType;
+    // Append image only if provided
+    if (completionImages) {
+      formData.append('completionImages', completionImages); // Ensure it’s appended as a file
+    }
 
+    // Append process type if provided
+    if (processType) {
+      formData.append('processType', processType);
+    }
+
+    // Print FormData contents for debugging
+    console.log('FormData contents:');
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    // Send the request with FormData and appropriate headers
     const response = await api.patch(
       `/kickboard/collector/reports/${reportId}`,
-      data
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set Content-Type explicitly
+        },
+      }
     );
     return response.data;
   } catch (error) {

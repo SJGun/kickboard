@@ -1,9 +1,11 @@
+// src/components/CollectCompleteModal.tsx
+
 import { useState } from 'react';
 import { CameraIcon } from '@heroicons/react/24/solid';
 
 export interface CollectCompleteModalProps {
   onClose: () => void;
-  onSubmit: (completionImages: string, processType: string) => void;
+  onSubmit: (completionImages: File | null, processType: string) => void; // Update to File | null
   address?: string | null;
   category?: string | null;
 }
@@ -14,7 +16,7 @@ const CollectCompleteModal = ({
   address,
   category,
 }: CollectCompleteModalProps) => {
-  const [completionImages, setCompletionImages] = useState<string>('');
+  const [completionImages, setCompletionImages] = useState<File | null>(null); // Update to File type
   const [processType, setProcessType] = useState<string>('PICK');
   const [showWarning, setShowWarning] = useState(false);
 
@@ -22,22 +24,13 @@ const CollectCompleteModal = ({
   const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCompletionImages(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setCompletionImages(file); // Set as File type
     }
-  };
-
-  // x버튼 누르면 현재 찍은 (고른) 이미지 삭제
-  const handleRemoveImage = () => {
-    setCompletionImages('');
   };
 
   const handleConfirm = () => {
     if (completionImages && processType !== 'PICK') {
-      onSubmit(completionImages, processType);
+      onSubmit(completionImages, processType); // Pass File directly
       onClose();
     } else {
       setShowWarning(true);
@@ -47,9 +40,7 @@ const CollectCompleteModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-75">
       <div className="relative w-80 rounded-md bg-white p-5 shadow-md">
-        {/* <h2 className="mb-4 text-lg font-semibold">완료 처리</h2> */}
-
-        {/* 해당 킥보드 주소와 신고 유형 */}
+        {/* Display Address and Category */}
         {address && category && (
           <div className="mb-4">
             <p className="font-bold">{address}</p>
@@ -57,8 +48,7 @@ const CollectCompleteModal = ({
           </div>
         )}
 
-        {/* 사진 첨부 */}
-        {/* <label className="mb-2 block">사진 첨부:</label> */}
+        {/* Photo Capture */}
         <div className="flex items-center gap-2">
           <input
             type="file"
@@ -77,16 +67,16 @@ const CollectCompleteModal = ({
           </button>
         </div>
 
-        {/* 이미지 미리보기와 삭제 버튼 */}
+        {/* Image Preview with Remove Button */}
         {completionImages && (
           <div className="relative mt-2">
             <img
-              src={completionImages}
+              src={URL.createObjectURL(completionImages)} // Preview File
               alt="Captured preview"
               className="h-auto w-full rounded"
             />
             <button
-              onClick={handleRemoveImage}
+              onClick={() => setCompletionImages(null)} // Reset File
               className="absolute right-1 top-1 rounded-full bg-red-600 p-1 text-white"
             >
               ✕
@@ -94,8 +84,7 @@ const CollectCompleteModal = ({
           </div>
         )}
 
-        {/* 처리 유형 선택 */}
-        {/* <label className="mb-2 mt-4 block">처리 유형:</label> */}
+        {/* Process Type Selection */}
         <div>
           <select
             value={processType}
@@ -113,12 +102,12 @@ const CollectCompleteModal = ({
           </select>
         </div>
 
-        {/* 경고 메시지 */}
+        {/* Warning Message */}
         {showWarning && (
           <p className="mb-4 text-red-500">사진과 처리 유형을 선택해주세요.</p>
         )}
 
-        {/* 취소 및 확인 버튼 */}
+        {/* Confirm and Cancel Buttons */}
         <div className="flex justify-end">
           <button
             onClick={onClose}

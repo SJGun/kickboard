@@ -279,18 +279,26 @@ const CollectList = () => {
 
   // 모달 열려서 확인 버튼 누를때 쓸 함수
   const handleModalSubmit = async (
-    completionImages: string,
+    completionImages: File | null, // Update to File type
     processType: string
   ) => {
     if (currentReportId) {
       try {
+        // Check if an image file is available before submitting
+        if (!completionImages) {
+          console.error('No image provided');
+          return;
+        }
+
+        // Call the API function with the File type for completionImages
         await updateReportStatus(
           currentReportId,
           'COLLECT_COMPLETED',
           completionImages,
           processType
         );
-        setIsModalOpen(false); // 제출 후 모달 닫아
+
+        setIsModalOpen(false); // Close the modal after submission
         setCurrentReportId(null);
       } catch (error) {
         console.error('Failed to submit completion data:', error);
@@ -450,7 +458,9 @@ const CollectList = () => {
       {isModalOpen && (
         <CollectCompleteModal
           onClose={() => setIsModalOpen(false)}
-          onSubmit={handleModalSubmit}
+          onSubmit={(completionImages, processType) =>
+            handleModalSubmit(completionImages, processType)
+          }
           address={currentAdress}
           category={currentCategory}
         />
