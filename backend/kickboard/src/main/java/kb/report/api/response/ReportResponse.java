@@ -35,7 +35,7 @@ public class ReportResponse {
         response.setLongitude(report.getLongitude());
         response.setCategory(report.getCategory().getName());
         response.setStatus(report.getStatus().name());
-        response.setImages(Arrays.asList(report.getPhotoUrl().split(","))); // 이미지 URL을 쉼표로 구분하여 리스트로 변환
+        response.setImages(Arrays.asList(report.getPhotoUrl().split(",")));
         response.setDescriptions(report.getContent());
         response.setCreatedAt(report.getCreatedAt().toString());
         return response;

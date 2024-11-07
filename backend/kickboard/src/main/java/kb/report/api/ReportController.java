@@ -35,8 +35,6 @@ public class ReportController {
                     description = "신고 등록 성공",
                     content = @Content(schema = @Schema(implementation = ReportResponse.class))
             ),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @PostMapping
     public ResponseEntity<?> createReport(
@@ -53,8 +51,6 @@ public class ReportController {
     @Operation(summary = "신고자 신고 리스트 조회", description = "담당 구역(area)으로 신고 리스트를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "신고 리스트 조회 성공", content = @Content(schema = @Schema(implementation = ReportResponse.class))),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping
     public ResponseEntity<?> getReportsByArea(
@@ -67,8 +63,6 @@ public class ReportController {
     @Operation(summary = "신고자 신고 세부 조회", description = "신고 ID로 특정 신고의 세부 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "신고 세부 조회 성공", content = @Content(schema = @Schema(implementation = ReportDetailResponse.class))),
-            @ApiResponse(responseCode = "404", description = "신고를 찾을 수 없음"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/{reportId}")
     public ResponseEntity<?> getReportDetail(

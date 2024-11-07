@@ -1,6 +1,7 @@
 package kb.report.internal.repository;
 
 import kb.report.internal.domain.Report;
+import kb.user.internal.domain.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.List;
  * @author 채기훈
  */
 public interface ReportRepository extends JpaRepository<Report, Long> {
-    List<Report> findByKey(String key);
+    List<Report> findByLocation(Location location);
 }

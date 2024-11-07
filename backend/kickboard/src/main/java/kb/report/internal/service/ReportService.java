@@ -12,6 +12,8 @@ import kb.report.internal.domain.ReportCategory;
 import kb.report.internal.domain.ReportStatus;
 import kb.report.internal.repository.ReportCategoryRepository;
 import kb.report.internal.repository.ReportRepository;
+import kb.user.internal.domain.Location;
+import kb.user.internal.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,7 @@ public class ReportService {
     private final KickboardRepository kickboardRepository;
     private final ReportCategoryRepository reportCategoryRepository;
     private final FileService fileService;
+    private final LocationRepository locationRepository;
 
 
     @Transactional
@@ -49,8 +52,10 @@ public class ReportService {
         ReportCategory category = reportCategoryRepository.findById(reportRequest.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 신고 카테고리가 존재하지 않습니다."));
 
-        // 주소에서 '구' 정보를 추출하여 key에 설정
+        // 주소에서 '구' 정보를 추출하여 location에 설정
         String district = extractDistrict(reportRequest.getAddress());
+        Location location = locationRepository.findByName(district)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 구역이 존재하지 않습니다."));
 
         // 이미지 URL 처리
         String photoUrl = processImages(images);
@@ -58,8 +63,8 @@ public class ReportService {
         // 신고 생성 및 저장
         Report report = Report.builder()
                 .kickboard(kickboard)
-                .key(district)  // '구' 정보로 key 설정
                 .category(category)
+                .location(location)
                 .address(reportRequest.getAddress())
                 .longitude(reportRequest.getLongitude())
                 .latitude(reportRequest.getLatitude())
@@ -71,7 +76,7 @@ public class ReportService {
         Report savedReport = reportRepository.save(report);
 
         // 응답 생성
-        return ReportResponse.from(report);
+        return ReportResponse.from(savedReport);
     }
 
     private String extractDistrict(String address) {
@@ -79,7 +84,6 @@ public class ReportService {
         Matcher matcher = pattern.matcher(address);
         return matcher.find() ? matcher.group(1) : "알수없음"; // '구' 정보가 없으면 기본값 반환
     }
-
 
     private String processImages(MultipartFile[] images) {
         if (images == null || images.length == 0) {
@@ -99,16 +103,20 @@ public class ReportService {
         return photoUrlBuilder.toString(); // URL이 하나 또는 두 개 합쳐진 결과 반환
     }
 
-
     public List<ReportResponse> getReportsByArea(String area) {
-        // 담당 구역에 해당하는 신고 리스트 조회
-        List<Report> reports = reportRepository.findByKey(area);
+        // 구역 이름으로 Location 조회
+        Location location = locationRepository.findByName(area)
+                .orElseThrow(() -> new EntityNotFoundException("해당 구역을 찾을 수 없습니다."));
+
+        // locationId로 해당 구역의 Report 조회
+        List<Report> reports = reportRepository.findByLocation(location);
 
         // Report 리스트를 ReportResponse 리스트로 변환하여 반환
         return reports.stream()
                 .map(ReportResponse::from)
                 .collect(Collectors.toList());
     }
+
 
     public ReportDetailResponse getReportDetail(Long reportId) {
         // reportId로 해당 Report를 조회, 없을 경우 예외 처리
