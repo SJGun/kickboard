@@ -2,6 +2,7 @@
 package kb.collection.internal.service;
 
 import kb.collection.api.request.CollectionRequestCreateRequest;
+import kb.collection.api.request.CollectionStatusUpdateRequest;
 import kb.collection.api.response.CollectionRequestResponse;
 import kb.collection.internal.domain.CollectionRequest;
 import kb.collection.internal.domain.CollectionStatus;
@@ -35,8 +36,8 @@ public class CollectionRequestService {
     private final FileService fileService;  // 파일 업로드 서비스
 
     @Transactional
-    public CollectionRequestResponse createRequest(CollectionRequestCreateRequest request) {
-        Report report = reportRepository.findById(request.reportId())
+    public CollectionRequestResponse createRequest(Long requestId,CollectionRequestCreateRequest request) {
+        Report report = reportRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 신고입니다."));
 
         String photoUrl = null;
@@ -60,13 +61,23 @@ public class CollectionRequestService {
             maxAttempts = 3,
             backoff = @Backoff(delay = 500)
     )
-    public CollectionRequestResponse updateStatus(Long requestId, CollectionStatus newStatus) {
+    public CollectionRequestResponse updateStatus(Long requestId,CollectionStatusUpdateRequest updateRequest) {
         CollectionRequest request = collectionRequestRepository.findByIdWithOptimisticLock(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 수거 요청입니다."));
 
-        request.updateStatus(newStatus);
+        String photoUrl = null;
 
-        if (newStatus == CollectionStatus.COMPLETED) {
+        if(updateRequest.photo() != null) {
+        photoUrl = fileService.uploadFile(updateRequest.photo());
+
+        }
+
+        request.updateCollectionStatus(updateRequest.collectionStatus());
+        request.updatePhotoUrl(photoUrl);
+        request.updateCollectionProcessStatus(updateRequest.processStatus());
+
+
+        if (updateRequest.collectionStatus() == CollectionStatus.COLLECT_COMPLETED) {
             request.getReport().updateStatus(ReportStatus.COMPLETED);
         }
 
