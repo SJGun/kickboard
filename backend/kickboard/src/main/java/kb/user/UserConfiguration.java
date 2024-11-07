@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Import;
  * @author 채기훈
  */
 @Configuration
-@Import(CoreConfiguration.class)
+//@Import(CoreConfiguration.class)
 public class UserConfiguration {
 }
