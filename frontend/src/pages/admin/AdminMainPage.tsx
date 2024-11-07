@@ -10,7 +10,7 @@ import {
   TiArrowSortedDown,
 } from 'react-icons/ti';
 import KakaoMap from './components/KaKaoMap';
-import IncidentDetails from './components/IncidentDetail'; // 추가된 import
+import IncidentDetails from './components/IncidentDetail';
 import { Report, ApiResponse } from '../../types';
 import IncidentImage from './components/IncidentImage';
 
@@ -19,16 +19,13 @@ const AdminMain: React.FC = () => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [sortField, setSortField] = useState<keyof Report | null>(null);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(
-    null
-  );
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(null);
 
   const statusItems = [
     { label: '신고접수', count: 10, colorClass: 'bg-red-500', value: '신고접수' },
     { label: '수거중', count: 10, colorClass: 'bg-yellow-500', value: '수거중' },
     { label: '수거완료', count: 10, colorClass: 'bg-green-500', value: '수거완료' },
   ];
-  
 
   const companies = ['BEAM', 'DEER', 'SWING', 'KICK GOING', 'LIME'];
   const addresses = [
@@ -43,34 +40,13 @@ const AdminMain: React.FC = () => {
     '광주광역시 광산구 월곡동 552-4',
     '광주광역시 광산구 소촌동 443-2',
   ];
-  const handleStatusChange = async (newStatus: Report['adminStatus']) => {
-    if (!selectedReport) return;
-
-    setIsLoading(true);
-    try {
-      // 실제 구현에서는 API 호출이 필요합니다
-      const updatedReports = apiData.data.reports.map((report) =>
-        report.reportId === selectedReport.reportId
-          ? { ...report, adminStatus: newStatus }
-          : report
-      );
-
-      // 상태 업데이트
-      setSelectedReport({ ...selectedReport, adminStatus: newStatus });
-      apiData.data.reports = updatedReports;
-    } catch (error) {
-      console.error('상태 변경 중 오류 발생:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const generateSampleData = (): ApiResponse => {
     const adminStatuses: Array<Report['adminStatus']> = [
       '신고접수',
       '수거중',
       '수거완료',
-    ]; // Report의 adminStatus 타입을 사용
+    ];
 
     const reports: Report[] = Array.from({ length: 10 }, (_, index) => ({
       reportId: `REP${String(index + 1).padStart(4, '0')}`,
@@ -79,8 +55,7 @@ const AdminMain: React.FC = () => {
       latitude: 35.1595 + (Math.random() - 0.5) * 0.01,
       longitude: 126.8526 + (Math.random() - 0.5) * 0.01,
       address: addresses[index % addresses.length],
-      adminStatus:
-        adminStatuses[Math.floor(Math.random() * adminStatuses.length)], // 타입이 호환되는 값으로 설정
+      adminStatus: adminStatuses[Math.floor(Math.random() * adminStatuses.length)],
       images: [beam],
       createdAt: new Date(
         Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)
@@ -98,14 +73,33 @@ const AdminMain: React.FC = () => {
       afterImages: reports
         .filter((report) => report.adminStatus === '수거완료')
         .map(
-          (report) =>
-            `/api/placeholder/400/320?text=Completed${report.reportId}`
+          (report) => `/api/placeholder/400/320?text=Completed${report.reportId}`
         ),
       error: undefined,
     };
   };
 
   const [apiData] = useState<ApiResponse>(generateSampleData());
+
+  const handleStatusChange = async (newStatus: Report['adminStatus']) => {
+    if (!selectedReport) return;
+
+    setIsLoading(true);
+    try {
+      const updatedReports = apiData.data.reports.map((report) =>
+        report.reportId === selectedReport.reportId
+          ? { ...report, adminStatus: newStatus }
+          : report
+      );
+
+      setSelectedReport({ ...selectedReport, adminStatus: newStatus });
+      apiData.data.reports = updatedReports;
+    } catch (error) {
+      console.error('상태 변경 중 오류 발생:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSort = (field: keyof Report) => {
     if (sortField === field) {
@@ -164,8 +158,6 @@ const AdminMain: React.FC = () => {
   }> = ({ field, children }) => (
     <th
       className="sticky top-0 z-10 cursor-pointer bg-gray-50 p-2 text-left transition-colors hover:bg-gray-100"
-    <th
-      className="sticky top-0 z-10 cursor-pointer bg-gray-50 p-2 text-left transition-colors hover:bg-gray-100"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center">
@@ -182,17 +174,12 @@ const AdminMain: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-
   return (
     <div className="w-full">
       <AdminNavBar />
       <div className="mx-auto max-w-7xl p-4">
-       
-
         <div className="space-y-4">
-          {/* Map, Images, and Details in one row */}
           <div className="grid grid-cols-3 gap-4">
-            {/* Map Section */}
             <div className="rounded-lg bg-white p-4">
               {isLoading ? (
                 <Skeleton className="h-[400px] w-full" />
@@ -205,7 +192,6 @@ const AdminMain: React.FC = () => {
               )}
             </div>
 
-            {/* Images Section */}
             <div className="rounded-lg bg-white p-4">
               <div className="grid grid-cols-1 gap-4">
                 {selectedReport?.images.map((image, index) => (
@@ -218,7 +204,6 @@ const AdminMain: React.FC = () => {
               </div>
             </div>
 
-            {/* Details Section */}
             <div className="rounded-lg bg-white">
               <IncidentDetails
                 report={selectedReport}
