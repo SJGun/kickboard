@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import kb.company.domain.Kickboard;
 import kb.core.domain.BaseEntity;
+import kb.user.internal.domain.Location;
 import lombok.*;
 /**
  * 리포트 Entity
@@ -24,12 +25,15 @@ public class Report extends BaseEntity {
     @JoinColumn(name = "kickboardId")
     private Kickboard kickboard;
 
-    @Column(name = "Key", nullable = false)
-    private String key;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "locationId")
+    private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId")
     private ReportCategory category;
+
+    private String address;
 
     private Double longitude;
     private Double latitude;
@@ -42,12 +46,13 @@ public class Report extends BaseEntity {
     private String content;
 
     @Builder
-    public Report(Kickboard kickboard, String key, ReportCategory category,
+    public Report(Kickboard kickboard, Location location, ReportCategory category, String address,
                   Double longitude, Double latitude, String photoUrl,
                   ReportStatus status, String content) {
         this.kickboard = kickboard;
-        this.key = key;
+        this.location = location;
         this.category = category;
+        this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
         this.photoUrl = photoUrl;
