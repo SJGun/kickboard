@@ -65,9 +65,9 @@ function App() {
           path="/collectlist"
           element={
             <PhoneScreenContainer>
-              <ProtectedRoute>
+              {/* <ProtectedRoute> */}
                 <CollectList />
-              </ProtectedRoute>
+              {/* </ProtectedRoute> */}
             </PhoneScreenContainer>
           }
         />
