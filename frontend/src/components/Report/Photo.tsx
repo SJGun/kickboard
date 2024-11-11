@@ -6,6 +6,7 @@ const Photo: React.FC = () => {
 
   const [photo1, setPhoto1] = useState<string | null>(null);
   const [photo2, setPhoto2] = useState<string | null>(null);
+  photo2;
 
   const handleCapture = async () => {
     try {

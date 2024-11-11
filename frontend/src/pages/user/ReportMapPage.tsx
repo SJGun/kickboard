@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import { useReportStore } from '../../store/ReportInfoStore';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 declare global {
   interface Window {
@@ -17,17 +17,15 @@ const ReportMapPage: React.FC = () => {
   const [address1, setAddress1] = useState<string>('');
   const [latitude1, setLatitude1] = useState<number>(0);
   const [longitude1, setLongitude1] = useState<number>(0);
+  map;
+  kakaoLoaded;
+  centerInfo;
+  longitude1;
 
   const KakaoMapApiKey = import.meta.env.VITE_KAKAOMAP_API_KEY;
   const { title, setTitle } = useStateStore();
-  const {
-    address,
-    setAddress,
-    latitude,
-    setLatitude,
-    longitude,
-    setLongitude,
-  } = useReportStore();
+  const { setAddress, latitude, setLatitude, longitude, setLongitude } =
+    useReportStore();
 
   const navigate = useNavigate();
   const handleBackClick = () => {
