@@ -24,6 +24,7 @@ const ReportPage: React.FC = () => {
     setSerialNumber,
     setLatitude,
     setLongitude,
+    reset,
   } = useReportStore();
 
   const navigate = useNavigate();
@@ -31,8 +32,13 @@ const ReportPage: React.FC = () => {
 
   // 위치 정보 가져오는 useEffect
   useEffect(() => {
-    setCompanyId(Number(searchParams.get('companyId')) ?? 0);
-    setSerialNumber(searchParams.get('serialNumber') ?? '');
+    if (!Boolean(companyId)) {
+      setCompanyId(Number(searchParams.get('companyId')) ?? 0);
+    }
+
+    if (!Boolean(serialNumber)) {
+      setSerialNumber(searchParams.get('serialNumber') ?? '');
+    }
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -80,11 +86,15 @@ const ReportPage: React.FC = () => {
       console.error('Error submitting report:', error);
     }
 
-    localStorage.removeItem('report-storage');
+    reset();
     navigate('/list');
   };
 
-  const isButtonDisabled = false;
+  const isButtonDisabled =
+    !Boolean(companyId) ||
+    !Boolean(serialNumber) ||
+    !Boolean(address) ||
+    !Boolean(photos.firstPhoto);
 
   return (
     <>

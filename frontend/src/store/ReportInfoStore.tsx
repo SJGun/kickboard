@@ -23,8 +23,10 @@ interface ReportState {
   description: string | null;
   setDescription: (description: string | null) => void;
 
-  photos: { firstPhoto: string; secondPhoto: string }; // 두 개의 사진을 위한 객체
-  setPhotos: (newPhoto: string) => void; // 새로운 사진 추가 함수
+  photos: { firstPhoto: string; secondPhoto: string };
+  setPhotos: (newPhoto: string) => void;
+
+  reset: () => void; // 초기화 함수
 }
 
 export const useReportStore = create<ReportState>()(
@@ -51,21 +53,31 @@ export const useReportStore = create<ReportState>()(
       description: '',
       setDescription: (description) => set({ description }),
 
-      photos: { firstPhoto: '', secondPhoto: '' }, // 초기값으로 빈 문자열 설정
+      photos: { firstPhoto: '', secondPhoto: '' },
       setPhotos: (newPhoto) =>
-        set((state) => {
-          // 새로운 사진을 첫 번째로 추가하고, 기존 첫 번째 사진을 두 번째로 이동
-          return {
-            photos: {
-              secondPhoto: state.photos.firstPhoto,
-              firstPhoto: newPhoto,
-            },
-          };
+        set((state) => ({
+          photos: {
+            secondPhoto: state.photos.firstPhoto,
+            firstPhoto: newPhoto,
+          },
+        })),
+
+      // 초기화 함수
+      reset: () =>
+        set({
+          companyId: 0,
+          serialNumber: '',
+          latitude: 33.450701,
+          longitude: 126.570667,
+          address: null,
+          categoryId: 0,
+          description: '',
+          photos: { firstPhoto: '', secondPhoto: '' },
         }),
     }),
     {
-      name: 'report-storage', // 로컬 스토리지에 저장될 이름
-      storage: createJSONStorage(() => localStorage), // JSON 저장소 설정
+      name: 'report-storage',
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );
