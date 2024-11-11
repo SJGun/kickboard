@@ -32,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
 //                .csrf(AbstractHttpConfigurer::disable)
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/users"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/v1/**"))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
