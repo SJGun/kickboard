@@ -27,6 +27,142 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
     'LIME': '#26A69A'     
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case '신고접수':
+        return { bg: '#FEE2E2', text: '#DC2626' };
+      case '수거중':
+        return { bg: '#E0F2FE', text: '#0284C7' };
+      case '수거완료':
+        return { bg: '#DCFCE7', text: '#16A34A' };
+      default:
+        return { bg: '#F3F4F6', text: '#374151' };
+    }
+  };
+
+  const createCustomOverlayContent = (report: Report) => {
+    const content = document.createElement('div');
+    content.className = 'custom-overlay';
+    const statusColors = getStatusColor(report.adminStatus);
+    
+    content.innerHTML = `
+      <div class="overlay-wrapper" style="
+        position: relative;
+        width: 300px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        padding: 15px;
+        font-family: system-ui, -apple-system, sans-serif;
+      ">
+        <div class="close-btn" style="
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          font-size: 18px;
+          color: #666;
+          z-index: 10;
+          background: white;
+          width: 24px;
+          height: 24px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        ">&times;</div>
+        
+        <div class="image-container" style="
+          position: relative;
+          width: 100%;
+          height: 150px;
+          margin-bottom: 12px;
+          border-radius: 6px;
+          overflow: hidden;
+        ">
+          ${report.images.map((image, index) => `
+            <img 
+              src="${image}" 
+              alt="Report Image ${index + 1}"
+              style="
+                width: 100%;
+                height: 150px;
+                object-fit: cover;
+                display: ${index === 0 ? 'block' : 'none'};
+              "
+            />
+          `).join('')}
+          ${report.images.length > 1 ? `
+            <div style="
+              position: absolute;
+              bottom: 8px;
+              right: 8px;
+              background: rgba(0,0,0,0.6);
+              color: white;
+              padding: 4px 8px;
+              border-radius: 12px;
+              font-size: 12px;
+            ">
+              1/${report.images.length}
+            </div>
+          ` : ''}
+        </div>
+        
+        <div style="padding: 0 5px;">
+          <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+          ">
+            <span style="
+              font-weight: 600;
+              color: ${companyColors[report.companyName]};
+            ">${report.companyName}</span>
+            <span style="
+              color: #666;
+              font-size: 0.9em;
+            ">${report.createdAt}</span>
+          </div>
+          
+          <div style="
+            margin-bottom: 12px;
+            color: #333;
+          ">
+            <div style="font-weight: 500; margin-bottom: 4px;">시리얼 번호</div>
+            <div style="color: #666; font-size: 0.95em;">${report.serialNumber}</div>
+          </div>
+          
+          <div style="
+            margin-bottom: 12px;
+            color: #333;
+          ">
+            <div style="font-weight: 500; margin-bottom: 4px;">주소</div>
+            <div style="color: #666; font-size: 0.95em;">${report.address}</div>
+          </div>
+          
+          <div style="
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            background-color: ${statusColors.bg};
+            color: ${statusColors.text};
+            font-size: 0.9em;
+            font-weight: 500;
+          ">${report.adminStatus}</div>
+        </div>
+      </div>
+    `;
+
+    const closeBtn = content.querySelector('.close-btn');
+    closeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      overlays.forEach(overlay => overlay.setMap(null));
+    });
+
+    return content;
+  };
   const getStatusIcon = (status: string) => {
     switch (status) {
       case '신고접수':
@@ -282,7 +418,6 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
       
       {/* 회사 범례 */}
       <div className="bg-white p-4 rounded-lg shadow-sm">
-       
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {Object.entries(companyColors).map(([company, color]) => (
             <div key={company} className="flex items-center gap-2 justify-center">

@@ -89,7 +89,8 @@ const IncidentDetails: React.FC<Props> = ({
   const details = [
     { label: "현재 상태", value: report.adminStatus },
     { label: "신고 일시", value: report.createdAt },
-    { label: "브랜드 정보", value: report.companyName },
+    { label: "주소", value: report.address },
+    { label: "브랜드 (시리얼넘버) ", value: report.companyName + ` (${report.serialNumber})`},
     { label: "신고 구분", value: "어린이 보호구역 주차" },
     { label: "신고 내용", value: "어린이 보호구역 주차건으로 신고합니다.\n신속히 처리해주세요" },
   ];

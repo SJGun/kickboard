@@ -44,7 +44,7 @@ const AdminMain: React.FC = () => {
   const generateSampleData = (): ApiResponse => {
     const adminStatuses: Array<Report['adminStatus']> = [
       '신고접수',
-      '수거중',
+      '처리중',
       '수거완료',
     ];
 
@@ -175,7 +175,7 @@ const AdminMain: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full font-KoPubMedium"> {/* 기본 폰트 적용 */}
       <AdminNavBar />
       <div className="mx-auto max-w-7xl p-4">
         <div className="space-y-4">
@@ -191,7 +191,7 @@ const AdminMain: React.FC = () => {
                 />
               )}
             </div>
-
+  
             <div className="rounded-lg bg-white p-4">
               <div className="grid grid-cols-1 gap-4">
                 {selectedReport?.images.map((image, index) => (
@@ -203,7 +203,7 @@ const AdminMain: React.FC = () => {
                 ))}
               </div>
             </div>
-
+  
             <div className="rounded-lg bg-white">
               <IncidentDetails
                 report={selectedReport}
@@ -295,6 +295,6 @@ const AdminMain: React.FC = () => {
       </div>
     </div>
   );
-};
+}  
 
 export default AdminMain;
