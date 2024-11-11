@@ -2,6 +2,9 @@ spring:
   application:
     name: Kickboard
 
+  profiles:
+    active: secrets
+
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
