@@ -2,8 +2,8 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface ReportState {
-  companyName: string | null;
-  setCompanyName: (companyName: string) => void;
+  companyId: number;
+  setCompanyId: (companyId: number) => void;
 
   serialNumber: string | null;
   setSerialNumber: (serialNumber: string) => void;
@@ -30,8 +30,8 @@ interface ReportState {
 export const useReportStore = create<ReportState>()(
   persist(
     (set) => ({
-      companyName: null,
-      setCompanyName: (companyName) => set({ companyName }),
+      companyId: 0,
+      setCompanyId: (companyId) => set({ companyId }),
 
       serialNumber: null,
       setSerialNumber: (serialNumber) => set({ serialNumber }),
