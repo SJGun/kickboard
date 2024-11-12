@@ -5,7 +5,7 @@ import NavBar from './components/AdminNavBar';
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);  // 로그인 오류 메시지를 저장할 상태 추가
+  const [error, setError] = useState<string | null>(null); // 로그인 오류 메시지를 저장할 상태 추가
   const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -34,9 +34,9 @@ const AdminLogin: React.FC = () => {
         if (data.success) {
           // accessToken을 로컬 스토리지에 저장
           localStorage.setItem('accessToken', data.data.accessToken);
-          
+
           // 관리자 대시보드 페이지로 이동
-          navigate('/adminMainPage');  // 로그인 성공 후 '/adminMainPage'로 이동
+          navigate('/adminMainPage'); // 로그인 성공 후 '/adminMainPage'로 이동
         } else {
           // 로그인 실패 시 오류 메시지 처리
           setError(data.error?.message || '로그인 실패');
@@ -64,7 +64,7 @@ const AdminLogin: React.FC = () => {
 
           {/* 오류 메시지 출력 */}
           {error && (
-            <div className="mb-4 text-red-500 text-center">
+            <div className="mb-4 text-center text-red-500">
               <p>{error}</p>
             </div>
           )}
