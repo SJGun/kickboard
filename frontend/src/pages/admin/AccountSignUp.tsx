@@ -11,8 +11,8 @@ const AccountSignUp: React.FC = () => {
   const [responseMessage, setResponseMessage] = useState('');
 
   // VITE 환경 변수에서 URL과 카카오맵 API 키 가져오기
-  const apiUrl = import.meta.env.VITE_URL;  // API URL
-  const kakaoMapApiKey = import.meta.env.VITE_KAKAOMAP_API_KEY;  // 카카오맵 API 키
+  const apiUrl = import.meta.env.VITE_URL; // API URL
+  const kakaoMapApiKey = import.meta.env.VITE_KAKAOMAP_API_KEY; // 카카오맵 API 키
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

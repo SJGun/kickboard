@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import Address from '../../components/report/Address';
 import ViolationTypeSelector from '../../components/report/ViolationTypeSelector';
-import Photo from '../../components/report/Photo';
 import ReportContent from '../../components/report/ReportContent';
 import Serial from '../../components/report/Serial';
 import Company from '../../components/report/Company';
@@ -27,6 +26,7 @@ const ReportPage1: React.FC = () => {
       area: '북구',
     },
   ];
+  response;
 
   useEffect(() => {
     setTitle('전동 킥보드 주정차 위반 신고');
@@ -43,7 +43,6 @@ const ReportPage1: React.FC = () => {
       <hr className="my-4" />
       <ViolationTypeSelector />
       <hr className="my-4" />
-      <Photo />
       <hr className="my-4" />
       <ReportContent />
       <Link to="/list" className="m-6 flex items-center justify-center">

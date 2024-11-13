@@ -25,7 +25,7 @@ const CompanyIdManage: React.FC = () => {
     try {
       // 환경 변수에서 API URL 가져오기
       const apiUrl = import.meta.env.VITE_URL;
-      const endpoint = '/kickboard/signup';  // API 엔드포인트
+      const endpoint = '/kickboard/signup'; // API 엔드포인트
 
       // 요청 URL 구성
       const url = `${apiUrl}${endpoint}`;
@@ -39,7 +39,7 @@ const CompanyIdManage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
           // 필요시 KakaoMap API 키를 Authorization 헤더에 포함
-          'Authorization': `Bearer ${kakaoMapApiKey}`,
+          Authorization: `Bearer ${kakaoMapApiKey}`,
         },
         body: JSON.stringify(formData),
       });
