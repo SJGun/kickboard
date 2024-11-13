@@ -17,6 +17,7 @@ public class ReportResponse {
     private Long companyId;
     private String serialNumber;
     private String address;
+    private String area;
     private Double latitude;
     private Double longitude;
     private String category;
@@ -32,6 +33,7 @@ public class ReportResponse {
         response.setSerialNumber(report.getKickboard().getSerialNumber());
         response.setCategory(report.getCategory().getName()); // category의 name 필드 사용
         response.setAddress(report.getAddress());
+        response.setArea(report.getLocation().getName());
         response.setLatitude(report.getLatitude());
         response.setLongitude(report.getLongitude());
         response.setCategory(report.getCategory().getName());
