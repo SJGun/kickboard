@@ -83,7 +83,6 @@ const ReportPage: React.FC = () => {
     });
 
     formData.append('report', reportBlob);
-    
 
     if (image1) {
       formData.append('image', image1);
@@ -119,7 +118,7 @@ const ReportPage: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} method="post">
+      <form onSubmit={handleSubmit}>
         <Company />
         <hr className="my-4" />
         <Serial />

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import List from '../../components/report/List';
 import ListMap from '../../components/report/ListMap';
+import axios from 'axios';
 
 const ReportListPage: React.FC = () => {
   const { title, setTitle, setReportList, isReportMap, setIsReportMap } =
@@ -11,6 +12,20 @@ const ReportListPage: React.FC = () => {
     setTitle('신고 목록');
     setReportList();
   }, [title, setTitle]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          import.meta.env.VITE_URL + '/kickboard/reports?area=남구'
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error submitting report:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
