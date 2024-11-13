@@ -53,7 +53,7 @@ public class ReportController {
     })
     @GetMapping("api/v1/kickboard/reports")
     public ResponseEntity<?> getReportsByArea(
-            @Parameter(description = "담당 구역", required = true) @RequestParam("area") String area) {
+            @Parameter(description = "담당 구역", required = false) @RequestParam("area") String area) {
 
         List<ReportResponse> reports = reportService.getReportsByArea(area);
         return ResponseEntity.ok(kb.core.dto.ApiResponse.success(reports));
