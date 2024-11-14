@@ -6,16 +6,23 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import kb.report.api.request.ReportCreateRequest;
+import kb.report.api.request.ReportStatusUpdateRequest;
+import kb.report.api.response.AdminReportResponse;
 import kb.report.api.response.ReportDetailResponse;
 import kb.report.api.response.ReportResponse;
 import kb.report.internal.service.ReportService;
+import kb.user.internal.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 신고 컨트롤러
@@ -23,7 +30,6 @@ import java.util.List;
  * @author 지예찬
  */
 @RestController
-@RequestMapping("api/v1/kickboard/reports")
 @RequiredArgsConstructor
 public class ReportController {
     private final ReportService reportService;
@@ -36,7 +42,7 @@ public class ReportController {
                     content = @Content(schema = @Schema(implementation = ReportResponse.class))
             ),
     })
-    @PostMapping
+    @PostMapping("api/v1/kickboard/reports")
     public ResponseEntity<?> createReport(
             @Parameter(description = "신고 정보", required = true, content = @Content(mediaType = "application/json", schema = @Schema(implementation = ReportCreateRequest.class)))
             @RequestPart("report") ReportCreateRequest report,
@@ -52,9 +58,9 @@ public class ReportController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "신고 리스트 조회 성공", content = @Content(schema = @Schema(implementation = ReportResponse.class))),
     })
-    @GetMapping
+    @GetMapping("api/v1/kickboard/reports")
     public ResponseEntity<?> getReportsByArea(
-            @Parameter(description = "담당 구역", required = true) @RequestParam("area") String area) {
+            @Parameter(description = "담당 구역", required = false) @RequestParam("area") String area) {
 
         List<ReportResponse> reports = reportService.getReportsByArea(area);
         return ResponseEntity.ok(kb.core.dto.ApiResponse.success(reports));
@@ -64,7 +70,7 @@ public class ReportController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "신고 세부 조회 성공", content = @Content(schema = @Schema(implementation = ReportDetailResponse.class))),
     })
-    @GetMapping("/{reportId}")
+    @GetMapping("api/v1/kickboard/reports/{reportId}")
     public ResponseEntity<?> getReportDetail(
             @Parameter(description = "신고 ID", required = true) @PathVariable Long reportId) {
 
@@ -72,6 +78,44 @@ public class ReportController {
         return ResponseEntity.ok(kb.core.dto.ApiResponse.success(reportDetail));
     }
 
+    @Operation(summary = "관리자 신고 목록 조회", description = "담당 구역(area)으로 신고 목록을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신고 목록 조회 성공", content = @Content(schema = @Schema(implementation = AdminReportResponse.class))),
+    })
+    @GetMapping("api/v1/kickboard/admin/reports")
+    public ResponseEntity<?> adminGetReportsByArea(
+            @Parameter(description = "담당 구역", required = true) @RequestParam("area") String area, @AuthenticationPrincipal User user) {
+
+        Map<String, List<AdminReportResponse>> reports = reportService.AdminGetReportsByArea(area);
+        return ResponseEntity.ok(kb.core.dto.ApiResponse.success(reports));    }
+
+    @Operation(summary = "관리자 신고 상세 조회", description = "serialNumber로 최신 신고를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신고 상세 조회 성공", content = @Content(schema = @Schema(implementation = AdminReportResponse.class)))
+    })
+    @GetMapping("api/v1/kickboard/admin/reports/{serialNumber}")
+    public ResponseEntity<?> AdmingetReportsBySerialNumber(
+            @Parameter(description = "serialNumber", required = true) @PathVariable String serialNumber, @AuthenticationPrincipal User user) {
+
+        List<AdminReportResponse> reportDetails = reportService.AdminGetReportsBySerialNumber(serialNumber);
+        Map<String, Object> response = new HashMap<>();
+        response.put("reports", reportDetails);
+
+        return ResponseEntity.ok(kb.core.dto.ApiResponse.success(response));
+    }
+
+    @Operation(summary = "관리자 신고 상태 변경", description = "특정 신고의 상태를 업데이트합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "신고 상태 업데이트 성공")
+    })
+    @PatchMapping("api/v1/kickboard/admin/reports/{reportId}/status")
+    public ResponseEntity<?> updateReportStatus(
+            @Parameter(description = "신고 ID", required = true) @PathVariable Long reportId,
+            @RequestBody @Valid ReportStatusUpdateRequest request) {
+
+        reportService.updateReportStatus(reportId, request.getStatus());
+        return ResponseEntity.ok(kb.core.dto.ApiResponse.success("상태 업데이트 성공"));
+    }
 
 
 }
