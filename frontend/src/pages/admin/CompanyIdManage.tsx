@@ -30,7 +30,9 @@ const CompanyIdManage: React.FC = () => {
         if (filteredData.length > 0) {
           setAdminData(filteredData); // 필터링된 데이터를 상태에 저장
         } else {
-          setResponseMessage('COLLECTION_COMPANY 역할을 가진 사용자가 없습니다.');
+          setResponseMessage(
+            'COLLECTION_COMPANY 역할을 가진 사용자가 없습니다.'
+          );
         }
       } catch (error) {
         setResponseMessage('서버에 연결할 수 없습니다.');
@@ -69,7 +71,9 @@ const CompanyIdManage: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <span className="w-24 font-medium text-gray-600">이메일</span>
+                    <span className="w-24 font-medium text-gray-600">
+                      이메일
+                    </span>
                     <span className="text-gray-800">{admin.email}</span>
                   </div>
                   <div className="flex items-center">

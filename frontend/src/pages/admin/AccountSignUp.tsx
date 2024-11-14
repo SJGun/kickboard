@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import NavBar from './components/AdminNavBar';
 
 const AccountSignUp: React.FC = () => {
+  // Define the type for location keys
+  type LocationKey = keyof typeof locationMap;
+
   const [formData, setFormData] = useState({
-    area: '', // 지역
+    area: '' as LocationKey, // 지역
     email: '', // 이메일
     password: '', // 비밀번호
     role: 'GOVERNMENT_OFFICIAL', // 기본값 설정
@@ -15,10 +18,10 @@ const AccountSignUp: React.FC = () => {
   // 지역에 대한 locationId 매핑
   const locationMap = {
     광산구: 1, // locationId: 1
-    동구: 2,   // locationId: 2
-    서구: 3,   // locationId: 3
-    남구: 4,   // locationId: 4
-    북구: 5,   // locationId: 5
+    동구: 2, // locationId: 2
+    서구: 3, // locationId: 3
+    남구: 4, // locationId: 4
+    북구: 5, // locationId: 5
   };
 
   const handleChange = (

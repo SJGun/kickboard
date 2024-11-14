@@ -30,7 +30,9 @@ const AdminIdManage: React.FC = () => {
         if (filteredData.length > 0) {
           setAdminData(filteredData); // 필터링된 데이터를 상태에 저장
         } else {
-          setResponseMessage('GOVERNMENT_OFFICIAL 역할을 가진 사용자가 없습니다.');
+          setResponseMessage(
+            'GOVERNMENT_OFFICIAL 역할을 가진 사용자가 없습니다.'
+          );
         }
       } catch (error) {
         setResponseMessage('서버에 연결할 수 없습니다.');
