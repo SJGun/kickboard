@@ -4,49 +4,42 @@ import { useNavigate } from 'react-router-dom';
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // 로그인 오류 메시지를 저장할 상태 추가
-  const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    
 
     const loginData = { email, password };
 
     try {
-      // VITE_URL 환경변수를 사용하여 요청 URL 생성
-      const response = await fetch(
-        `${import.meta.env.VITE_URL}/kickboard/admin/login`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(loginData),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_URL}/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData),
+      });
 
       const data = await response.json();
 
-      if (response.ok) {
-        // 로그인 성공 시
-        if (data.success) {
-          // accessToken을 로컬 스토리지에 저장
-          localStorage.setItem('accessToken', data.data.accessToken);
+      if (response.ok && data.success) {
+        localStorage.setItem('accessToken', data.data.accessToken);
+        localStorage.setItem('role', data.data.role);
+        localStorage.setItem('area', data.data.area);
 
-          // 관리자 대시보드 페이지로 이동
-          navigate('/adminMainPage'); // 로그인 성공 후 '/adminMainPage'로 이동
-        } else {
-          // 로그인 실패 시 오류 메시지 처리
-          setError(data.error?.message || '로그인 실패');
-        }
+        // 로그인 성공 데이터 콘솔에 출력
+        console.log('로그인 성공 데이터:', data);
+
+        navigate('/adminMainPage');
       } else {
         setError(data.error?.message || '알 수 없는 오류 발생');
       }
     } catch (error: any) {
       if (error instanceof TypeError) {
         setError('네트워크 오류 발생');
-        console.loginData
+        console.log('네트워크 오류 발생:', error);
       } else {
         setError('알 수 없는 오류 발생');
       }
@@ -58,8 +51,6 @@ const AdminLogin: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
-      {/* NavBar Component */}
-      {/* <NavBar /> */}
       <div className="flex flex-1 items-center justify-center">
         <form
           onSubmit={handleLogin}
@@ -68,7 +59,7 @@ const AdminLogin: React.FC = () => {
           <h2 className="mb-6 text-center text-2xl font-bold">관리자 페이지</h2>
 
           {error && (
-            <div className="mb-4 text-center text-red-500">
+            <div className="mb-4 text-red-500 text-center">
               <p>{error}</p>
             </div>
           )}
