@@ -258,7 +258,9 @@ const AdminMain: React.FC = () => {
                       <tr>
                         <TableHeader field="createdAt">신고 일시</TableHeader>
                         <TableHeader field="companyName">업체명</TableHeader>
-                        <TableHeader field="serialNumber">시리얼 번호</TableHeader>
+                        <TableHeader field="serialNumber">
+                          시리얼 번호
+                        </TableHeader>
                         <TableHeader field="address">주소</TableHeader>
                         <TableHeader field="adminStatus">처리 상태</TableHeader>
                       </tr>

@@ -5,38 +5,40 @@ import ViolationTypeSelector from '../../components/report/ViolationTypeSelector
 import Photo from '../../components/report/Photo';
 import ReportContent from '../../components/report/ReportContent';
 import { useReportStore } from '../../store/ReportInfoStore';
+import Serial from '../../components/report/Serial';
+import Company from '../../components/report/Company';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
 const ReportPage: React.FC = () => {
   const { title, setTitle, setReport } = useStateStore();
   const {
-    companyName,
+    companyId,
     serialNumber,
     latitude,
     longitude,
     address,
     categoryId,
     description,
-    photos,
-    setLatitude,
-    setLongitude,
+    setCompanyId,
+    setSerialNumber,
+    reset,
   } = useReportStore();
 
+  const [image1, setImage1] = useState<File | null>(null);
+  const [image2, setImage2] = useState<File | null>(null);
+
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // 위치 정보 가져오는 useEffect
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // 위치 정보 성공적으로 얻었을 때
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          console.log(latitude + ' ' + longitude);
-        },
-        (err) => {
-          // 위치 정보 오류 발생 시
-          console.log(err);
-        }
-      );
-    } else {
-      console.log('이 브라우저는 Geolocation을 지원하지 않습니다.');
+    if (!Boolean(companyId)) {
+      setCompanyId(Number(searchParams.get('companyId')) ?? 0);
+    }
+
+    if (!Boolean(serialNumber)) {
+      setSerialNumber(searchParams.get('serialNumber') ?? '');
     }
   }, []);
 
@@ -48,43 +50,68 @@ const ReportPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 수집된 데이터를 한 객체로 묶어 API 요청
     const formData = new FormData();
-    formData.append('companyName', companyName ?? '');
-    formData.append('serialNumber', serialNumber ?? '');
-    formData.append('latitude', latitude.toString());
-    formData.append('longitude', longitude.toString());
-    formData.append('address', address ?? '');
-    formData.append('categoryId', categoryId.toString());
-    formData.append('description', description ?? '');
-    formData.append('firstPhoto', photos.firstPhoto);
-    formData.append('secondPhoto', photos.secondPhoto);
+    const reportData = {
+      companyId: companyId,
+      serialNumber: serialNumber,
+      latitude: latitude,
+      longitude: longitude,
+      address: address,
+      categoryId: categoryId,
+      description: description,
+    };
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
+    // JSON 데이터를 Blob으로 변환하여 첨부
+    const reportBlob = new Blob([JSON.stringify(reportData)], {
+      type: 'application/json',
+    });
+
+    formData.append('report', reportBlob);
+
+    if (image1) {
+      formData.append('image', image1);
+    }
+    if (image2) {
+      formData.append('image', image2);
     }
 
     try {
-      const response = await fetch('https://api.example.com/report', {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await response.json();
-      console.log(result); // 응답 처리
+      const response = await axios.post(
+        import.meta.env.VITE_URL + '/kickboard/reports',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data', // multipart 설정
+          },
+        }
+      );
+      console.log(response.data);
     } catch (error) {
       console.error('Error submitting report:', error);
     }
+
+    reset();
+    navigate('/list');
   };
 
   const isButtonDisabled = false;
+  // !Boolean(companyId) ||
+  // !Boolean(serialNumber) ||
+  // !Boolean(address) ||
+  // !Boolean(photos.firstPhoto);
+
   return (
     <>
-      <form onSubmit={handleSubmit} method="post" encType="multipart/form-data">
+      <form onSubmit={handleSubmit}>
+        <Company />
+        <hr className="my-4" />
+        <Serial />
+        <hr className="my-4" />
         <Address />
         <hr className="my-4" />
         <ViolationTypeSelector />
         <hr className="my-4" />
-        <Photo />
+        <Photo setImage1={setImage1} setImage2={setImage2} />
         <hr className="my-4" />
         <ReportContent />
         <hr className="my-4" />
