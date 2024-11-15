@@ -83,7 +83,6 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
         map: map,
       });
 
-      // 인포윈도우 생성
       const getStatusStyle = (status: string): string => {
         if (status === 'REPORT_COMPLETED') {
           return `
@@ -116,6 +115,7 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
       // 인포윈도우 생성
       const infowindow = new window.kakao.maps.InfoWindow({
         content: `
+        <a href=/list/${item.reportId}>
           <div style="
             padding: 1rem;
             width: 250px;
@@ -192,6 +192,7 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
               </div>
             </div>
           </div>
+        </a>
         `,
       });
 
