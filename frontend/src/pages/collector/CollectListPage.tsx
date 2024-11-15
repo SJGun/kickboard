@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 // kakao맵 오류없이 하기위해 window type 확장하기 (카카오도 인식 가능하게)
 declare global {
   interface Window {
@@ -11,7 +12,7 @@ interface Request {
   latitude: number;
   longitude: number;
   category: string; // 신고 유형
-  image: string; // 신고 접수된 사진
+  photoUrl: string; // 신고 접수된 사진
   status: 'COLLECT_RECEIVED' | 'COLLECT_PROGRESS' | 'COLLECT_COMPLETED';
   createdAt: string;
 }
@@ -34,6 +35,7 @@ const CollectList = () => {
   const [collectList, setCollectList] = useState<Request[]>([]);
   const [addressList, setAddressList] = useState<
     {
+      requestId: string;
       reportId: string;
       category: string;
       address: string;
@@ -42,20 +44,24 @@ const CollectList = () => {
     }[]
   >([]);
   const [kakaoLoaded, setKakaoLoaded] = useState(false); // 카카오맵이 로딩됐는지 여부 확인
-  const [buttonStatus, setButtonStatus] = useState<{ [key: number]: string }>(
+  const [buttonStatus, setButtonStatus] = useState<{ [key: string]: string }>(
     {}
   ); // 버튼 text랑 color state에 따라 바뀌게 하기
 
   // 모달관리
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentReportId, setCurrentReportId] = useState<string | null>(null);
-  const [currentAdress, setCurrentAdress] = useState<string | null>(null);
-  const [currentCategory, setCurrentCategory] = useState<string | null>(null);
+  const [currentReportId, setCurrentReportId] = useState<string>('');
+  const [currentRequestId, setCurrentRequestId] = useState<string>('');
+  const [currentAdress, setCurrentAdress] = useState<string>('');
+  const [currentCategory, setCurrentCategory] = useState<string>('');
 
   // =========================================================================================
 
-  const accessToken = useCollectorAuthStore((state) => state.accessToken);
   const area = useCollectorAuthStore((state) => state.area);
+
+  useEffect(() => {
+    console.log('collectList 바뀔때마다 프린트: ', collectList);
+  }, [collectList]);
 
   // 영어로 온 area 데이터를 한국어로 바꿔
   const getKoreanArea = (areaCode: string) => {
@@ -69,66 +75,98 @@ const CollectList = () => {
     return areaMap[areaCode || ''] || areaCode;
   };
 
-  // 지금 잘되는지 띄워보려고 만든 샘플리스트
-  const sampleCollectList: Request[] = [
-    {
-      requestId: '1',
-      reportId: '1',
-      latitude: 35.1405,
-      longitude: 126.79,
-      category: '횡단보도 3m 안에 주차',
-      image: 'https://picsum.photos/200/300',
-      status: 'COLLECT_RECEIVED',
-      createdAt: '20221004',
-    },
-    {
-      requestId: '2',
-      reportId: '2',
-      latitude: 35.1385,
-      longitude: 126.7919,
-      category: '상가 입구를 막고 있음',
-      image: 'https://picsum.photos/200/300',
-      status: 'COLLECT_RECEIVED',
-      createdAt: '20221104',
-    },
-    {
-      requestId: '3',
-      reportId: '3',
-      latitude: 35.121,
-      longitude: 126.7808,
-      category: '어린이보호구역에 주차',
-      image: 'https://picsum.photos/200/300',
-      status: 'COLLECT_RECEIVED',
-      createdAt: '20221204',
-    },
-  ];
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'COLLECT_RECEIVED':
+        return '수거 시작';
+      case 'COLLECT_PROGRESS':
+        return '길찾기';
+      case 'COLLECT_COMPLETED':
+        return '처리 완료';
+      default:
+        return '수거 시작';
+    }
+  };
+
+  // 수거목록 업데이트
+  const refreshCollectList = async () => {
+    try {
+      const response = await fetchCollectLists();
+      let filteredList = response.data.data;
+      filteredList = filteredList.sort((a: Request, b: Request) => {
+        if (
+          a.status === 'COLLECT_COMPLETED' &&
+          b.status !== 'COLLECT_COMPLETED'
+        ) {
+          return 1; // move 'COLLECT_COMPLETED' to the bottom
+        } else if (
+          a.status !== 'COLLECT_COMPLETED' &&
+          b.status === 'COLLECT_COMPLETED'
+        ) {
+          return -1; // keep other statuses at the top
+        } else {
+          return 0; // keep the same order for items with the same status
+        }
+      });
+
+      console.log('업데이트된 filteredList: ', filteredList);
+
+      setCollectList(filteredList);
+
+      const updatedButtonStatus: { [key: string]: string } = {};
+      filteredList.forEach((item: Request) => {
+        updatedButtonStatus[item.requestId] = getStatusText(item.status);
+      });
+
+      setButtonStatus(updatedButtonStatus);
+    } catch (error) {
+      console.error('Error refreshing collect list:', error);
+    }
+  };
 
   // 페이지 로드될때 collect list 요청보내서 가져오기
   useEffect(() => {
+    console.log(map);
     const fetchCollectListData = async () => {
       try {
         const response = await fetchCollectLists();
-        // 수거해야할 리스트랑 수거중인 리스트들만 필터링
-        const filteredList = response.data.requests.filter(
-          (request: Request) =>
-            request.status === 'COLLECT_RECEIVED' ||
-            request.status === 'COLLECT_PROGRESS'
-        );
+        // 수거해야할 리스트랑 수거중인 리스트들만 필터링 (필터링없앰)
+        let filteredList = response.data.data;
+
+        filteredList = filteredList.sort((a: Request, b: Request) => {
+          if (
+            a.status === 'COLLECT_COMPLETED' &&
+            b.status !== 'COLLECT_COMPLETED'
+          ) {
+            return 1;
+          } else if (
+            a.status !== 'COLLECT_COMPLETED' &&
+            b.status === 'COLLECT_COMPLETED'
+          ) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+
         setCollectList(filteredList);
+
+        const initialButtonStatus: { [key: string]: string } = {};
+        filteredList.forEach((item: Request) => {
+          initialButtonStatus[item.requestId] = getStatusText(item.status);
+        });
+
+        setButtonStatus(initialButtonStatus);
       } catch (error) {
         console.error('Error fetching collect list:', error);
-
-        // 에러났을때는 샘플데이터 써서 하자
-        const filteredSampleList = sampleCollectList.filter(
-          (item) =>
-            item.status === 'COLLECT_RECEIVED' ||
-            item.status === 'COLLECT_PROGRESS'
-        );
-        setCollectList(filteredSampleList);
       }
     };
 
     fetchCollectListData();
+  }, []);
+
+  useEffect(() => {
+    console.log(map);
   }, []);
 
   // 지도 띄우기 위해 document에 script 추가
@@ -176,7 +214,7 @@ const CollectList = () => {
       const infoWindowContent = `
       <div class="bg-white shadow-lg rounded-lg p-3 text-center max-w-[150px] overflow-hidden">
         <p class="font-semibold text-sm mb-1 truncate">${item.category}</p>
-        <img src="${item.image}" alt="${item.category}" class="w-full h-auto rounded-md"/>
+        <img src="${item.photoUrl}" alt="${item.category}" class="w-full h-auto rounded-md"/>
       </div>
     `;
 
@@ -211,21 +249,26 @@ const CollectList = () => {
   // 수거 버튼 클릭 이벤트
   const handleButtonClick = async (
     index: number,
+    requestId: string,
     reportId: string,
     lat: number,
     lng: number,
     address: string,
     category: string
   ) => {
-    const currentStatus = buttonStatus[index] || '수거 시작';
+    const currentStatus = buttonStatus[requestId] || '수거 시작';
+    setCurrentRequestId(requestId);
+    setCurrentReportId(reportId);
+    index = addressList.findIndex((item) => item.requestId === requestId);
 
     if (currentStatus === '수거 시작') {
       try {
-        await updateReportStatus(reportId, 'COLLECT_PROGRESS'); // 수거 시작한다고 status update 요청 보내기
-        setButtonStatus((prevStatus) => ({ ...prevStatus, [index]: '길찾기' }));
+        await updateReportStatus(requestId, 'COLLECT_PROGRESS', ''); // 수거 시작한다고 status update 요청 보내기
+        console.log('Status Update (COLLECT_PROGRESS) 성공!');
+        await refreshCollectList();
+        console.log(collectList);
       } catch (error) {
         console.error('수거 리스트 가져오기 실패: ', error);
-        setButtonStatus((prevStatus) => ({ ...prevStatus, [index]: '길찾기' }));
       }
     } else if (currentStatus === '길찾기') {
       // 사용자 현재 위치
@@ -252,7 +295,7 @@ const CollectList = () => {
                 window.open(kakaoMapUrl, '_blank');
                 setButtonStatus((prevStatus) => ({
                   ...prevStatus,
-                  [index]: '처리하기',
+                  [requestId]: '처리하기',
                 }));
               } else {
                 alert('현재 위치의 주소를 찾을 수 없습니다.');
@@ -266,10 +309,8 @@ const CollectList = () => {
         }
       );
     } else if (currentStatus === '처리하기') {
-      // setButtonStatus((prevStatus) => ({
-      //   ...prevStatus,
-      //   [index]: '수거 시작',
-      // }));
+      await refreshCollectList();
+      setCurrentRequestId(requestId);
       setCurrentReportId(reportId);
       setCurrentAdress(address);
       setCurrentCategory(category);
@@ -278,28 +319,23 @@ const CollectList = () => {
   };
 
   // 모달 열려서 확인 버튼 누를때 쓸 함수
-  const handleModalSubmit = async (
-    completionImages: File | null, // Update to File type
-    processType: string
-  ) => {
+  const handleModalSubmit = async (processType: string) => {
     if (currentReportId) {
       try {
-        // Check if an image file is available before submitting
-        if (!completionImages) {
-          console.error('No image provided');
-          return;
-        }
-
-        // Call the API function with the File type for completionImages
+        console.log('Status Final Update (COLLECT_COMPLETE) 성공!');
         await updateReportStatus(
-          currentReportId,
+          currentRequestId,
           'COLLECT_COMPLETED',
-          completionImages,
           processType
         );
-
+        await refreshCollectList();
+        // setButtonStatus((prevStatus) => ({
+        //   ...prevStatus,
+        //   [currentRequestId]: '처리 완료',
+        // }));
         setIsModalOpen(false); // Close the modal after submission
-        setCurrentReportId(null);
+        setCurrentRequestId('');
+        setCurrentReportId('');
       } catch (error) {
         console.error('Failed to submit completion data:', error);
       }
@@ -315,6 +351,7 @@ const CollectList = () => {
 
     const geocoder = new window.kakao.maps.services.Geocoder();
     const updatedAddressList: {
+      requestId: string;
       reportId: string;
       category: string;
       address: string;
@@ -324,11 +361,12 @@ const CollectList = () => {
 
     // !!주의!!여기 나중에 실제로는 collectList로 바꿔야돼 이름!!
     for (const {
+      requestId,
       reportId,
       category,
       latitude,
       longitude,
-    } of sampleCollectList) {
+    } of collectList) {
       const coords = new window.kakao.maps.LatLng(latitude, longitude);
 
       await new Promise<void>((resolve) => {
@@ -339,6 +377,7 @@ const CollectList = () => {
             if (status === window.kakao.maps.services.Status.OK) {
               const address = result[0].address.address_name;
               updatedAddressList.push({
+                requestId,
                 reportId,
                 category,
                 address,
@@ -347,6 +386,7 @@ const CollectList = () => {
               });
             } else {
               updatedAddressList.push({
+                requestId,
                 reportId,
                 category,
                 address: '주소를 찾을 수 없음',
@@ -365,13 +405,14 @@ const CollectList = () => {
 
   // 카카오 렌더링 됐으면 실제 주소로 바꿔
   useEffect(() => {
-    if (kakaoLoaded) {
+    if (kakaoLoaded && collectList.length > 0) {
       convertToAddress();
     }
-  }, [kakaoLoaded]);
+  }, [kakaoLoaded, collectList]);
 
   // 각 리스트 클릭할때마다 해당 마커가 센터로 변경됨
-  const handleListClick = (index: number) => {
+  const handleListClick = (requestId: string) => {
+    const index = addressList.findIndex((item) => item.requestId === requestId);
     const selectedMarker = markers[index];
     if (selectedMarker && mapRef.current) {
       mapRef.current.setCenter(selectedMarker.getPosition());
@@ -391,7 +432,7 @@ const CollectList = () => {
       </div>
 
       {/* 지도 */}
-      <div id="map" className="mb-5 h-[360px] w-full"></div>
+      <div id="map" className="mb-5 h-[250px] w-full"></div>
 
       {/* 수거 건수 */}
       <div className="ml-5">
@@ -405,12 +446,12 @@ const CollectList = () => {
       </div>
 
       {/* 수거 리스트 */}
-      <div className="m-5 mb-5">
-        {addressList.map((item, index) => (
+      <div className="m-5 mb-5 max-h-[300px] overflow-y-auto">
+        {addressList.map((item) => (
           <div
             className="mb-5 flex cursor-pointer items-center justify-between rounded-lg border border-black bg-[rgba(220,220,220,0.38)] p-2 text-xs"
             key={item.reportId}
-            onClick={() => handleListClick(index)}
+            onClick={() => handleListClick(item.requestId)}
           >
             <div>
               <div className="flex items-center">
@@ -432,15 +473,19 @@ const CollectList = () => {
             </div>
             <button
               className={`rounded-md border p-2 ${
-                buttonStatus[index] === '길찾기'
+                buttonStatus[item.requestId] === '길찾기'
                   ? 'bg-blue-500 text-white'
-                  : buttonStatus[index] === '처리하기'
+                  : buttonStatus[item.requestId] === '처리하기'
                     ? 'bg-green-500 text-white'
-                    : 'border-black bg-white'
+                    : buttonStatus[item.requestId] === '처리 완료'
+                      ? 'cursor-not-allowed bg-gray-400 text-gray-700'
+                      : 'border-black bg-white'
               }`}
               onClick={() =>
+                buttonStatus[item.requestId] !== '처리 완료' &&
                 handleButtonClick(
-                  index,
+                  parseInt(item.requestId),
+                  item.requestId,
                   item.reportId,
                   item.lat,
                   item.lng,
@@ -449,7 +494,7 @@ const CollectList = () => {
                 )
               }
             >
-              {buttonStatus[index] || '수거 시작'}
+              {buttonStatus[item.requestId] || '수거 시작'}
             </button>
           </div>
         ))}
@@ -458,9 +503,7 @@ const CollectList = () => {
       {isModalOpen && (
         <CollectCompleteModal
           onClose={() => setIsModalOpen(false)}
-          onSubmit={(completionImages, processType) =>
-            handleModalSubmit(completionImages, processType)
-          }
+          onSubmit={(processType) => handleModalSubmit(processType)}
           address={currentAdress}
           category={currentCategory}
         />

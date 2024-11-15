@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useStateStore } from '../../store/StateStore';
@@ -65,19 +66,27 @@ const NoticePage: React.FC = () => {
           <table className="min-w-full table-auto border-collapse">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-2 border-b text-center text-gray-800 w-3/12">번호</th>
-                <th className="px-4 py-2 border-b text-center text-gray-800 w-9/12">제목</th>
+                <th className="w-3/12 border-b px-4 py-2 text-center text-gray-800">
+                  번호
+                </th>
+                <th className="w-9/12 border-b px-4 py-2 text-center text-gray-800">
+                  제목
+                </th>
               </tr>
             </thead>
             <tbody>
               {notices.map((notice, index) => (
                 <tr
                   key={notice.id}
-                  className="border-b hover:bg-gray-100 cursor-pointer"
+                  className="cursor-pointer border-b hover:bg-gray-100"
                   onClick={() => handleRowClick(notice)} // Handle row click
                 >
-                  <td className="px-4 py-2 text-center text-gray-800">{index + 1}</td>
-                  <td className="px-4 py-2 text-center text-gray-800">{notice.title}</td>
+                  <td className="px-4 py-2 text-center text-gray-800">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-2 text-center text-gray-800">
+                    {notice.title}
+                  </td>
                 </tr>
               ))}
             </tbody>

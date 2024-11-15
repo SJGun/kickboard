@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useEffect, useRef, useState } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import { useReportStore } from '../../store/ReportInfoStore';
@@ -40,12 +41,11 @@ const ReportMapPage: React.FC = () => {
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KakaoMapApiKey}&autoload=false&libraries=services`;
     script.async = true;
     document.head.appendChild(script);
-
     script.onload = () => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
         const options = {
-          center: new window.kakao.maps.LatLng(latitude, longitude),
+          center: new window.kakao.maps.LatLng(latitude1, longitude1),
           level: 3,
         };
         const initializedMap = new window.kakao.maps.Map(container, options);
@@ -91,7 +91,7 @@ const ReportMapPage: React.FC = () => {
         );
       });
     };
-  }, []);
+  }, [latitude, longitude]);
 
   useEffect(() => {
     setTitle('위치 확인');
@@ -108,10 +108,11 @@ const ReportMapPage: React.FC = () => {
           console.log(err);
         }
       );
+      console.log(latitude, longitude);
+      window.location.reload();
     } else {
       console.log('이 브라우저는 Geolocation을 지원하지 않습니다.');
     }
-    window.location.reload();
   };
   return (
     <>

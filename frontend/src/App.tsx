@@ -4,9 +4,9 @@ import {
   Routes,
   Navigate,
 } from 'react-router-dom';
-
+import './index.css';
 // 핸드폰 사이즈 조절
-import PhoneScreenContainer from './components/phoneScreenContainer';
+import PhoneScreenContainer from './components/PhoneScreenContainer';
 
 // 수거업체 관련
 import ProtectedRoute from './components/ProtectedRoute';
@@ -34,6 +34,8 @@ import AccountSignUp from './pages/admin/AccountSignUp';
 import CompanyIdMagage from './pages/admin/CompanyIdManage';
 import AdminIdManage from './pages/admin/AdminIdManage';
 import ReportPage1 from './pages/user/ReportPage1';
+import ReportMapPage1 from './pages/user/ReportMapPage1';
+// import ProtectedRouteAdmin from './pages/admin/components/ProtectedRoute';
 
 function App() {
   const isLoggedIn = useCollectorAuthStore((state) => state.isLoggedIn);
@@ -135,8 +137,27 @@ function App() {
             </PhoneScreenContainer>
           }
         />
+
+        <Route
+          path="/list/:id/map"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <MainContainer1>
+                <ReportMapPage1 />
+              </MainContainer1>
+            </PhoneScreenContainer>
+          }
+        />
         {/* 사용자 페이지 -------------------------------------*/}
-        <Route path="/adminMainPage" element={<AdminMainPage />} />
+        <Route
+          path="/adminMainPage"
+          element={
+            //<ProtectedRouteAdmin>
+            <AdminMainPage />
+            //</ProtectedRouteAdmin>
+          }
+        />
         <Route path="/admininfo" element={<AdminInfoPage />} />
         <Route path="/adminmap" element={<AdminMapPage />} />
         <Route path="/accountmanage" element={<AccountManagePage />} />

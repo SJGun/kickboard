@@ -18,36 +18,253 @@ const KakaoMap: React.FC<Props> = ({
   const [infowindows, setInfowindows] = useState<any[]>([]);
   const [centerAddress, setCenterAddress] = useState<string>('');
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>(['전체']);
-
+  const [overlays, setOverlays] = useState<any[]>([]);
+  const activeOverlayRef = useRef<any>(null);
   const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAOMAP_API_KEY;
 
   const statusOptions = ['전체', '신고접수', '수거중', '수거완료'];
 
   const companyColors: { [key: string]: string } = {
-    BEAM: '#FF6B6B',
-    DEER: '#4ECDC4',
-    SWING: '#45B7D1',
-    'KICK GOING': '#96CEB4',
-    LIME: '#26A69A',
+    빔: '#7448ff', // 빔
+    디어: '#ffe301', // 디어
+    지쿠터: '#34d025', // 지쿠
+    타고가: '#f88379', // 타고가
+    씽씽: '#ffd939', // 씽씽
   };
 
+  const getStatusLabel = (status: Report['adminStatus']) => {
+    switch (status) {
+      case 'REPORT_RECEIVED':
+        return '신고접수';
+      case 'COLLECT_RECEIVED':
+        return '수거접수';
+      case 'COLLECT_PROGRESS':
+        return '수거중';
+      case 'COLLECT_COMPLETED':
+        return '수거완료';
+      case 'REPORT_COMPLETED':
+        return '신고처리완료';
+      default:
+        return status;
+    }
+  };
+  // 지도 이동 함수 추가
+  const moveToLocation = (lat: number, lng: number) => {
+    if (!map) return;
+
+    const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+    map.panTo(moveLatLng);
+  };
+
+  // 오버레이 표시 함수
+  const showOverlay = (overlay: any, _marker: any) => {
+    // 이전 활성 오버레이가 있다면 제거
+    if (activeOverlayRef.current) {
+      activeOverlayRef.current.setMap(null);
+    }
+
+    overlay.setMap(map);
+    activeOverlayRef.current = overlay;
+  };
+
+  // selectedReport 변경 감지하여 지도 이동
+  useEffect(() => {
+    if (selectedReport && map) {
+      moveToLocation(selectedReport.latitude, selectedReport.longitude);
+
+      // 해당 리포트의 오버레이 찾기 및 표시
+      // const reportIndex = reports.findIndex(r => r.reportId === selectedReport.reportId);
+      // if (reportIndex !== -1 && overlays[reportIndex]) {
+      //   showOverlay(overlays[reportIndex], markers[reportIndex]);
+      // }
+    }
+  }, [selectedReport, map]);
+  const getFormattedDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
+  };
+
+  useEffect(() => {
+    if (!map) return;
+
+    markers.forEach((marker) => marker.setMap(null));
+    infowindows.forEach((infowindow) => infowindow.close());
+    overlays.forEach((overlay) => overlay.setMap(null));
+
+    const filteredReports = getFilteredReports();
+    const newMarkers: any[] = [];
+    const newInfowindows: any[] = [];
+    const newOverlays: any[] = [];
+
+    filteredReports.forEach((report) => {
+      const position = new window.kakao.maps.LatLng(
+        report.latitude,
+        report.longitude
+      );
+
+      const markerImage = new window.kakao.maps.MarkerImage(
+        createMarkerImage(
+          companyColors[report.companyName] || '#FF0000',
+          report.adminStatus
+        ).src,
+        new window.kakao.maps.Size(24, 35)
+      );
+
+      const marker = new window.kakao.maps.Marker({
+        position,
+        map,
+        image: markerImage,
+      });
+
+      const overlay = new window.kakao.maps.CustomOverlay({
+        content: createCustomOverlayContent(report),
+        position: position,
+        xAnchor: 0.5,
+        yAnchor: 1,
+      });
+
+      // 마커 클릭 이벤트 수정
+      window.kakao.maps.event.addListener(marker, 'click', () => {
+        onSelectReport(report);
+        showOverlay(overlay, marker);
+      });
+
+      newMarkers.push(marker);
+      newInfowindows.push(infowindows);
+      newOverlays.push(overlay);
+    });
+
+    setMarkers(newMarkers);
+    setInfowindows(newInfowindows);
+    setOverlays(newOverlays);
+
+    // 초기 선택된 리포트가 있다면 해당 위치로 이동
+    if (selectedReport) {
+      moveToLocation(selectedReport.latitude, selectedReport.longitude);
+    }
+  }, [map, reports, selectedStatuses]);
+
+  const createCustomOverlayContent = (report: Report) => {
+    const content = document.createElement('div');
+    content.className = 'custom-overlay';
+    content.innerHTML = `
+      <div class="overlay-wrapper" style="
+        position: relative;
+        width: 300px;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        padding: 15px;
+        font-family: system-ui, -apple-system, sans-serif;
+      ">
+        <div class="close-btn" style="
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          font-size: 18px;
+          color: #666;
+        ">&times;</div>
+        
+ 
+        <div style="padding: 0 5px;">
+          <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+          ">
+            <span style="
+              font-weight: 600;
+              color: ${companyColors[report.companyName]};
+            ">${report.companyName}</span>
+            <span style="
+              color: #666;
+              font-size: 0.9em;
+            ">${getFormattedDate(report.createdAt)}</span>
+          </div>
+          
+          <div style="margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95em;
+          ">
+            <div style="color: #666;">${report.address}</div>
+          </div>
+          
+          <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          ">
+            <div style="
+              display: inline-block;
+              padding: 4px 8px;
+              border-radius: 4px;
+              background-color: ${
+                report.adminStatus === 'REPORT_RECEIVED'
+                  ? '#FEE2E2'
+                  : report.adminStatus === 'COLLECT_PROGRESS'
+                    ? '#E0F2FE'
+                    : '#DCFCE7'
+              };
+              color: ${
+                report.adminStatus === 'REPORT_RECEIVED'
+                  ? '#DC2626'
+                  : report.adminStatus === 'COLLECT_PROGRESS'
+                    ? '#0284C7'
+                    : '#16A34A'
+              };
+              font-size: 0.9em;
+              font-weight: 500;
+            ">${getStatusLabel(report.adminStatus)}</div>
+            
+  
+          </div>
+        </div>
+      </div>
+    `;
+
+    // 이벤트 리스너 추가
+    const closeBtn = content.querySelector('.close-btn');
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        overlays.forEach((overlay) => overlay.setMap(null));
+      });
+    }
+
+    return content;
+  };
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case '신고접수':
+      case 'REPORT_RECEIVED': // 신고접수
         return `
-          <circle cx="12" cy="12" r="8" fill="white"/>
-          <path fill="black" d="M11 6h2v6h-2zM11 14h2v2h-2z"/>
-        `;
-      case '수거중':
+            <circle cx="12" cy="12" r="8" fill="white"/>
+            <path fill="black" d="M11 6h2v6h-2zM11 14h2v2h-2z"/>
+          `;
+      case 'COLLECT_RECEIVED': // 수거접수
+      case 'COLLECT_PROGRESS': // 수거중
+      case 'COLLECT_COMPLETED': // 수거완료
         return `
-          <circle cx="12" cy="12" r="8" fill="white"/>
-          <path fill="black" d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm2.5-5.5l-3.5 2V8h1v4.3l2.5-1.7.5.9z"/>
-        `;
-      case '수거완료':
+            <circle cx="12" cy="12" r="8" fill="white"/>
+            <path fill="black" d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm2.5-5.5l-3.5 2V8h1v4.3l2.5-1.7.5.9z"/>
+          `;
+      case 'COLLECT_COMPLETED': // 수거완료
         return `
-          <circle cx="12" cy="12" r="8" fill="white"/>
-          <path fill="black" d="M9.5 15.5l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"/>
-        `;
+            <circle cx="12" cy="12" r="8" fill="white"/>
+            <path fill="black" d="M9.5 15.5l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"/>
+          `;
+      case 'REPORT_COMPLETED': // 신고처리완료
+        return `
+            <circle cx="12" cy="12" r="8" fill="white"/>
+            <path fill="black" d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/>
+          `;
       default:
         return '';
     }
@@ -62,11 +279,11 @@ const KakaoMap: React.FC<Props> = ({
 
     return {
       src: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 35">
-          <path fill="${color}" d="M12 0C5.4 0 0 5.4 0 12c0 7.5 12 23 12 23s12-15.5 12-23c0-6.6-5.4-12-12-12z"/>
-          ${getStatusIcon(status)}
-        </svg>
-      `)}`,
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 35">
+            <path fill="${color}" d="M12 0C5.4 0 0 5.4 0 12c0 7.5 12 23 12 23s12-15.5 12-23c0-6.6-5.4-12-12-12z"/>
+            ${getStatusIcon(status)}
+          </svg>
+        `)}`,
       size: markerSize,
       shape: markerShape,
     };
@@ -143,30 +360,30 @@ const KakaoMap: React.FC<Props> = ({
         filterControl.className =
           'absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm p-3 border-t border-gray-200 z-10';
         filterControl.innerHTML = `
-          <div class="max-w-3xl mx-auto">
-            <div class="flex flex-col space-y-3">
-              <div class="flex flex-wrap gap-2 justify-center">
-                ${statusOptions
-                  .map(
-                    (status) => `
-                  <button
-                    class="filter-btn px-4 py-1.5 rounded-full text-sm transition-colors ${
-                      selectedStatuses.includes(status)
-                        ? 'bg-blue-500 text-white hover:bg-blue-600'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                    }"
-                    data-status="${status}"
-                  >
-                    ${status}
-                  </button>
-                `
-                  )
-                  .join('')}
+            <div class="max-w-3xl mx-auto">
+              <div class="flex flex-col space-y-3">
+                <div class="flex flex-wrap gap-2 justify-center">
+                  ${statusOptions
+                    .map(
+                      (status) => `
+                    <button
+                      class="filter-btn px-4 py-1.5 rounded-full text-sm transition-colors ${
+                        selectedStatuses.includes(status)
+                          ? 'bg-blue-500 text-white hover:bg-blue-600'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }"
+                      data-status="${status}"
+                    >
+                      ${status}
+                    </button>
+                  `
+                    )
+                    .join('')}
+                </div>
+              
               </div>
-             
             </div>
-          </div>
-        `;
+          `;
 
         // 필터 버튼 이벤트 리스너 추가
         filterControl.addEventListener('click', (e) => {
@@ -223,10 +440,12 @@ const KakaoMap: React.FC<Props> = ({
 
     markers.forEach((marker) => marker.setMap(null));
     infowindows.forEach((infowindow) => infowindow.close());
+    overlays.forEach((overlay) => overlay.setMap(null)); // 오버레이 제거
 
     const filteredReports = getFilteredReports();
     const newMarkers: any[] = [];
     const newInfowindows: any[] = [];
+    const newOverlays: any[] = []; // 새로운 오버레이 배열 추가
 
     filteredReports.forEach((report) => {
       const position = new window.kakao.maps.LatLng(
@@ -250,11 +469,11 @@ const KakaoMap: React.FC<Props> = ({
 
       const infowindow = new window.kakao.maps.InfoWindow({
         content: `
-          <div class="p-2">
-            <p class="font-bold">${report.address}</p>
-            <p>${report.companyName}</p>
-          </div>
-        `,
+            <div class="p-2">
+              <p class="font-bold">${report.address}</p>
+              <p>${report.companyName}</p>
+            </div>
+          `,
       });
 
       window.kakao.maps.event.addListener(marker, 'click', () => {
@@ -265,36 +484,22 @@ const KakaoMap: React.FC<Props> = ({
 
       newMarkers.push(marker);
       newInfowindows.push(infowindow);
+
+      // 오버레이 생성 및 추가
+      const overlay = new window.kakao.maps.CustomOverlay({
+        content: createCustomOverlayContent(report),
+        position: position,
+        xAnchor: 0.5,
+        yAnchor: 1,
+      });
+      newOverlays.push(overlay); // 새로운 오버레이 추가
     });
 
     setMarkers(newMarkers);
     setInfowindows(newInfowindows);
+    setOverlays(newOverlays); // 오버레이 상태 업데이트
   }, [map, reports, selectedStatuses, onSelectReport]);
 
-  useEffect(() => {
-    if (!map || !selectedReport) return;
-
-    const position = new window.kakao.maps.LatLng(
-      selectedReport.latitude,
-      selectedReport.longitude
-    );
-
-    map.setCenter(position);
-
-    markers.forEach((marker, index) => {
-      const markerPosition = marker.getPosition();
-      if (
-        markerPosition.getLat() === selectedReport.latitude &&
-        markerPosition.getLng() === selectedReport.longitude
-      ) {
-        marker.setZIndex(10);
-        infowindows[index].open(map, marker);
-      } else {
-        marker.setZIndex(1);
-        infowindows[index].close();
-      }
-    });
-  }, [map, selectedReport, markers, infowindows]);
   return (
     <div className="w-full space-y-4">
       <div ref={mapRef} className="relative h-[400px] w-full rounded-lg" />
@@ -311,7 +516,7 @@ const KakaoMap: React.FC<Props> = ({
                 className="h-4 w-4 rounded-full"
                 style={{ backgroundColor: color }}
               />
-              <span className="text-sm text-gray-600">{company}</span>
+              <span className="text-xs">{company}</span>
             </div>
           ))}
         </div>

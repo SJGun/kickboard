@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useEffect, useState } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import List from '../../components/report/List';
@@ -5,8 +6,14 @@ import ListMap from '../../components/report/ListMap';
 import axios from 'axios';
 
 const ReportListPage: React.FC = () => {
-  const { title, setTitle, setReportList, isReportMap, setIsReportMap } =
-    useStateStore();
+  const {
+    title,
+    setTitle,
+    setReportList,
+    isReportMap,
+    setIsReportMap,
+    setIsReportMap1,
+  } = useStateStore();
 
   const [responseData, setResponseData] = useState([]);
   useEffect(() => {
@@ -15,6 +22,7 @@ const ReportListPage: React.FC = () => {
   }, [title, setTitle]);
 
   useEffect(() => {
+    setIsReportMap1();
     const fetchData = async () => {
       try {
         const response = await axios.get(
@@ -22,13 +30,14 @@ const ReportListPage: React.FC = () => {
         );
         if (response) {
           setResponseData(response.data.data);
-          console.log(response.data.data);
         }
       } catch (error) {
         console.error('Error submitting report:', error);
       }
     };
-    fetchData();
+    if (isReportMap) {
+      fetchData();
+    }
   }, []);
 
   return (

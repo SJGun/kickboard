@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Skeleton } from './Skeleton';
-
 interface StatusItem {
   label: string;
   count: number;
@@ -18,26 +17,20 @@ const AdminNavBar: React.FC<AdminNavBarProps> = ({
   statusItems = [
     {
       label: '신고접수',
-      count: 10,
+      count: 0,
       colorClass: 'bg-red-500',
       value: '신고접수',
     },
-    {
-      label: '수거중',
-      count: 10,
-      colorClass: 'bg-yellow-500',
-      value: '수거중',
-    },
+    { label: '수거중', count: 0, colorClass: 'bg-yellow-500', value: '수거중' },
     {
       label: '수거완료',
-      count: 10,
+      count: 0,
       colorClass: 'bg-green-500',
-      value: '수거완료',
+      value: '신고처리완료',
     },
   ],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <nav className="bg-gray-200 p-4 shadow-md">
       <div className="container mx-auto">
