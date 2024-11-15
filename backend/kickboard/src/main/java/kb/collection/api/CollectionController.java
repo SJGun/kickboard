@@ -31,7 +31,7 @@ import java.util.List;
 public class CollectionController {
     private final CollectionRequestService collectionRequestService;
 
-    @LocationAuth
+
     @Operation(summary = "수거 요청 생성")
     @PostMapping( "/{reportId}")
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> createRequest(
@@ -41,7 +41,7 @@ public class CollectionController {
                 collectionRequestService.createRequest(reportId)));
     }
 
-    @LocationAuth
+
     @Operation(summary = "수거 요청 상태 업데이트")
     @PatchMapping("/{requestId}")
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> updateStatus(
@@ -52,7 +52,7 @@ public class CollectionController {
                 collectionRequestService.updateStatus(requestId,request)));
     }
 
-    @LocationAuth
+
     @Operation(summary = "수거 요청 조회")
     @GetMapping("/{requestId}")
     public ResponseEntity<ApiResponse<CollectionRequestResponse>> getRequest(
