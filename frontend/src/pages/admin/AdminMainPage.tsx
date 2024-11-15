@@ -36,7 +36,9 @@ const AdminMain: React.FC = () => {
   const statusCounts = useMemo(() => {
     const counts = {
       신고접수: 0,
+      수거접수: 0,
       수거중: 0,
+      수거완료: 0,
       신고처리완료: 0,
     };
 
@@ -45,8 +47,12 @@ const AdminMain: React.FC = () => {
         counts['신고접수']++;
       } else if (report.adminStatus === 'REPORT_COMPLETED') {
         counts['신고처리완료']++;
-      } else if (report.adminStatus.startsWith('COLLECT_')) {
+      } else if (report.adminStatus === 'COLLECT_RECEIVED') {
+        counts['수거접수']++;
+      } else if (report.adminStatus === 'COLLECT_PROGRESS') {
         counts['수거중']++;
+      } else if (report.adminStatus === 'COLLECT_COMPLETED') {
+        counts['수거완료']++;
       }
     });
 
@@ -62,10 +68,22 @@ const AdminMain: React.FC = () => {
         value: 'REPORT_RECEIVED',
       },
       {
+        label: '수거접수',
+        count: statusCounts['수거접수'],
+        colorClass: 'bg-orange-500',
+        value: 'COLLECT_RECEIVED',
+      },
+      {
         label: '수거중',
         count: statusCounts['수거중'],
         colorClass: 'bg-yellow-500',
         value: 'COLLECT_PROGRESS',
+      },
+      {
+        label: '수거완료',
+        count: statusCounts['수거완료'],
+        colorClass: 'bg-blue-500',
+        value: 'COLLECT_COMPLETED',
       },
       {
         label: '처리완료',
@@ -197,10 +215,10 @@ const AdminMain: React.FC = () => {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-  
+
     return `${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
   };
-  
+
   return (
     <div className="w-full font-KoPubMedium">
       <AdminNavBar isLoading={isLoading} statusItems={statusItems} />
@@ -313,7 +331,9 @@ const AdminMain: React.FC = () => {
                                 : ''
                             }`}
                           >
-                            <td className="p-2">{getFormattedDate(report.createdAt)}</td>
+                            <td className="p-2">
+                              {getFormattedDate(report.createdAt)}
+                            </td>
                             <td className="p-2">{report.companyName}</td>
                             <td className="p-2">{report.serialNumber}</td>
                             <td className="p-2">{report.address}</td>

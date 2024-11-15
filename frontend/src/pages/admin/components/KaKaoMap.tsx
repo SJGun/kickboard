@@ -7,7 +7,11 @@ interface Props {
   onSelectReport: (report: Report) => void;
 }
 
-const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) => {
+const KakaoMap: React.FC<Props> = ({
+  selectedReport,
+  reports,
+  onSelectReport,
+}) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
@@ -47,7 +51,7 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
   // 지도 이동 함수 추가
   const moveToLocation = (lat: number, lng: number) => {
     if (!map) return;
-    
+
     const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
     map.panTo(moveLatLng);
   };
@@ -58,7 +62,7 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
     if (activeOverlayRef.current) {
       activeOverlayRef.current.setMap(null);
     }
-    
+
     overlay.setMap(map);
     activeOverlayRef.current = overlay;
   };
@@ -67,7 +71,7 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
   useEffect(() => {
     if (selectedReport && map) {
       moveToLocation(selectedReport.latitude, selectedReport.longitude);
-      
+
       // 해당 리포트의 오버레이 찾기 및 표시
       // const reportIndex = reports.findIndex(r => r.reportId === selectedReport.reportId);
       // if (reportIndex !== -1 && overlays[reportIndex]) {
@@ -82,10 +86,10 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-  
+
     return `${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
   };
-  
+
   useEffect(() => {
     if (!map) return;
 
@@ -139,7 +143,7 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
     setMarkers(newMarkers);
     setInfowindows(newInfowindows);
     setOverlays(newOverlays);
-    
+
     // 초기 선택된 리포트가 있다면 해당 위치로 이동
     if (selectedReport) {
       moveToLocation(selectedReport.latitude, selectedReport.longitude);
@@ -235,7 +239,6 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
       });
     }
 
- 
     return content;
   };
   const getStatusIcon = (status: string) => {
@@ -251,11 +254,6 @@ const KakaoMap: React.FC<Props> = ({ selectedReport, reports, onSelectReport }) 
         return `
             <circle cx="12" cy="12" r="8" fill="white"/>
             <path fill="black" d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm2.5-5.5l-3.5 2V8h1v4.3l2.5-1.7.5.9z"/>
-          `;
-      case 'COLLECT_COMPLETED': // 수거완료
-        return `
-            <circle cx="12" cy="12" r="8" fill="white"/>
-            <path fill="black" d="M9.5 15.5l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"/>
           `;
       case 'REPORT_COMPLETED': // 신고처리완료
         return `

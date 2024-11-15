@@ -150,11 +150,14 @@ function App() {
           }
         />
         {/* 사용자 페이지 -------------------------------------*/}
-        <Route path="/adminMainPage"           element={
+        <Route
+          path="/adminMainPage"
+          element={
             //<ProtectedRouteAdmin>
-              <AdminMainPage />
+            <AdminMainPage />
             //</ProtectedRouteAdmin>
-          }  />
+          }
+        />
         <Route path="/admininfo" element={<AdminInfoPage />} />
         <Route path="/adminmap" element={<AdminMapPage />} />
         <Route path="/accountmanage" element={<AccountManagePage />} />
