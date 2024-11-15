@@ -5,8 +5,14 @@ import ListMap from '../../components/report/ListMap';
 import axios from 'axios';
 
 const ReportListPage: React.FC = () => {
-  const { title, setTitle, setReportList, isReportMap, setIsReportMap } =
-    useStateStore();
+  const {
+    title,
+    setTitle,
+    setReportList,
+    isReportMap,
+    setIsReportMap,
+    setIsReportMap1,
+  } = useStateStore();
 
   const [responseData, setResponseData] = useState([]);
   useEffect(() => {
@@ -15,6 +21,7 @@ const ReportListPage: React.FC = () => {
   }, [title, setTitle]);
 
   useEffect(() => {
+    setIsReportMap1();
     const fetchData = async () => {
       try {
         const response = await axios.get(
@@ -27,7 +34,9 @@ const ReportListPage: React.FC = () => {
         console.error('Error submitting report:', error);
       }
     };
-    fetchData();
+    if (isReportMap) {
+      fetchData();
+    }
   }, []);
 
   return (

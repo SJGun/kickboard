@@ -43,12 +43,12 @@ const CollectorLoginPage = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onClick(); 
+    onClick();
   };
 
   useEffect(() => {
-    console.log(CollectList)
-  }, [CollectList])
+    console.log(CollectList);
+  }, [CollectList]);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center">

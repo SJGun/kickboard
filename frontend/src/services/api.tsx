@@ -69,7 +69,7 @@ export const updateReportStatus = async (
 ) => {
   try {
     const response = await api.patch(
-      `/kickboard/collections/${requestId}?collectionStatus=${collectionStatus}&processStatus=${processType}`, 
+      `/kickboard/collections/${requestId}?collectionStatus=${collectionStatus}&processStatus=${processType}`
       // {
       //     collectionStatus,
       //     processStatus: processType || null,

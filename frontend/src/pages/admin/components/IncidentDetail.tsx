@@ -168,10 +168,9 @@ const IncidentDetails: React.FC<Props> = ({
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-  
+
     return `${year}년 ${month}월 ${day}일 ${hours}시${minutes}분${seconds}초`;
   };
-  
 
   const details = [
     { label: '현재 상태', value: getStatusLabel(report.adminStatus) },

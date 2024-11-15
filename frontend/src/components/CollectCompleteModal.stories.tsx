@@ -19,7 +19,7 @@ const Template: StoryFn<CollectCompleteModalProps> = (args) => {
 
   const handleClose = () => setIsOpen(false);
 
-  const handleSubmit = (processType: string |null) => {
+  const handleSubmit = (processType: string | null) => {
     alert(`처리 유형: ${processType}`);
   };
 

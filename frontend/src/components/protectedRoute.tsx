@@ -10,8 +10,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const isLoggedIn = useCollectorAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
-    console.log("isLoggedIn state: ", isLoggedIn)
-  })
+    console.log('isLoggedIn state: ', isLoggedIn);
+  });
 
   if (!isLoggedIn) {
     return <Navigate to="/collector-login" replace />;

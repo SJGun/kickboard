@@ -1,4 +1,4 @@
-import { ApiResponse } from "../../../types/index";
+import { ApiResponse } from '../../../types/index';
 
 const BASE_URL = import.meta.env.VITE_URL;
 
@@ -6,7 +6,7 @@ const getAuthHeaders = () => {
   const token = localStorage.getItem('accessToken');
   return {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
+    Authorization: `Bearer ${token}`,
   };
 };
 
@@ -17,10 +17,13 @@ export const fetchReports = async (): Promise<ApiResponse> => {
       throw new Error('No area found in localStorage');
     }
 
-    const response = await fetch(`${BASE_URL}/kickboard/admin/reports?area=${area}`, {
-      headers: getAuthHeaders()
-    });
-    
+    const response = await fetch(
+      `${BASE_URL}/kickboard/admin/reports?area=${area}`,
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+
     if (!response.ok) {
       if (response.status === 401) {
         localStorage.removeItem('accessToken');
@@ -33,7 +36,7 @@ export const fetchReports = async (): Promise<ApiResponse> => {
       console.error('API request failed:', errorText);
       throw new Error('API request failed');
     }
-    
+
     const data: ApiResponse = await response.json();
     return data;
   } catch (error) {
@@ -42,13 +45,19 @@ export const fetchReports = async (): Promise<ApiResponse> => {
   }
 };
 
-export const updateReportStatus = async (reportId: string, status: string): Promise<ApiResponse> => {
+export const updateReportStatus = async (
+  reportId: string,
+  status: string
+): Promise<ApiResponse> => {
   try {
-    const response = await fetch(`${BASE_URL}/kickboard/admin/reports/${reportId}/status`, {
-      method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ status }),
-    });
+    const response = await fetch(
+      `${BASE_URL}/kickboard/admin/reports/${reportId}/status`,
+      {
+        method: 'PATCH',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status }),
+      }
+    );
 
     if (!response.ok) {
       if (response.status === 401) {
@@ -73,10 +82,13 @@ export const updateReportStatus = async (reportId: string, status: string): Prom
 
 export const postReport = async (reportId: string) => {
   try {
-    const response = await fetch(`${BASE_URL}/kickboard/collections/${reportId}`, {
-      method: 'POST',
-      headers: getAuthHeaders()
-    });
+    const response = await fetch(
+      `${BASE_URL}/kickboard/collections/${reportId}`,
+      {
+        method: 'POST',
+        headers: getAuthHeaders(),
+      }
+    );
 
     if (!response.ok) {
       if (response.status === 401) {
