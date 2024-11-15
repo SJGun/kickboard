@@ -1,24 +1,30 @@
-import { useState } from 'react';
+// 킥보드 브레이커
+import { useEffect, useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import BlueButton from '../../components/BlueButton';
 import { collectorLogin } from '../../services/Api';
 import kickboardCollector from '../../assets/kickboard_collector.webp';
 import { useCollectorAuthStore } from '../../store/CollectorAuthStore';
+import { useNavigate } from 'react-router-dom';
+import CollectList from './CollectListPage';
 
 const CollectorLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useCollectorAuthStore();
 
-  // 로그인 함수 나중에 만들기
+  // 로그인 함수
   const onClick = async () => {
     try {
       const response = await collectorLogin(email, password);
       if (response.success) {
         const { accessToken, role, area } = response.data;
         useCollectorAuthStore.getState().setAuthData(accessToken, role, area);
-        console.log('로그인 성공: ', response);
+        login();
+        navigate('/collectlist');
       } else {
         setErrorMessage(response.error.message);
       }
@@ -29,6 +35,21 @@ const CollectorLoginPage = () => {
       );
     }
   };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onClick(); // Trigger the login function when Enter key is pressed
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onClick();
+  };
+
+  useEffect(() => {
+    console.log(CollectList);
+  }, [CollectList]);
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center">
@@ -60,7 +81,7 @@ const CollectorLoginPage = () => {
 
       <div className="z-10 flex w-full max-w-xs flex-col items-center rounded-md border border-black bg-[#f9f9f9e0] p-5">
         <div className="w-full sm:max-w-sm">
-          <form className="w-full space-y-6">
+          <form className="w-full space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -77,6 +98,7 @@ const CollectorLoginPage = () => {
                   autoComplete="email" // Changed autocomplete to match a generic username
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 />
               </div>
@@ -108,6 +130,7 @@ const CollectorLoginPage = () => {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 />
                 <button

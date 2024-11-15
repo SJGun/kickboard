@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useState, useMemo, useEffect } from 'react';
 import AdminNavBar from './components/AdminNavBar';
 import { Card, CardContent } from './components/Card';
