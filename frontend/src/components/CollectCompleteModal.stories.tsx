@@ -19,8 +19,8 @@ const Template: StoryFn<CollectCompleteModalProps> = (args) => {
 
   const handleClose = () => setIsOpen(false);
 
-  const handleSubmit = (completionImages: string, processType: string) => {
-    alert(`이미지: ${completionImages}\n처리 유형: ${processType}`);
+  const handleSubmit = (processType: string |null) => {
+    alert(`처리 유형: ${processType}`);
   };
 
   return (
