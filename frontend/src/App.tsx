@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import './index.css';
 // 핸드폰 사이즈 조절
-import PhoneScreenContainer from './components/phoneScreenContainer';
+import PhoneScreenContainer from './components/PhoneScreenContainer';
 
 // 수거업체 관련
 import ProtectedRoute from './components/ProtectedRoute';
