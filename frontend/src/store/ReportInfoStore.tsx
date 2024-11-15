@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 

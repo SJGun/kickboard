@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useEffect, useRef, useState } from 'react';
 
 declare global {

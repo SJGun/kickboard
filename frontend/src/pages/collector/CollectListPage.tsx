@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 // kakao맵 오류없이 하기위해 window type 확장하기 (카카오도 인식 가능하게)
 declare global {
   interface Window {
