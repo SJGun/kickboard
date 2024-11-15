@@ -35,7 +35,7 @@ import CompanyIdMagage from './pages/admin/CompanyIdManage';
 import AdminIdManage from './pages/admin/AdminIdManage';
 import ReportPage1 from './pages/user/ReportPage1';
 import ReportMapPage1 from './pages/user/ReportMapPage1';
-import ProtectedRouteAdmin from './pages/admin/components/ProtectedRoute';
+// import ProtectedRouteAdmin from './pages/admin/components/ProtectedRoute';
 
 function App() {
   const isLoggedIn = useCollectorAuthStore((state) => state.isLoggedIn);
@@ -151,9 +151,9 @@ function App() {
         />
         {/* 사용자 페이지 -------------------------------------*/}
         <Route path="/adminMainPage"           element={
-            <ProtectedRouteAdmin>
+            //<ProtectedRouteAdmin>
               <AdminMainPage />
-            </ProtectedRouteAdmin>
+            //</ProtectedRouteAdmin>
           }  />
         <Route path="/admininfo" element={<AdminInfoPage />} />
         <Route path="/adminmap" element={<AdminMapPage />} />

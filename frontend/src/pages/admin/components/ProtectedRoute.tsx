@@ -10,7 +10,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   }
 
   if (role !== 'ADMIN' && role !== 'COLLECTOR') {
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/adminMainPage" replace />;
   }
 
   return <>{children}</>;

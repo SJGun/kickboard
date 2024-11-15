@@ -1,4 +1,4 @@
-import { ApiResponse } from '../../../types/index';
+import { ApiResponse } from "../../../types/index";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -33,7 +33,7 @@ export const fetchReports = async (): Promise<ApiResponse> => {
       console.error('API request failed:', errorText);
       throw new Error('API request failed');
     }
-
+    
     const data: ApiResponse = await response.json();
     return data;
   } catch (error) {
@@ -98,7 +98,3 @@ export const postReport = async (reportId: string) => {
     throw error;
   }
 };
-};
-
-export const areas = ['광산구', '동구', '북구', '남구', '서구'] as const;
-export type Area = (typeof areas)[number];
