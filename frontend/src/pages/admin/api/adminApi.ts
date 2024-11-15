@@ -1,6 +1,6 @@
 import { ApiResponse } from "../../../types/index";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_URL;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('accessToken');
