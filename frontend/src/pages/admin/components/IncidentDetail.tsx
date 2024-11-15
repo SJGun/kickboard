@@ -15,7 +15,6 @@ const IncidentDetails: React.FC<Props> = ({
   report,
   isLoading,
   onStatusChange,
-  onStatusChange,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingStatus, setPendingStatus] = useState<Report['adminStatus'] | null>(null);
