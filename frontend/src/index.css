@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-<<<<<<< HEAD
-=======
 
 .my-button {
   @apply rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50;
@@ -32,4 +30,3 @@
   font-weight: 700; /* Bold 폰트의 경우 */
   font-style: normal;
 }
->>>>>>> frontend

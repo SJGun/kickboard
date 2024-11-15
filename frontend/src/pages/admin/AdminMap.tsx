@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import NavBar from './AdminNavBar';
-
-const AdminMap: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gray-100">
-      {/* NavBar Component */}
-      <NavBar />
-      <p>지도</p>
-      {/* Main Content */}
-=======
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import NavBar from './components/AdminNavBar';
@@ -606,7 +594,6 @@ const AdminMap = () => {
       {isModalOpen && selectedReport && (
         <Modal report={selectedReport} onClose={() => setIsModalOpen(false)} />
       )}
->>>>>>> frontend
     </div>
   );
 };
