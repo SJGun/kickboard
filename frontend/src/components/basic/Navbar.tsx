@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import { useStateStore } from '../../store/StateStore';
 // 네브바 아이콘
 import ReportOnIcon from '../../assets/navbar-icons/ReportOnIcon.svg';
