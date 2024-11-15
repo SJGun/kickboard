@@ -1,73 +1,77 @@
-import { useEffect, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { Search } from 'lucide-react';
 import NavBar from './components/AdminNavBar';
+import IncidentDetails from './components/IncidentDetail'; 
+import IncidentImage from './components/IncidentImage'; 
+import { fetchReports } from './api/adminApi'; 
+import { Report } from '../../types/index'; 
 
 const AdminMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   const [overlays, setOverlays] = useState<any[]>([]);
-  const [centerAddress, setCenterAddress] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [currentAddress, setCurrentAddress] = useState<string>('');
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>(['전체']);
-  const [selectedReport, setSelectedReport] = useState(null);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [geocoder, setGeocoder] = useState<any>(null);
+  const [places, setPlaces] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAOMAP_API_KEY;
 
-  // Sample data generation
-  const companies = ['BEAM', 'DEER', 'SWING', 'KICK GOING', 'LIME'];
-  const addresses = [
-    '광주광역시 광산구 장덕동 1623-3',
-    '광주광역시 광산구 수완동 1089-1',
-    '광주광역시 광산구 신가동 992-1',
-    '광주광역시 광산구 운남동 785-1',
-    '광주광역시 광산구 첨단동 1223-3',
-  ];
-
-  const generateSampleData = () => {
-    const adminStatuses = ['신고접수', '수거중', '수거완료'];
-    return Array.from({ length: 10 }, (_, index) => ({
-      reportId: `REP${String(index + 1).padStart(4, '0')}`,
-      companyName: companies[Math.floor(Math.random() * companies.length)],
-      serialNumber: `SN${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`,
-      latitude: 35.1595 + (Math.random() - 0.5) * 0.01,
-      longitude: 126.8526 + (Math.random() - 0.5) * 0.01,
-      address: addresses[index % addresses.length],
-      adminStatus: adminStatuses[Math.floor(Math.random() * adminStatuses.length)],
-      createdAt: new Date(Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000))
-        .toISOString()
-        .replace('T', ' ')
-        .slice(0, 16),
-      imageUrl: `/api/placeholder/200/150`
-    }));
-  };
-
-  const [reports] = useState(generateSampleData());
-
   const statusOptions = ['전체', '신고접수', '수거중', '수거완료'];
   
-  const companyColors = {
-    'BEAM': '#FF6B6B',    
-    'DEER': '#4ECDC4',    
-    'SWING': '#45B7D1',   
-    'KICK GOING': '#96CEB4', 
-    'LIME': '#26A69A'     
+  const companyColors: { [key: string]: string } = {
+    '빔': '#7448ff',    // 빔
+    '디어': '#ffe301',    // 디어
+    '지쿠터': '#34d025',    // 지쿠
+    '타고가': '#f88379',  // 타고가
+    '씽씽': '#ffd939'  // 씽씽
+  };
+  const getStatusLabel = (status: Report['adminStatus']) => {
+    switch (status) {
+      case "REPORT_RECEIVED":
+        return "신고접수";
+      case "COLLECT_RECEIVED":
+        return "수거접수";
+      case "COLLECT_PROGRESS":
+        return "수거중";
+      case "COLLECT_COMPLETED":
+        return "수거완료";
+      case "REPORT_COMPLETED":
+        return "신고처리완료";
+      default:
+        return status;
+    }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case '신고접수':
+      case 'REPORT_RECEIVED': // 신고접수
         return `
           <circle cx="12" cy="12" r="8" fill="white"/>
           <path fill="black" d="M11 6h2v6h-2zM11 14h2v2h-2z"/>
         `;
-      case '수거중':
+      case 'COLLECT_RECEIVED': // 수거접수
+      case 'COLLECT_PROGRESS':  // 수거중
+      case 'COLLECT_COMPLETED': // 수거완료
         return `
           <circle cx="12" cy="12" r="8" fill="white"/>
           <path fill="black" d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm2.5-5.5l-3.5 2V8h1v4.3l2.5-1.7.5.9z"/>
         `;
-      case '수거완료':
+      case 'COLLECT_COMPLETED': // 수거완료
         return `
           <circle cx="12" cy="12" r="8" fill="white"/>
           <path fill="black" d="M9.5 15.5l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"/>
+        `;
+      case 'REPORT_COMPLETED': // 신고처리완료
+        return `
+          <circle cx="12" cy="12" r="8" fill="white"/>
+          <path fill="black" d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/>
         `;
       default:
         return '';
@@ -93,7 +97,7 @@ const AdminMap = () => {
     };
   };
 
-  const createCustomOverlayContent = (report: any) => {
+  const createCustomOverlayContent = (report: Report) => {
     const content = document.createElement('div');
     content.className = 'custom-overlay';
     content.innerHTML = `
@@ -115,7 +119,7 @@ const AdminMap = () => {
           color: #666;
         ">&times;</div>
         
-        <img src="${report.imageUrl}" alt="Report Image" style="
+        <img src="${Array.isArray(report.images) ? report.images[0] : report.images}" alt="Report Image" style="
           width: 100%;
           height: 150px;
           object-fit: cover;
@@ -123,9 +127,7 @@ const AdminMap = () => {
           margin-bottom: 12px;
         "/>
         
-        <div style="
-          padding: 0 5px;
-        ">
+        <div style="padding: 0 5px;">
           <div style="
             display: flex;
             justify-content: space-between;
@@ -142,43 +144,117 @@ const AdminMap = () => {
             ">${report.createdAt}</span>
           </div>
           
-          <div style="
-            margin-bottom: 8px;
+          <div style="margin-bottom: 8px;
             color: #333;
             font-size: 0.95em;
           ">
-            <div style="font-weight: 500;">주소</div>
             <div style="color: #666;">${report.address}</div>
           </div>
           
           <div style="
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            background-color: ${
-              report.adminStatus === '신고접수' ? '#FEE2E2' :
-              report.adminStatus === '수거중' ? '#E0F2FE' :
-              '#DCFCE7'
-            };
-            color: ${
-              report.adminStatus === '신고접수' ? '#DC2626' :
-              report.adminStatus === '수거중' ? '#0284C7' :
-              '#16A34A'
-            };
-            font-size: 0.9em;
-            font-weight: 500;
-          ">${report.adminStatus}</div>
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          ">
+            <div style="
+              display: inline-block;
+              padding: 4px 8px;
+              border-radius: 4px;
+              background-color: ${
+                report.adminStatus === 'REPORT_RECEIVED' ? '#FEE2E2' :
+                report.adminStatus === 'COLLECT_PROGRESS' ? '#E0F2FE' :
+                '#DCFCE7'
+              };
+              color: ${
+                report.adminStatus === 'REPORT_RECEIVED' ? '#DC2626' :
+                report.adminStatus === 'COLLECT_PROGRESS' ? '#0284C7' :
+                '#16A34A'
+              };
+              font-size: 0.9em;
+              font-weight: 500;
+            ">${getStatusLabel(report.adminStatus)}</div>
+            
+            <button class="details-btn" style="
+              padding: 4px 12px;
+              background-color: #3B82F6;
+              color: white;
+              border-radius: 4px;
+              font-size: 0.9em;
+              cursor: pointer;
+              border: none;
+              transition: background-color 0.2s;
+            ">상세보기</button>
+          </div>
         </div>
       </div>
     `;
 
-    // Add click event to close button
+    // 이벤트 리스너 추가
     const closeBtn = content.querySelector('.close-btn');
-    closeBtn!.addEventListener('click', function() {
-      overlays.forEach(overlay => overlay.setMap(null));
-    });
+    const detailsBtn = content.querySelector('.details-btn');
+    
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        overlays.forEach(overlay => overlay.setMap(null));
+      });
+    }
+    
+    if (detailsBtn) {
+      detailsBtn.addEventListener('click', () => {
+        setSelectedReport(report);
+        setIsModalOpen(true);
+      });
+    }
 
     return content;
+  };
+
+  const Modal = ({ report, onClose }: { report: Report; onClose: () => void }) => {
+    if (!report) return null;
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+          <div className="p-4 border-b">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">신고 상세 정보</h2>
+              <button
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          
+          <div className="p-4">
+            <div className="grid grid-cols-1 gap-4">
+              {Array.isArray(report.images) ? (
+                report.images.map((image, index) => (
+                  <IncidentImage
+                    key={index}
+                    imageUrl={image}
+                    isLoading={isLoading}
+                  />
+                ))
+              ) : (
+                <IncidentImage
+                  imageUrl={report.images}
+                  isLoading={isLoading}
+                />
+              )}
+            </div>
+            
+            <div className="mt-4">
+              <IncidentDetails
+                report={report}
+                isLoading={isLoading}
+                onStatusChange={handleStatusChange}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const handleStatusToggle = (status: string) => {
@@ -205,6 +281,25 @@ const AdminMap = () => {
   };
 
   useEffect(() => {
+    const loadReports = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetchReports('광산구');
+        if (response.success && response.data) {
+          setReports(response.data.reports);
+        } else {
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadReports();
+  }, []);
+
+
+  useEffect(() => {
     if (!KAKAO_MAP_KEY) {
       console.error('Kakao Map API key is not defined');
       return;
@@ -226,16 +321,20 @@ const AdminMap = () => {
         const newMap = new window.kakao.maps.Map(mapRef.current, options);
         
         const geocoder = new window.kakao.maps.services.Geocoder();
+        const places = new window.kakao.maps.services.Places();
+        
+        setGeocoder(geocoder);
+        setPlaces(places);
+        setMap(newMap);
+        
         newMap.addListener('idle', () => {
           const center = newMap.getCenter();
-          geocoder.coord2Address(center.getLng(), center.getLat(), (result, status) => {
+          geocoder.coord2Address(center.getLng(), center.getLat(), (result: { address: { address_name: SetStateAction<string>; }; }[], status: any) => {
             if (status === window.kakao.maps.services.Status.OK) {
-              setCenterAddress(result[0].address.address_name);
+              setCurrentAddress(result[0].address.address_name);
             }
           });
         });
-
-        setMap(newMap);
       });
     };
 
@@ -276,15 +375,14 @@ const AdminMap = () => {
         content: createCustomOverlayContent(report),
         position: position,
         xAnchor: 0.5,
-        yAnchor: 1
+        yAnchor: 1,
+        zIndex: 1
       });
 
       window.kakao.maps.event.addListener(marker, 'click', () => {
         newOverlays.forEach(o => o.setMap(null));
         overlay.setMap(map);
         setSelectedReport(report);
-        
-        // 마커 클릭 시 해당 위치로 부드럽게 이동
         map.panTo(position);
       });
 
@@ -300,18 +398,87 @@ const AdminMap = () => {
     setOverlays(newOverlays);
   }, [map, reports, selectedStatuses]);
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchValue.trim() || !geocoder || !places || !map) return;
+
+    const gwangjuBounds = new window.kakao.maps.LatLngBounds(
+      new window.kakao.maps.LatLng(35.0292, 126.6876),
+      new window.kakao.maps.LatLng(35.2834, 127.0122)
+    );
+
+    geocoder.addressSearch(searchValue, (addressResults: any[], addressStatus: any) => {
+      if (addressStatus === window.kakao.maps.services.Status.OK) {
+        const coords = new window.kakao.maps.LatLng(addressResults[0].y, addressResults[0].x);
+        
+        if (gwangjuBounds.contain(coords)) {
+          map.setCenter(coords);
+          map.setLevel(3);
+        } else {
+          alert('광주광역시 내의 위치만 검색 가능합니다.');
+        }
+      } else {
+        const searchOptions = {
+          bounds: gwangjuBounds,
+          size: 1
+        };
+
+        places.keywordSearch(searchValue, (data: any[], status: any) => {
+          if (status === window.kakao.maps.services.Status.OK && data.length > 0) {
+            const coords = new window.kakao.maps.LatLng(data[0].y, data[0].x);
+            
+            if (gwangjuBounds.contain(coords)) {
+              map.setCenter(coords);
+              map.setLevel(3);
+            } else {
+              alert('광주광역시 내의 위치만 검색 가능합니다.');
+            }
+          } else {
+            alert('검색 결과가 없습니다.');
+          }
+        }, searchOptions);
+      }
+    });
+  };
+
+  const handleStatusChange = async (newStatus: Report['adminStatus']) => {
+    if (selectedReport) {
+      const updatedReports = reports.map(report =>
+        report.reportId === selectedReport.reportId
+          ? { ...report, adminStatus: newStatus }
+          : report
+      );
+      setReports(updatedReports);
+      setSelectedReport({ ...selectedReport, adminStatus: newStatus });
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen flex flex-col font-KoPubMedium">
       <NavBar />
       
-      {/* Filter Panel */}
-      <div className="bg-white shadow-md p-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Combined Filters Row */}
+      <div className="p-4 bg-transparent "> 
+        <div className="max-w-7xl mx-auto space-y-4">
+          {/* Search Bar */}
+          <form onSubmit={handleSearch} className="relative">
+            <input
+              type="text"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder={currentAddress || "주소나 키워드를 입력하세요"}
+              className="w-full px-4 py-2 pl-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button 
+              type="submit" 
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <Search size={20} />
+            </button>
+          </form>
+
           <div className="flex flex-wrap gap-8 items-start">
             {/* Status Filter */}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-2">상태 필터</h3>
               <div className="flex flex-wrap gap-2">
                 {statusOptions.map(status => (
                   <button
@@ -319,8 +486,8 @@ const AdminMap = () => {
                     onClick={() => handleStatusToggle(status)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       selectedStatuses.includes(status)
-                        ? 'bg-blue-500 text-white shadow-sm'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-blue-500 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
                     {status}
@@ -331,10 +498,9 @@ const AdminMap = () => {
 
             {/* Company Legend */}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-2">업체별 현황</h3>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                 {Object.entries(companyColors).map(([company, color]) => (
-                  <div key={company} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+                  <div key={company} className="flex items-center gap-2">
                     <div 
                       className="w-4 h-4 rounded-full" 
                       style={{ backgroundColor: color }}
@@ -351,16 +517,56 @@ const AdminMap = () => {
       {/* Map Container */}
       <div className="flex-1 relative">
         <div ref={mapRef} className="w-full h-full absolute inset-0" />
-        
-        {/* Center Address Display */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-          <div className="bg-white px-6 py-3 rounded-lg shadow-lg">
-            <p className="text-gray-900 font-medium">{centerAddress}</p>
+      </div>
+
+      {/* Modal */}
+      {isModalOpen && selectedReport && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-semibold">신고 상세 정보</h2>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            
+            <div className="p-4">
+            {selectedReport?.images.map((image, index) => (
+                  <IncidentImage
+                    key={index}
+                    imageUrl={image}
+                    isLoading={isLoading}
+                  />
+                ))}
+              
+              <div className="mt-4">
+                <IncidentDetails
+                  report={selectedReport}
+                  isLoading={false}
+                  onStatusChange={handleStatusChange}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+        
+      )}
+            {isModalOpen && selectedReport && (
+        <Modal 
+          report={selectedReport} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+      )}
     </div>
+    
   );
 };
 
 export default AdminMap;
+
+
