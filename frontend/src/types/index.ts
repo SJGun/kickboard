@@ -13,12 +13,12 @@ export interface Report {
   latitude: number;
   longitude: number;
   address: string;
-  adminStatus: 
-    | "REPORT_RECEIVED"  // 신고접수
-    | "COLLECT_RECEIVED" // 수거접수
-    | "COLLECT_PROGRESS"  // 수거중
-    | "COLLECT_COMPLETED" // 수거완료
-    | "REPORT_COMPLETED"; // 신고처리완료
+  adminStatus:
+    | 'REPORT_RECEIVED' // 신고접수
+    | 'COLLECT_RECEIVED' // 수거접수
+    | 'COLLECT_PROGRESS' // 수거중
+    | 'COLLECT_COMPLETED' // 수거완료
+    | 'REPORT_COMPLETED'; // 신고처리완료
   images: string[];
   afterImages: string[];
   createdAt: string;

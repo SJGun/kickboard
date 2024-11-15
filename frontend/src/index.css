@@ -10,7 +10,6 @@
   @apply rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300;
 }
 
-
 @font-face {
   font-family: 'KoPubDotumLight';
   src: url('./fonts/KoPubDotum-Light.ttf') format('truetype');

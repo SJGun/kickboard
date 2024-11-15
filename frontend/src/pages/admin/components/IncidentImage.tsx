@@ -9,11 +9,11 @@ interface Props {
   adminStatus?: Report['adminStatus'];
 }
 
-const IncidentImage: React.FC<Props> = ({ 
-  imageUrl, 
-  isLoading, 
+const IncidentImage: React.FC<Props> = ({
+  imageUrl,
+  isLoading,
   afterImages = [],
-  adminStatus 
+  adminStatus,
 }) => {
   const [showAfterImages, setShowAfterImages] = useState(false);
 
@@ -27,7 +27,7 @@ const IncidentImage: React.FC<Props> = ({
   );
 
   const renderToggleButton = () => {
-    if (adminStatus === "COLLECT_COMPLETED" && afterImages.length > 0) {
+    if (adminStatus === 'COLLECT_COMPLETED' && afterImages.length > 0) {
       return (
         <button
           onClick={() => setShowAfterImages(!showAfterImages)}
@@ -47,7 +47,7 @@ const IncidentImage: React.FC<Props> = ({
   return (
     <div className="relative overflow-hidden rounded-lg">
       {renderToggleButton()}
-      
+
       {showAfterImages ? (
         afterImages.length > 0 ? (
           <div className="grid gap-4">
