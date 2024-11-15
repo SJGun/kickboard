@@ -50,12 +50,12 @@ const NoticePage: React.FC = () => {
             {notices.map((notice) => (
               <div
                 key={notice.id}
-                className="rounded-lg border-2 border-black bg-white p-4 sm:p-6 shadow-md transition-shadow hover:shadow-lg"
+                className="rounded-lg border-2 border-black bg-white p-4 shadow-md transition-shadow hover:shadow-lg sm:p-6"
               >
-                <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-800 sm:text-2xl">
                   {notice.title}
                 </h2>
-                <p className="mt-2 sm:mt-4 text-sm sm:text-base text-gray-700 whitespace-pre-line">
+                <p className="mt-2 whitespace-pre-line text-sm text-gray-700 sm:mt-4 sm:text-base">
                   {notice.content}
                 </p>
               </div>
