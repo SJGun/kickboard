@@ -445,7 +445,7 @@ const CollectList = () => {
       </div>
 
       {/* 수거 리스트 */}
-      <div className="m-5 mb-5 max-h-[500px] overflow-y-auto">
+      <div className="m-5 mb-5 max-h-[300px] overflow-y-auto">
         {addressList.map((item) => (
           <div
             className="mb-5 flex cursor-pointer items-center justify-between rounded-lg border border-black bg-[rgba(220,220,220,0.38)] p-2 text-xs"
