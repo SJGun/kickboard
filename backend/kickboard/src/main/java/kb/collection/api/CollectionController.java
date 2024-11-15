@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Tag(name = "Collection", description = "수거 요청 API")
 @Controller
-@RequestMapping("/kickboard/collections")
+@RequestMapping("/api/v1/kickboard/collections")
 @RequiredArgsConstructor
 public class CollectionController {
     private final CollectionRequestService collectionRequestService;
@@ -61,7 +61,6 @@ public class CollectionController {
         return ResponseEntity.ok(ApiResponse.success(
                 collectionRequestService.getRequest(requestId)));
     }
-
 
 
     @Operation(summary = "담당 구역 전체 수거 요청 조회")
