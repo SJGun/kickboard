@@ -54,7 +54,7 @@ const CollectList = () => {
 
   // =========================================================================================
 
-  const accessToken = useCollectorAuthStore((state) => state.accessToken);
+  // const accessToken = useCollectorAuthStore((state) => state.accessToken);
   const area = useCollectorAuthStore((state) => state.area);
 
   // 영어로 온 area 데이터를 한국어로 바꿔
@@ -105,6 +105,7 @@ const CollectList = () => {
 
   // 페이지 로드될때 collect list 요청보내서 가져오기
   useEffect(() => {
+    console.log(map);
     const fetchCollectListData = async () => {
       try {
         const response = await fetchCollectLists();

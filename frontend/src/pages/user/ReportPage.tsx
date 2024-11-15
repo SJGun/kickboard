@@ -85,7 +85,7 @@ const ReportPage: React.FC = () => {
           },
         }
       );
-      console.log(response.data);
+      response;
     } catch (error) {
       console.error('Error submitting report:', error);
     }
@@ -94,11 +94,11 @@ const ReportPage: React.FC = () => {
     navigate('/list');
   };
 
-  const isButtonDisabled = false;
-  // !Boolean(companyId) ||
-  // !Boolean(serialNumber) ||
-  // !Boolean(address) ||
-  // !Boolean(photos.firstPhoto);
+  const isButtonDisabled =
+    !Boolean(companyId) ||
+    !Boolean(serialNumber) ||
+    !Boolean(address) ||
+    !Boolean(image1);
 
   return (
     <>

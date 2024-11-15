@@ -4,7 +4,7 @@ import {
   Routes,
   Navigate,
 } from 'react-router-dom';
-import './index.css'; 
+import './index.css';
 // 핸드폰 사이즈 조절
 import PhoneScreenContainer from './components/phoneScreenContainer';
 
@@ -34,6 +34,7 @@ import AccountSignUp from './pages/admin/AccountSignUp';
 import CompanyIdMagage from './pages/admin/CompanyIdManage';
 import AdminIdManage from './pages/admin/AdminIdManage';
 import ReportPage1 from './pages/user/ReportPage1';
+import ReportMapPage1 from './pages/user/ReportMapPage1';
 import ProtectedRouteAdmin from './pages/admin/components/ProtectedRoute';
 
 function App() {
@@ -132,6 +133,18 @@ function App() {
               <Header />
               <MainContainer1>
                 <ReportMapPage />
+              </MainContainer1>
+            </PhoneScreenContainer>
+          }
+        />
+
+        <Route
+          path="/list/:id/map"
+          element={
+            <PhoneScreenContainer>
+              <Header />
+              <MainContainer1>
+                <ReportMapPage1 />
               </MainContainer1>
             </PhoneScreenContainer>
           }

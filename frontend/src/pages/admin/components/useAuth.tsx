@@ -86,7 +86,7 @@
 //   const login = async (credentials: LoginCredentials) => {
 //     setLoading(true);
 //     setError(null);
-    
+
 //     try {
 //       const response = await fetch('/api/auth/login', {
 //         method: 'POST',
@@ -103,7 +103,7 @@
 //       }
 
 //       const { accessToken, role, area } = data.data;
-      
+
 //       const userData: User = {
 //         role,
 //         ...(area && { area })
@@ -111,7 +111,7 @@
 
 //       localStorage.setItem(TOKEN_KEY, accessToken);
 //       localStorage.setItem(USER_KEY, JSON.stringify(userData));
-      
+
 //       setAccessToken(accessToken);
 //       setUser(userData);
 //     } catch (err) {
