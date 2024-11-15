@@ -30,11 +30,7 @@ const CollectCompleteModal = ({
 
   const handleConfirm = () => {
     if (completionImages && processType !== 'PICK') {
-<<<<<<< HEAD
-      onSubmit(completionImages, processType); // Pass File directly
-=======
       onSubmit(processType); // Pass File directly
->>>>>>> develop
       onClose();
     } else {
       setShowWarning(true);

@@ -35,10 +35,7 @@ import CompanyIdMagage from './pages/admin/CompanyIdManage';
 import AdminIdManage from './pages/admin/AdminIdManage';
 import ReportPage1 from './pages/user/ReportPage1';
 import ReportMapPage1 from './pages/user/ReportMapPage1';
-<<<<<<< HEAD
-=======
 // import ProtectedRouteAdmin from './pages/admin/components/ProtectedRoute';
->>>>>>> develop
 
 function App() {
   const isLoggedIn = useCollectorAuthStore((state) => state.isLoggedIn);
@@ -121,15 +118,9 @@ function App() {
           element={
             <PhoneScreenContainer>
               <Header />
-<<<<<<< HEAD
-              <MainContainer>
-                <NoticePage />
-              </MainContainer>
-=======
               <MainContainer1>
                 <NoticePage />
               </MainContainer1>
->>>>>>> develop
               <Navbar />
             </PhoneScreenContainer>
           }
