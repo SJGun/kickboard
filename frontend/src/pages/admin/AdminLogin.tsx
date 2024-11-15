@@ -1,27 +1,15 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
-// import NavBar from './AdminNavBar';
-=======
 import { useNavigate } from 'react-router-dom';
->>>>>>> frontend
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-<<<<<<< HEAD
-=======
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
->>>>>>> frontend
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
-    // 로그인 처리 로직 추가
-    console.log('Email:', email);
-    console.log('Password:', password);
-=======
     setIsLoading(true);
 
     const loginData = { email, password };
@@ -58,7 +46,6 @@ const AdminLogin: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
->>>>>>> frontend
   };
 
   return (
@@ -68,9 +55,6 @@ const AdminLogin: React.FC = () => {
           onSubmit={handleLogin}
           className="w-96 rounded bg-white p-6 shadow-md"
         >
-<<<<<<< HEAD
-          <h2 className="mb-6 text-center text-2xl font-bold">로그인</h2>
-=======
           <h2 className="mb-6 text-center text-2xl font-bold">관리자 페이지</h2>
 
           {error && (
@@ -79,7 +63,6 @@ const AdminLogin: React.FC = () => {
             </div>
           )}
 
->>>>>>> frontend
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -96,6 +79,7 @@ const AdminLogin: React.FC = () => {
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
+
           <div className="mb-6">
             <label
               htmlFor="password"
@@ -112,6 +96,7 @@ const AdminLogin: React.FC = () => {
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
+
           <button
             type="submit"
             className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"

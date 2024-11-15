@@ -1,15 +1,11 @@
 import React from 'react';
-import NavBar from './AdminNavBar';
+import { Link } from 'react-router-dom';
+import NavBar from './components/AdminNavBar';
 
 const AccountManage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* NavBar Component */}
+    <div className="flex min-h-screen flex-col bg-gray-100">
       <NavBar />
-<<<<<<< HEAD
-      <p>계정관리</p>
-      {/* Main Content */}
-=======
       <div className="flex flex-grow flex-col items-center justify-center p-6">
         {/* <h1 className="mb-12 text-3xl font-bold text-gray-800">계정 관리</h1> */}
         <div className="w-full max-w-lg rounded-lg bg-white p-8 pt-10 shadow-md">
@@ -62,7 +58,6 @@ const AccountManage: React.FC = () => {
           </Link>
         </div>
       </div>
->>>>>>> frontend
     </div>
   );
 };
