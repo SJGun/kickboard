@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useEffect, useState } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import { Link, useParams } from 'react-router-dom';

@@ -1,39 +1,33 @@
+// 킥보드 브레이커
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import NavBar from './components/AdminNavBar';
+import NavBar from './components/AdminNavBar'; // AdminNavBar 컴포넌트 임포트
 
 interface Notice {
-  userId: number;
+  id: number;
   title: string;
   content: string;
-  noticeId: number;
 }
 
 const AdminInfoPage: React.FC = () => {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null); // 선택된 공지사항 상태 추가
   const navigate = useNavigate();
 
+  // API에서 공지사항을 가져오는 함수
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const url = `${import.meta.env.VITE_URL}/kickboard/admin/notice/notices`;
-        const response = await fetch(url);
-        const data = await response.json();
-
-        console.log(data); // 응답 데이터 로그 출력
-
-        if (data.success) {
-          setNotices(data.data); // data.data가 공지사항 배열입니다.
-        } else {
-          setError(data.error?.message || '알 수 없는 오류');
-        }
-      } catch (err) {
-        setError(
-          '데이터를 가져오는 중에 문제가 발생했습니다. 다시 시도해주세요.'
+        const response = await axios.get(
+          `${import.meta.env.VITE_URL}/kickboard/admin/notice/notices`
         );
-        console.error('API 요청 에러:', err);
+        if (response.data.success) {
+          setNotices(response.data.data.map((item: any) => item.data));
+        }
+      } catch (error) {
+        console.error('Error fetching notices:', error);
       } finally {
         setLoading(false);
       }
@@ -42,25 +36,35 @@ const AdminInfoPage: React.FC = () => {
     fetchNotices();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <span className="text-lg text-gray-500">로딩 중...</span>
+      </div>
+    );
+  }
+
   const handleWriteNotice = () => {
     console.log('글쓰기 버튼 클릭');
     navigate('/infowrite');
   };
 
-  // const handleViewNotice = (noticeId: number) => {
-  //   console.log(`내용보기 버튼 클릭: 공지사항 ID ${noticeId}`);
-  // };
+  // 공지사항 클릭 시 모달 열기
+  const handleRowClick = (notice: Notice) => {
+    setSelectedNotice(notice); // 선택된 공지사항을 모달에 전달
+  };
 
-  // const handleEditNotice = (noticeId: number) => {
-  //   console.log(`수정하기 버튼 클릭: 공지사항 ID ${noticeId}`);
-  //   navigate('/infoedit');
-  // };
+  // 모달 닫기
+  const handleClosePopup = () => {
+    setSelectedNotice(null); // 선택된 공지사항을 null로 설정하여 모달 닫기
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       <NavBar />
-      <div className="mx-auto max-w-xl flex-1 p-4 sm:p-6 md:max-w-2xl md:p-8 lg:max-w-4xl lg:p-10 xl:max-w-5xl">
-        <h2 className="mb-6 text-center text-2xl font-bold">공지사항</h2>
+
+      <div className="ml-72 mr-72 mt-16">
+        <h1 className="text-center text-2xl font-bold">공지사항</h1>
         <div className="mb-4 flex justify-end">
           <button
             onClick={handleWriteNotice}
@@ -69,39 +73,62 @@ const AdminInfoPage: React.FC = () => {
             글쓰기
           </button>
         </div>
-        <div className="rounded bg-white p-4 shadow-md">
-          {loading ? (
-            <p>로딩 중...</p>
-          ) : error ? (
-            <p className="text-red-600">{error}</p>
-          ) : notices.length === 0 ? (
-            <p>등록된 공지사항이 없습니다.</p>
-          ) : (
-            <ul>
-              {notices.map((notice) => (
-                <li key={notice.noticeId} className="mb-4 border-b p-4">
-                  <h3 className="text-lg font-semibold">{notice.title}</h3>
-                  <p className="text-gray-600">{notice.content}</p>
-                  <div className="mt-2 flex justify-end space-x-2">
-                    {/* <button
-                      onClick={() => handleViewNotice(notice.noticeId)}
-                      className="rounded bg-blue-600 px-2 py-1 text-white hover:bg-blue-700"
-                    >
-                      내용보기
-                    </button> */}
-                    {/* <button
-                      onClick={() => handleEditNotice(notice.noticeId)}
-                      className="rounded bg-yellow-600 px-2 py-1 text-white hover:bg-yellow-700"
-                    >
-                      수정하기
-                    </button> */}
-                  </div>
-                </li>
+
+        {notices.length === 0 ? (
+          <div className="text-center text-gray-500">
+            등록된 공지사항이 없습니다.
+          </div>
+        ) : (
+          <table className="min-w-full table-auto border-collapse bg-white">
+            <thead className="bg-gray-700">
+              <tr>
+                <th className="w-3/12 border-b px-4 py-2 text-center text-white">
+                  번호
+                </th>
+                <th className="w-9/12 border-b px-4 py-2 text-center text-white">
+                  제목
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {notices.map((notice, index) => (
+                <tr
+                  key={notice.id}
+                  className="cursor-pointer border-b hover:bg-gray-100"
+                  onClick={() => handleRowClick(notice)} // 공지사항 클릭 시 모달 열기
+                >
+                  <td className="px-4 py-2 text-center text-gray-800">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-2 text-center text-gray-800">
+                    {notice.title}
+                  </td>
+                </tr>
               ))}
-            </ul>
-          )}
-        </div>
+            </tbody>
+          </table>
+        )}
       </div>
+
+      {/* Modal (Popup) for displaying the title and content */}
+      {selectedNotice && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="h-auto max-h-[80%] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6">
+            <h2 className="mb-4 text-xl font-bold">{selectedNotice.title}</h2>
+            <p className="whitespace-pre-wrap break-words text-gray-800">
+              {selectedNotice.content}
+            </p>
+            <div className="mt-4 flex justify-center">
+              <button
+                className="rounded-lg bg-red-500 px-6 py-2 text-white transition-all hover:bg-red-600"
+                onClick={handleClosePopup} // 모달 닫기
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

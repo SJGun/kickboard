@@ -5,7 +5,7 @@ import { CameraIcon } from '@heroicons/react/24/solid';
 
 export interface CollectCompleteModalProps {
   onClose: () => void;
-  onSubmit: (completionImages: File | null, processType: string) => void; // Update to File | null
+  onSubmit: (processType: string) => void;
   address?: string | null;
   category?: string | null;
 }
@@ -30,7 +30,11 @@ const CollectCompleteModal = ({
 
   const handleConfirm = () => {
     if (completionImages && processType !== 'PICK') {
+<<<<<<< HEAD
       onSubmit(completionImages, processType); // Pass File directly
+=======
+      onSubmit(processType); // Pass File directly
+>>>>>>> develop
       onClose();
     } else {
       setShowWarning(true);

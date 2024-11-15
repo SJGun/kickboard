@@ -22,7 +22,11 @@ interface ReportData {
 }
 
 interface ListProps {
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
   response: ReportData[]; // response의 타입을 실제 데이터에 맞게 정의해주세요
+=======
+  response: ReportData[];
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
 }
 
 const ListMap: React.FC<ListProps> = ({ response }) => {
@@ -30,6 +34,7 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
   const mapRef = useRef<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   const [kakaoLoaded, setKakaoLoaded] = useState(false);
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
   map;
   kakaoLoaded;
   // 카카오맵이 로딩됐는지 여부 확인
@@ -37,6 +42,12 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
   const KakaoMapApiKey = import.meta.env.VITE_KAKAOMAP_API_KEY;
 
   // 지도 띄우기 위해 document에 script 추가
+=======
+
+  const KakaoMapApiKey = import.meta.env.VITE_KAKAOMAP_API_KEY;
+
+  // 카카오맵 초기화 코드는 동일...
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KakaoMapApiKey}&autoload=false&libraries=services`;
@@ -53,7 +64,11 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
         const initializedMap = new window.kakao.maps.Map(container, options);
         setMap(initializedMap);
         mapRef.current = initializedMap;
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
         setKakaoLoaded(true); // 로딩 끝났으면 로딩상태 true로 바꿔
+=======
+        setKakaoLoaded(true);
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
       });
     };
   }, []);
@@ -62,6 +77,7 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
   useEffect(() => {
     if (!kakaoLoaded || !map || !response) return;
 
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
     // 기존 마커들 제거
     markers.forEach((marker) => marker.setMap(null));
 
@@ -69,6 +85,10 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
     const newMarkers: any[] = [];
 
     // 지도 범위 재설정을 위한 bounds 객체
+=======
+    markers.forEach((marker) => marker.setMap(null));
+    const newMarkers: any[] = [];
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
     const bounds = new window.kakao.maps.LatLngBounds();
 
     response.forEach((item) => {
@@ -77,13 +97,46 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
         item.longitude
       );
 
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
+=======
+      // 상태에 따른 마커 이미지 설정
+      const markerSize = new window.kakao.maps.Size(24, 35);
+      const markerImage = new window.kakao.maps.MarkerImage(
+        item.status === 'REPORT_COMPLETED'
+          ? // 완료된 신고 마커 (초록색)
+            'data:image/svg+xml;charset=utf-8,' +
+            encodeURIComponent(`
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="35" viewBox="0 0 24 35">
+                <path fill="#15803d" d="M12 0C5.4 0 0 5.4 0 12c0 7.5 12 23 12 23s12-15.5 12-23c0-6.6-5.4-12-12-12z"/>
+                <circle fill="#ffffff" cx="12" cy="12" r="6"/>
+              </svg>
+            `)
+          : // 처리 중인 신고 마커 (노란색)
+            'data:image/svg+xml;charset=utf-8,' +
+            encodeURIComponent(`
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="35" viewBox="0 0 24 35">
+                <path fill="#a16207" d="M12 0C5.4 0 0 5.4 0 12c0 7.5 12 23 12 23s12-15.5 12-23c0-6.6-5.4-12-12-12z"/>
+                <circle fill="#ffffff" cx="12" cy="12" r="6"/>
+              </svg>
+            `),
+        markerSize
+      );
+
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
       // 마커 생성
       const marker = new window.kakao.maps.Marker({
         position: position,
         map: map,
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
       });
 
       // 인포윈도우 생성
+=======
+        image: markerImage,
+      });
+
+      // 나머지 인포윈도우 코드는 동일...
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
       const getStatusStyle = (status: string): string => {
         if (status === 'REPORT_COMPLETED') {
           return `
@@ -113,9 +166,15 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
         return status === 'REPORT_COMPLETED' ? '처리 완료' : '처리 중';
       };
 
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
       // 인포윈도우 생성
       const infowindow = new window.kakao.maps.InfoWindow({
         content: `
+=======
+      const infowindow = new window.kakao.maps.InfoWindow({
+        content: `
+        <a href=/list/${item.reportId}>
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
           <div style="
             padding: 1rem;
             width: 250px;
@@ -192,17 +251,26 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
               </div>
             </div>
           </div>
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
         `,
       });
 
       // 마커 클릭 이벤트
       window.kakao.maps.event.addListener(marker, 'click', function () {
         // 다른 인포윈도우 닫기
+=======
+        </a>
+        `,
+      });
+
+      window.kakao.maps.event.addListener(marker, 'click', function () {
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
         newMarkers.forEach((m) => m.infowindow.close());
         infowindow.open(map, marker);
       });
 
       window.kakao.maps.event.addListener(map, 'click', function () {
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
         // 모든 인포윈도우 닫기
         newMarkers.forEach((m) => m.infowindow.close());
       });
@@ -218,12 +286,26 @@ const ListMap: React.FC<ListProps> = ({ response }) => {
     map.setBounds(bounds);
 
     // 마커 상태 업데이트
+=======
+        newMarkers.forEach((m) => m.infowindow.close());
+      });
+
+      newMarkers.push({ marker, infowindow });
+      bounds.extend(position);
+    });
+
+    map.setBounds(bounds);
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
     setMarkers(newMarkers);
   }, [kakaoLoaded, map, response]);
 
   return (
     <>
+<<<<<<< HEAD:frontend/src/components/Report/ListMap.tsx
       <div id="map" className="mb-5 h-[500px] w-full"></div>
+=======
+      <div id="map" className="h-[calc(70vh)] w-full overflow-hidden"></div>
+>>>>>>> develop:frontend/src/components/report/ListMap.tsx
     </>
   );
 };
