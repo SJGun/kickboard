@@ -82,19 +82,27 @@ const AdminInfoPage: React.FC = () => {
           <table className="min-w-full table-auto border-collapse bg-white">
             <thead className="bg-gray-700">
               <tr>
-                <th className="px-4 py-2 border-b text-center text-white w-3/12">번호</th>
-                <th className="px-4 py-2 border-b text-center text-white w-9/12">제목</th>
+                <th className="w-3/12 border-b px-4 py-2 text-center text-white">
+                  번호
+                </th>
+                <th className="w-9/12 border-b px-4 py-2 text-center text-white">
+                  제목
+                </th>
               </tr>
             </thead>
             <tbody>
               {notices.map((notice, index) => (
                 <tr
                   key={notice.id}
-                  className="border-b hover:bg-gray-100 cursor-pointer"
+                  className="cursor-pointer border-b hover:bg-gray-100"
                   onClick={() => handleRowClick(notice)} // 공지사항 클릭 시 모달 열기
                 >
-                  <td className="px-4 py-2 text-center text-gray-800">{index + 1}</td>
-                  <td className="px-4 py-2 text-center text-gray-800">{notice.title}</td>
+                  <td className="px-4 py-2 text-center text-gray-800">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-2 text-center text-gray-800">
+                    {notice.title}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -104,13 +112,15 @@ const AdminInfoPage: React.FC = () => {
 
       {/* Modal (Popup) for displaying the title and content */}
       {selectedNotice && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg max-w-lg w-full h-auto max-h-[80%] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">{selectedNotice.title}</h2>
-            <p className="text-gray-800 whitespace-pre-wrap break-words">{selectedNotice.content}</p>
-            <div className="flex justify-center mt-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="h-auto max-h-[80%] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6">
+            <h2 className="mb-4 text-xl font-bold">{selectedNotice.title}</h2>
+            <p className="whitespace-pre-wrap break-words text-gray-800">
+              {selectedNotice.content}
+            </p>
+            <div className="mt-4 flex justify-center">
               <button
-                className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-all"
+                className="rounded-lg bg-red-500 px-6 py-2 text-white transition-all hover:bg-red-600"
                 onClick={handleClosePopup} // 모달 닫기
               >
                 닫기

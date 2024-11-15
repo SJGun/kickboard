@@ -5,7 +5,7 @@ import { Menu, MenuButton } from '@headlessui/react';
 interface props {
   category: string;
 }
-// 
+
 const ViolationTypeSelector1: React.FC<props> = ({ category }) => {
   return (
     <>
