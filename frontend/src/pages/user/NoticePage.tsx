@@ -88,9 +88,13 @@ const NoticePage: React.FC = () => {
       {/* Modal (Popup) for displaying the title and content */}
       {selectedNotice && (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 z-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-1/5"> {/* 너비를 1/3에서 1/4로 변경 */}
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">{selectedNotice.title}</h2>
-      <p className="text-gray-700 mb-4 whitespace-pre-line">{selectedNotice.content}</p>
+    <div className="bg-white p-6 rounded-lg shadow-lg w-1/4 max-w-full"> {/* Width set to 1/4 and max-width set to full */}
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4 break-words"> {/* Added break-words to allow title wrapping */}
+        {selectedNotice.title}
+      </h2>
+      <p className="text-gray-700 mb-4 whitespace-pre-line break-words"> {/* Ensure text wraps and breaks long words */}
+        {selectedNotice.content}
+      </p>
       <div className="flex justify-center">
         <button
           className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-all"
@@ -102,6 +106,8 @@ const NoticePage: React.FC = () => {
     </div>
   </div>
 )}
+
+
     </div>
   );
 };
