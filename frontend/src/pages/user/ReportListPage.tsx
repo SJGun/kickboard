@@ -25,7 +25,7 @@ const ReportListPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          import.meta.env.VITE_URL + '/kickboard/reports?area'
+          import.meta.env.VITE_URL + '/kickboard/reports?area='
         );
         if (response) {
           setResponseData(response.data.data);
