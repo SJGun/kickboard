@@ -5,8 +5,6 @@ interface PhotoProps {
 }
 
 const Photo1: React.FC<PhotoProps> = ({ images }) => {
-  console.log(images[0]);
-
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       <div className="flex items-center justify-center gap-4">
