@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 // src/services/api.tsx
 import axios from 'axios';
 import { useCollectorAuthStore } from '../store/CollectorAuthStore';
@@ -30,7 +31,7 @@ api.interceptors.request.use(
 // 수거업체 로그인
 export const collectorLogin = async (email: string, password: string) => {
   try {
-    const response = await api.post('/kickboard/collector/login', {
+    const response = await api.post('/users/login', {
       email,
       password,
     });
@@ -44,7 +45,8 @@ export const collectorLogin = async (email: string, password: string) => {
 // 수거업체 수거 리스트 받기위해 백엔드로 요청
 export const fetchCollectLists = async () => {
   try {
-    const response = await api.get(`/kickboard/collector/reports`);
+    const response = await api.get(`/kickboard/collections`);
+    console.log('수거 리스트 response: ', response);
     return response;
   } catch (error) {
     console.error('수거 리스트 받지 못함: ', error);
@@ -59,41 +61,20 @@ export const fetchCollectLists = async () => {
 // status 종류 : 수거접수(COLLECT_RECEIVED), 수거중(COLLECT_PROGRESS), 수거완료(COLLECT_COMPLETED)
 // processType 처리 종류 : 없음(NOT_EXIST), 이동(MOVE), 견인(TOW), 세움(PARK)
 export const updateReportStatus = async (
-  reportId: string,
-  status: 'COLLECT_RECEIVED' | 'COLLECT_PROGRESS' | 'COLLECT_COMPLETED',
-  completionImages?: File, // Update to File type
-  processType?: string
+  requestId: string,
+  collectionStatus:
+    | 'COLLECT_RECEIVED'
+    | 'COLLECT_PROGRESS'
+    | 'COLLECT_COMPLETED',
+  processType: string | ''
 ) => {
   try {
-    // Create FormData and append required fields
-    const formData = new FormData();
-    formData.append('status', status);
-
-    // Append image only if provided
-    if (completionImages) {
-      formData.append('completionImages', completionImages); // Ensure it’s appended as a file
-    }
-
-    // Append process type if provided
-    if (processType) {
-      formData.append('processType', processType);
-    }
-
-    // Print FormData contents for debugging
-    console.log('FormData contents:');
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    // Send the request with FormData and appropriate headers
     const response = await api.patch(
-      `/kickboard/collector/reports/${reportId}`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data', // Set Content-Type explicitly
-        },
-      }
+      `/kickboard/collections/${requestId}?collectionStatus=${collectionStatus}&processStatus=${processType}`
+      // {
+      //     collectionStatus,
+      //     processStatus: processType || null,
+      // }
     );
     return response.data;
   } catch (error) {

@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import RightArrowIcon from '../../assets/RightArrowIcon';
 import { useNavigate } from 'react-router-dom';
 import { useStateStore } from '../../store/StateStore';

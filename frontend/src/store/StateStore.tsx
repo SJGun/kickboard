@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import { create } from 'zustand';
 
 interface State {
@@ -15,6 +16,7 @@ interface State {
 
   isReportMap: boolean;
   setIsReportMap: Function;
+  setIsReportMap1: Function;
 }
 
 export const useStateStore = create<State>((set) => ({
@@ -35,4 +37,5 @@ export const useStateStore = create<State>((set) => ({
 
   isReportMap: false,
   setIsReportMap: () => set((state) => ({ isReportMap: !state.isReportMap })),
+  setIsReportMap1: () => set(() => ({ isReportMap: false })),
 }));

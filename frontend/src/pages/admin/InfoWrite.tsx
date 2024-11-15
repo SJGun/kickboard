@@ -1,3 +1,4 @@
+// 킥보드 브레이커
 import React, { useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import NavBar from './components/AdminNavBar';
@@ -45,7 +46,8 @@ const InfoWrite: React.FC = () => {
 
       if (data.success) {
         setResponseMessage(
-          `공지사항이 등록되었습니다. ID: ${data.data.noticeId}`
+          `공지사항이 등록되었습니다.`
+          // ID: ${data.data.noticeId}
         );
         setErrorMessage('');
         setTitle('');
