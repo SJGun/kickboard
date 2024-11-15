@@ -1,62 +1,55 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // v6에서는 useNavigate 사용
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // 로그인 오류 메시지를 저장할 상태 추가
-  const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    // 로그인 데이터
-    const loginData = {
-      email,
-      password,
-    };
+    const loginData = { email, password };
 
     try {
-      // VITE_URL 환경변수를 사용하여 요청 URL 생성
-      const response = await fetch(
-        `${import.meta.env.VITE_URL}/kickboard/admin/login`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(loginData),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_URL}/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData),
+      });
 
       const data = await response.json();
 
-      if (response.ok) {
-        // 로그인 성공 시
-        if (data.success) {
-          // accessToken을 로컬 스토리지에 저장
-          localStorage.setItem('accessToken', data.data.accessToken);
+      if (response.ok && data.success) {
+        localStorage.setItem('accessToken', data.data.accessToken);
+        localStorage.setItem('role', data.data.role);
+        localStorage.setItem('area', data.data.area);
 
-          // 관리자 대시보드 페이지로 이동
-          navigate('/adminMainPage'); // 로그인 성공 후 '/adminMainPage'로 이동
-        } else {
-          // 로그인 실패 시 오류 메시지 처리
-          setError(data.error?.message || '로그인 실패');
-        }
+        // 로그인 성공 데이터 콘솔에 출력
+        console.log('로그인 성공 데이터:', data);
+
+        navigate('/adminMainPage');
       } else {
-        // 응답 상태가 OK가 아닐 경우
-        setError(data.error?.message || '서버 오류');
+        setError(data.error?.message || '알 수 없는 오류 발생');
       }
-    } catch (error) {
-      setError('네트워크 오류 발생');
+    } catch (error: any) {
+      if (error instanceof TypeError) {
+        setError('네트워크 오류 발생');
+        console.log('네트워크 오류 발생:', error);
+      } else {
+        setError('알 수 없는 오류 발생');
+      }
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
-      {/* NavBar Component */}
-      {/* <NavBar /> */}
       <div className="flex flex-1 items-center justify-center">
         <form
           onSubmit={handleLogin}
@@ -64,7 +57,6 @@ const AdminLogin: React.FC = () => {
         >
           <h2 className="mb-6 text-center text-2xl font-bold">관리자 페이지</h2>
 
-          {/* 오류 메시지 출력 */}
           {error && (
             <div className="mb-4 text-center text-red-500">
               <p>{error}</p>
@@ -108,8 +100,9 @@ const AdminLogin: React.FC = () => {
           <button
             type="submit"
             className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+            disabled={isLoading}
           >
-            로그인
+            {isLoading ? '로그인 중...' : '로그인'}
           </button>
         </form>
       </div>

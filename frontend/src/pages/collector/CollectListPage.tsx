@@ -125,6 +125,7 @@ const CollectList = () => {
 
   // 페이지 로드될때 collect list 요청보내서 가져오기
   useEffect(() => {
+    console.log(map);
     const fetchCollectListData = async () => {
       try {
         const response = await fetchCollectLists();

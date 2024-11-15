@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useStateStore } from '../../store/StateStore';
 import { useReportStore } from '../../store/ReportInfoStore';
 import { useNavigate } from 'react-router-dom';
+import MyLocation from '../../assets/navbar-icons/my_location.svg';
 
 declare global {
   interface Window {
@@ -15,12 +16,11 @@ const ReportMapPage: React.FC = () => {
   const [kakaoLoaded, setKakaoLoaded] = useState(false);
   const [centerInfo, setCenterInfo] = useState<string[]>([]); // 중심 좌표 정보를 위한 상태
   const [address1, setAddress1] = useState<string>('');
-  const [latitude1, setLatitude1] = useState<number>(0);
-  const [longitude1, setLongitude1] = useState<number>(0);
+  const [latitude1, setLatitude1] = useState<number>(35.2059392);
+  const [longitude1, setLongitude1] = useState<number>(126.8154368);
   map;
   kakaoLoaded;
   centerInfo;
-  longitude1;
 
   const KakaoMapApiKey = import.meta.env.VITE_KAKAOMAP_API_KEY;
   const { title, setTitle } = useStateStore();
@@ -31,7 +31,7 @@ const ReportMapPage: React.FC = () => {
   const handleBackClick = () => {
     setAddress(address1);
     setLatitude(latitude1);
-    setLongitude(longitude);
+    setLongitude(longitude1);
     navigate(-1); // -1은 이전 페이지로 이동
   };
 
@@ -40,12 +40,11 @@ const ReportMapPage: React.FC = () => {
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KakaoMapApiKey}&autoload=false&libraries=services`;
     script.async = true;
     document.head.appendChild(script);
-
     script.onload = () => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
         const options = {
-          center: new window.kakao.maps.LatLng(latitude, longitude),
+          center: new window.kakao.maps.LatLng(latitude1, longitude1),
           level: 3,
         };
         const initializedMap = new window.kakao.maps.Map(container, options);
@@ -91,18 +90,42 @@ const ReportMapPage: React.FC = () => {
         );
       });
     };
-  }, []);
+  }, [latitude, longitude]);
 
   useEffect(() => {
     setTitle('위치 확인');
   }, [title, setTitle]);
 
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+      console.log(latitude, longitude);
+      window.location.reload();
+    } else {
+      console.log('이 브라우저는 Geolocation을 지원하지 않습니다.');
+    }
+  };
   return (
     <>
       <div className="my-border flex h-12 w-full items-center justify-center">
         {address1}
       </div>
-      <div id="map" className="h-[calc(100vh-140px)] w-full"></div>
+      <div id="map" className="h-[calc(100vh-140px)] w-full">
+        <div
+          onClick={getLocation}
+          className="absolute bottom-4 right-4 z-10 cursor-pointer rounded-full bg-white p-2"
+        >
+          <MyLocation />
+        </div>
+      </div>
       <button onClick={handleBackClick} className="my-border h-12 w-full">
         확인
       </button>

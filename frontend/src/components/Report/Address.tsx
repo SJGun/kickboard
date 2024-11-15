@@ -19,7 +19,6 @@ const Address: React.FC = () => {
           disabled
           rows={2} // 원하는 초기 높이에 맞춰 조정할 수 있습니다.
         />
-
         <Link
           to="/map"
           type="button"

@@ -22,8 +22,6 @@ const ReportPage: React.FC = () => {
     description,
     setCompanyId,
     setSerialNumber,
-    setLatitude,
-    setLongitude,
     reset,
   } = useReportStore();
 
@@ -41,20 +39,6 @@ const ReportPage: React.FC = () => {
 
     if (!Boolean(serialNumber)) {
       setSerialNumber(searchParams.get('serialNumber') ?? '');
-    }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    } else {
-      console.log('이 브라우저는 Geolocation을 지원하지 않습니다.');
     }
   }, []);
 
@@ -101,7 +85,7 @@ const ReportPage: React.FC = () => {
           },
         }
       );
-      console.log(response.data);
+      response;
     } catch (error) {
       console.error('Error submitting report:', error);
     }
@@ -110,11 +94,11 @@ const ReportPage: React.FC = () => {
     navigate('/list');
   };
 
-  const isButtonDisabled = false;
-  // !Boolean(companyId) ||
-  // !Boolean(serialNumber) ||
-  // !Boolean(address) ||
-  // !Boolean(photos.firstPhoto);
+  const isButtonDisabled =
+    !Boolean(companyId) ||
+    !Boolean(serialNumber) ||
+    !Boolean(address) ||
+    !Boolean(image1);
 
   return (
     <>
