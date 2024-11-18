@@ -25,7 +25,7 @@
 
 | **채기훈** | **지예찬** | **정지영** | **곽재은** | **정소영** | **김희주** | **신재건** |
 | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/Hun425?v=4" height=150 width=150><br/> @Hun425](https://github.com/Hun425) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @박동민](https://github.com/trick0846) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @윤성준]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @김정환]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @박봉균]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @노명환]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @노명환]() |
+| [<img src="https://avatars.githubusercontent.com/Hun425?v=4" height=150 width=150><br/> @Hun425](https://github.com/Hun425) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @지예찬](https://github.com/trick0846) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @정지영]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @곽재은]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @정소영]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @김희주]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @신재건]() |
 
 
 </div>
