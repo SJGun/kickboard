@@ -227,18 +227,90 @@
 
 <br>
 
-## 7. 페이지별 기능 
+## 7. 서비스 페이지
 
-### [메인페이지]
+<details>
+<summary> 사용자 페이지 </summary>
+<div markdown="1">
 
-|예시 |
-|----------|
-||
-- 예시
+| 신고페이지 | 신고하기 |
+| --- |--- |
+|![메인페이지](exec/READMEIMG/u1.png) |![메인페이지](exec/READMEIMG/u3.png) | 
 
-<br>
+| 신고목록 | 신고 위치확인 |
+| --- |--- |
+|![메인페이지](exec/READMEIMG/u2.png) |![메인페이지](exec/READMEIMG/u4.png) | 
 
-<br>
+| 공지사항 | 공지사항 상세보기 |
+| --- |--- |
+|![메인페이지](exec/READMEIMG/u5.png) |![메인페이지](exec/READMEIMG/u6.png) | 
+
+
+</div>
+</details>
+
+<details>
+<summary> 수거업체 페이지 </summary>
+<div markdown="1">
+
+| 로그인 | 수거목록 |
+| --- |--- |
+|![메인페이지](exec/READMEIMG/c1.png) |![메인페이지](exec/READMEIMG/c2.png) | 
+
+| 길찾기 | 처리하기 |
+| --- |--- |
+|![메인페이지](exec/READMEIMG/c3.png) |![메인페이지](exec/READMEIMG/c4.png) | 
+
+| 처리 후 사진찍기 | 수거완료 |
+| --- |--- |
+|![메인페이지](exec/READMEIMG/c5.png) |![메인페이지](exec/READMEIMG/c6.png) | 
+
+</div>
+</details>
+
+<details>
+<summary> 관리자 페이지 </summary>
+<div markdown="1">
+
+
+| 관리자 로그인 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a1.png) | 
+
+| 관리자 신고현황 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a2.png) | 
+
+| 관리자 지도 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a3.png) | 
+
+| 계정관리 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a4.png) | 
+
+| 수거업체 계정관리 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a5.png) | 
+
+| 관리자 계정관리 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a6.png) | 
+
+| 공지사항 글쓰기 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a9.png) | 
+
+| 공지사항 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a7.png) | 
+
+| 공지사항 상세보기 | 
+| --- |
+|![메인페이지](exec/READMEIMG/a8.png) | 
+
+</div>
+</details>
 
 
 
@@ -417,6 +489,7 @@
 
 ## 10. 프로젝트 후기
 
+![메인페이지](./exec/READMEIMG/thank.jpg)
 
 | 이름 | 느낀점 |   
 | --- | --- |
@@ -429,5 +502,4 @@
 | 신재건 | [프런트]<br/> |  
 
 <br>
-
 
