@@ -125,6 +125,7 @@ public class ReportService {
             reports = reportRepository.findByLocation(location);
         }
 
+
         // Report 리스트를 ReportResponse 리스트로 변환하여 반환
         return reports.stream()
                 .map(ReportResponse::from)
