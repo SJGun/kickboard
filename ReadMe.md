@@ -86,7 +86,7 @@
 
 | **채기훈** | **지예찬** | **정지영** | **곽재은** | **정소영** | **김희주** | **신재건** |
 | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/Hun425?v=4" height=150 width=150><br/> @Hun425](https://github.com/Hun425) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @지예찬](https://github.com/trick0846) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @정지영]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @곽재은]() | [<img src="https://avatars.githubusercontent.com/lovelySo03?v=4" height=150 width=150><br/> @정소영](https://github.com/lovelySo03) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @김희주]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @신재건]() |
+| [<img src="https://avatars.githubusercontent.com/Hun425?v=4" height=150 width=150><br/> @Hun425](https://github.com/Hun425) | [<img src="https://avatars.githubusercontent.com/dev-yesam?v=4" height=150 width=150><br/> @dev-yesam](https://github.com/dev-yesam) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @정지영]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @곽재은]() | [<img src="https://avatars.githubusercontent.com/lovelySo03?v=4" height=150 width=150><br/> @정소영](https://github.com/lovelySo03) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @김희주]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @신재건]() |
 
 
 </div>
@@ -391,6 +391,7 @@
 #### 프로젝트 
 
 - 오류를 최소화한 안정적인 개발
+- 사진 등록 과정에서의 오류 수정
 
 </div>
 </details>
@@ -482,7 +483,8 @@
 
 #### 프로젝트 
 
-- 오류를 최소화한 안정적인 개발
+- CRUD 에서 오류 최소화
+- 데이터베이스 쿼리 최적화
 
 </div>
 </details>
@@ -568,7 +570,7 @@
 
 | 이름 | 느낀점 |   
 | --- | --- |
-| 지예찬 |[팀장, 백엔드] <br/>  | 
+| 지예찬 |[팀장, 백엔드] <br/> 팀장으로서 부족한 점을 많이 느꼈지만, 팀원들의 도움으로 프로젝트를 마무리할 수 있었던 거 같습니다. 특히 모바일 환경과 데스크탑 환경 모두에서 작동하는 어플리케이션이 좋았습니다. | 
 | 채기훈 | [백엔드]<br/>팀원들과의 협업 과정에서 의사소통의 중요성을 다시 한 번 깨달았습니다. Jira를 활용한 업무 분담, Notion을 통한 API 명세 공유 등 체계적인 프로젝트 관리 방법을 경험했습니다.<br/> 프로젝트 진행 중 기술 고도화를 위한 개인 공부를 통해 더 발전하는 계기가 되었습니다.| 
 | 정지영 | [백엔드, 인프라]<br/>| 
 | 정소영 | [풀스택]<br/> |
