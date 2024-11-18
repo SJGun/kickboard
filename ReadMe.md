@@ -152,9 +152,13 @@
 <div markdown="1">
  <br/>
 
-### 2. Notion 및 Swagger를 사용하여 API 명세서를 작성
-### 3. Gitlab branch를 사용하여 협업을 진행
-### 4. 코드 및 커밋 컨벤션을 지정해 코드 품질 관리와 의사소통에 집중
+| Jira |
+|---|
+| ![메인페이지](./exec/READMEIMG/git1.jpg) |
+| ![메인페이지](./exec/READMEIMG/git2.jpg) |
+| ![메인페이지](./exec/READMEIMG/git3.jpg) |
+| ![메인페이지](./exec/READMEIMG/git4.jpg) |
+| ![메인페이지](./exec/READMEIMG/git5.jpg) |
 
 </div>
 </details>
@@ -163,7 +167,7 @@
 <summary>Notion을 활용한 팀 활동 기록</summary>
 <div markdown="1">
  <br/>
- 
+
 | Notion|
 |---|
 | ![메인페이지](./exec/READMEIMG/notion.png) |
@@ -196,8 +200,7 @@
 
 <details> <summary> API 명세서 </summary>
 <div markdown="1">
-
- Swagger
+ <!-- Swagger -->
 
 ![Copy_of_킥보드브레이커__1](exec/READMEIMG/api.png)
 
@@ -227,8 +230,6 @@
 
 </div>
 </details>
-
-<br>
 
 ## 5. 역할 분담
 
