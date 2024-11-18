@@ -86,7 +86,7 @@
 
 | **채기훈** | **지예찬** | **정지영** | **곽재은** | **정소영** | **김희주** | **신재건** |
 | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [<img src="https://avatars.githubusercontent.com/Hun425?v=4" height=150 width=150><br/> @Hun425](https://github.com/Hun425) | [<img src="https://avatars.githubusercontent.com/dev-yesam?v=4" height=150 width=150><br/> @dev-yesam](https://github.com/dev-yesam) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @정지영]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @곽재은]() | [<img src="https://avatars.githubusercontent.com/lovelySo03?v=4" height=150 width=150><br/> @정소영](https://github.com/lovelySo03) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @김희주]() | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @신재건]() |
+| [<img src="https://avatars.githubusercontent.com/Hun425?v=4" height=150 width=150><br/> @Hun425](https://github.com/Hun425) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @지예찬](https://github.com/trick0846) | [<img src="https://avatars.githubusercontent.com/jiiiyoung?v=4" height=150 width=150><br/> @정지영](https://github.com/jiiiyoung) | [<img src="https://avatars.githubusercontent.com/trick0846?v=4" height=150 width=150><br/> @곽재은]() | [<img src="https://avatars.githubusercontent.com/lovelySo03?v=4" height=150 width=150><br/> @정소영](https://github.com/lovelySo03) | [<img src="https://avatars.githubusercontent.com/walley78?v=4" height=150 width=150><br/> @김희주](https://github.com/walley78) | [<img src="https://avatars.githubusercontent.com/sjgun?v=4" height=150 width=150><br/> @신재건](https://github.com/sjgun) |
 
 
 </div>
@@ -159,21 +159,17 @@
 - dev 와 master branch를 분리하고, master는 자동 배포용 dev는 개발용으로 branch를 분리
 
 
-<br>
+## 3. 화면 설계
 
+| Figma |
+|----------|
+|![Copy_of_킥보드브레이커__1_](exec/READMEIMG/kickFigma.png)|
 
-
-## 3. DB 설계 
-
+## 4. DB 설계 
 
 | ERD |
 |----------|
-|![Copy_of_킥보드브레이커__1_](/uploads/d494748ce0fde046a68c2601dfd96bf6/Copy_of_킥보드브레이커__1_.png)|
-
-
-
-## 4. Figma 
-
+|![Copy_of_킥보드브레이커__1_](exec/READMEIMG/kickERD.png)|
 
 
 
@@ -183,15 +179,15 @@
 
 ![메인페이지](./exec/READMEIMG/team.jpg)
 
-| 이름 | 역할 |   
-| --- | --- |
-| 지예찬 |[팀장, 백엔드] <br/> 관리자 페이지 API<br/>발표  | 
-| 채기훈 | [백엔드]<br/>유저 API, 수거업체 API<br/>역할배분 및 일정관리<br/>README 작성 | 
-| 정지영 | [백엔드]<br/> 인프라| 
-| 정소영 | [풀스택]<br/> 계정관리 (관리자, 수거업체) <br/>공지사항 백엔드 & 프런트 <br/>PPT제작 & README 작성|
-| 곽재은 | [프런트]<br/> 사용자 페이지<br/>프런트 공통 컴포넌트 제작|  
-| 김희주 | [프런트]<br/> 수거업체 페이지 <br/>지도, 위치 API<br/>UCC 제작|  
-| 신재건 | [프런트]<br/> 관리자 메인페이지<br/>지도, 위치 API|  
+| 이름 | 역할 | 내용 |   
+| --- | --- |--- |
+| 지예찬 |팀장, 백엔드|신고자 신고 및 조회 기능<br/>신고 카테고리 분류 기능 <br/> 신고 요청 및 응답 <br/> 중간 및 최종 발표  | 
+| 채기훈 | 백엔드|유저 API, 수거업체 API<br/>역할배분 및 일정관리<br/>README 작성 | 
+| 정지영 | 백엔드| 인프라<br/>AWS EC2 인스턴스 설정<br/>Docker & Jenkins 활용| 
+| 정소영 | 풀스택| 계정관리 (관리자, 수거업체) <br/>공지사항 백엔드 & 프런트 <br/>회의 및 DailyScrum 기록 <br/>PPT제작 & README 작성|
+| 곽재은 | 프런트| 사용자 페이지<br/>킥보드 회사별 신고 기능<br/>신고 목록 조회<br/>지도, 위치 API<br/>프런트 공통 컴포넌트 제작|  
+| 김희주 | 프런트| 수거업체 페이지 <br/>지도, 위치 API<br/>UCC 제작|  
+| 신재건 | 프런트| 관리자 메인페이지<br/>킥보드별 신고접수 현황 분류<br/>지도 및 위치 API <br/> 주소 및 키워드 검색 |  
 <br/>
 
 <br>
@@ -477,9 +473,15 @@
 
 ## 9. 개인 목표
 
-<details>
-<summary>지예찬 </summary>
-<div markdown="1">
+| 이름 | 역할 | 개인 목표 |  
+| --- | --- | --- |  
+| 지예찬 | 팀장, 백엔드 | 오류를 최소화한 안정적인 개발 |  
+| 채기훈 | 백엔드 | 더 자세한 테스트 코드 작성 (단위, 통합 구분) <br/> 서버 과부하 테스트 및 최적화 <br/> 서버 확장 (MSA) 시도 <br/> Java 21의 가상스레드 적용 |  
+| 정지영 | 백엔드, 인프라 | 실질적인 문제 해결 |  
+| 정소영 | 풀스택 | 팀의 방향성을 항상 생각하면서, 개발 진행 |  
+| 곽재은 | 프런트 | 효율적인 개발 |  
+| 김희주 | 프런트 | 코드 재사용성을 고려하며 개발 <br/> 사용자 입장에서 사용하기 편리하고 오류 없는 컴포넌트 개발 |  
+| 신재건 | 프런트 | 문제없이 기한 내 마무리 |  
 
 #### 프로젝트 
 
@@ -567,6 +569,15 @@
 ## 10. 프로젝트 후기
 
 ![메인페이지](./exec/READMEIMG/thank.jpg)
+| 이름 | 역할 | 느낀점 |   
+| --- | --- | --- |
+| 지예찬 | 팀장, 백엔드 | 팀장으로서 부족한 점을 많이 느꼈지만, 팀원들의 도움으로 프로젝트를 마무리할 수 있었던 거 같습니다. 특히 모바일 환경과 데스크탑 환경 모두에서 작동하는 어플리케이션이 좋았습니다. |  
+| 채기훈 | 백엔드 | 팀원들과의 협업 과정에서 의사소통의 중요성을 다시 한 번 깨달았습니다. Jira를 활용한 업무 분담, Notion을 통한 API 명세 공유 등 체계적인 프로젝트 관리 방법을 경험했습니다. 프로젝트 진행 중 기술 고도화를 위한 개인 공부를 통해 더 발전하는 계기가 되었습니다. |  
+| 정지영 | 백엔드 | 인프라 구축을 맡으면서 처음으로 Jenkins 파이프라인 설정에 도전해볼 수 있었습니다. 배포 환경을 설정하면서 많은 것을 배웠습니다. 팀원들과 협력하여 기술적 문제를 해결하는 과정에서 팀워크의 중요성을 깨달았습니다. |  
+| 정소영 | 풀스택 | 계정 관리와 공지사항 기능을 풀스택으로 구현하며 기술 스택에 대한 폭넓은 이해를 할 수 있었습니다. 특히, 다양한 역할을 맡아 프로젝트 전반에 걸쳐 기여할 수 있어 뿌듯했습니다. 회의록 기록과 발표 자료 제작 경험은 협업과 커뮤니케이션 능력을 강화해 주었습니다. |  
+| 곽재은 | 프런트 | 사용자 페이지와 지도 및 위치 API 구현에 참여하면서 사용자 경험(UX)을 고려한 디자인과 기능 개발의 중요성을 배웠습니다. 공통 컴포넌트를 제작하며 재사용성과 효율성을 고려한 코드 작성 방법도 익힐 수 있었습니다. 프런트엔드 개발자로서 성장할 수 있는 소중한 기회였습니다. |  
+| 김희주 | 프런트 | 기능이나 코드에서 변경 사항이 있을 때마다 서로 소통하며 꾸준히 업데이트를 하는 것의 중요성에 대해 깨닫게 되었습니다. 기록의 중요성에 대해서도 깨닫게 되었는데, 개발 과정이나 개발환경 세팅과 같은 부분을 기록해두었던 것이 도움이 많이 되어서 기록을 앞으로 습관화해야겠다고 생각했습니다. |  
+| 신재건 | 프런트 | 관리자 메인페이지 개발을 담당하며 관리자 관점에서의 서비스 설계 방법을 고민할 수 있었습니다. 지도 API와 검색 기능을 구현하며 API 활용 능력을 크게 키울 수 있었고, 프로젝트를 통해 문제 해결 능력을 배우게 되어 유익했습니다. |  
 
 | 이름 | 느낀점 |   
 | --- | --- |
