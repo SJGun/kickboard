@@ -83,7 +83,7 @@ const AdminMap = () => {
 
   const createMarkerImage = (color: string, status: string) => {
     const markerSize = new window.kakao.maps.Size(24, 35);
-    
+
     const markerShape = {
       coords: [12, 34, 1, 21, 1, 12, 6, 4, 18, 4, 23, 12, 23, 21, 12, 34],
       type: 'poly',
@@ -110,7 +110,6 @@ const AdminMap = () => {
 
     return `${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
   };
-
 
   const createCustomOverlayContent = (
     report: Report,
@@ -217,7 +216,7 @@ const AdminMap = () => {
     }
 
     const closeBtn = content.querySelector('.close-btn');
-    
+
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
         e.stopPropagation(); // 이벤트 전파 중단

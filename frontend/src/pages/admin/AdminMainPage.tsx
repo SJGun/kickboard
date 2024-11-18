@@ -35,26 +35,26 @@ const AdminMain: React.FC = () => {
   const statusStyles = {
     REPORT_RECEIVED: {
       bgClass: 'bg-red-100',
-      textClass: 'text-red-600'
+      textClass: 'text-red-600',
     },
     COLLECT_RECEIVED: {
       bgClass: 'bg-orange-100',
-      textClass: 'text-orange-600'
+      textClass: 'text-orange-600',
     },
     COLLECT_PROGRESS: {
       bgClass: 'bg-blue-100',
-      textClass: 'text-blue-600'
+      textClass: 'text-blue-600',
     },
     COLLECT_COMPLETED: {
       bgClass: 'bg-blue-100',
-      textClass: 'text-blue-600'
+      textClass: 'text-blue-600',
     },
     REPORT_COMPLETED: {
       bgClass: 'bg-green-100',
-      textClass: 'text-green-600'
-    }
+      textClass: 'text-green-600',
+    },
   };
-  
+
   // 회사별 색상 매핑
   const companyColors: { [key: string]: string } = {
     빔: '#7448ff',
@@ -146,7 +146,6 @@ const AdminMain: React.FC = () => {
 
     loadReports();
   }, []);
-
 
   const handleStatusChange = async (newStatus: Report['adminStatus']) => {
     if (!selectedReport) return;
@@ -248,22 +247,25 @@ const AdminMain: React.FC = () => {
     return `${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
   };
   const CompanyName: React.FC<{ name: string }> = ({ name }) => {
-    const baseCompanyName = Object.keys(companyColors).find(company => 
+    const baseCompanyName = Object.keys(companyColors).find((company) =>
       name.toLowerCase().includes(company.toLowerCase())
     );
-    
+
     return baseCompanyName ? (
-      <span style={{ color: companyColors[baseCompanyName] }} className="font-semibold">
+      <span
+        style={{ color: companyColors[baseCompanyName] }}
+        className="font-semibold"
+      >
         {name}
       </span>
     ) : (
       <span>{name}</span>
     );
   };
-  
+
   return (
     <div className="w-full font-KoPubMedium">
-      <AdminNavBar  />
+      <AdminNavBar />
       <div className="mx-auto max-w-7xl p-4">
         {error && (
           <div className="mb-4 rounded-lg bg-red-100 p-4 text-red-700">
@@ -356,44 +358,47 @@ const AdminMain: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-  {isLoading ? (
-    <tr>
-      <td colSpan={5}>
-        <TableSkeleton />
-      </td>
-    </tr>
-  ) : (
-    sortedAndFilteredReports.map((report) => {
-      const statusStyle = statusStyles[report.adminStatus];
-      
-      return (
-        <tr
-          key={report.reportId}
-          onClick={() => handleRowClick(report)}
-          className={`cursor-pointer border-t hover:bg-gray-50 ${
-            selectedReport?.reportId === report.reportId
-              ? 'bg-blue-50'
-              : ''
-          }`}
-        >
-          <td className="p-2">{getFormattedDate(report.createdAt)}</td>
-          <td className="p-2">
-            <CompanyName name={report.companyName} />
-          </td>
-          <td className="p-2">{report.serialNumber}</td>
-          <td className="p-2">{report.address}</td>
-          <td className="p-2">
-            <span
-              className={`rounded-full px-2 py-1 ${statusStyle?.bgClass} ${statusStyle?.textClass}`}
-            >
-              {statusMap[report.adminStatus] || report.adminStatus}
-            </span>
-          </td>
-        </tr>
-      );
-    })
-  )}
-</tbody>
+                      {isLoading ? (
+                        <tr>
+                          <td colSpan={5}>
+                            <TableSkeleton />
+                          </td>
+                        </tr>
+                      ) : (
+                        sortedAndFilteredReports.map((report) => {
+                          const statusStyle = statusStyles[report.adminStatus];
+
+                          return (
+                            <tr
+                              key={report.reportId}
+                              onClick={() => handleRowClick(report)}
+                              className={`cursor-pointer border-t hover:bg-gray-50 ${
+                                selectedReport?.reportId === report.reportId
+                                  ? 'bg-blue-50'
+                                  : ''
+                              }`}
+                            >
+                              <td className="p-2">
+                                {getFormattedDate(report.createdAt)}
+                              </td>
+                              <td className="p-2">
+                                <CompanyName name={report.companyName} />
+                              </td>
+                              <td className="p-2">{report.serialNumber}</td>
+                              <td className="p-2">{report.address}</td>
+                              <td className="p-2">
+                                <span
+                                  className={`rounded-full px-2 py-1 ${statusStyle?.bgClass} ${statusStyle?.textClass}`}
+                                >
+                                  {statusMap[report.adminStatus] ||
+                                    report.adminStatus}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
                   </table>
                 </div>
               </div>

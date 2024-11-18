@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Skeleton } from './Skeleton';
-import { fetchReports } from '../api/adminApi'; 
+import { fetchReports } from '../api/adminApi';
 
 interface StatusItem {
   label: string;
@@ -11,15 +11,19 @@ interface StatusItem {
   textColor: string;
 }
 
-const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDateChange }) => {
+const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({
+  onDateChange,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
   const [statusCounts, setStatusCounts] = useState({
-    'REPORT_RECEIVED': 0,
-    'COLLECT_RECEIVED': 0,
-    'COLLECT_PROGRESS': 0,
-    'COLLECT_COMPLETED': 0,
-    'REPORT_COMPLETED': 0
+    REPORT_RECEIVED: 0,
+    COLLECT_RECEIVED: 0,
+    COLLECT_PROGRESS: 0,
+    COLLECT_COMPLETED: 0,
+    REPORT_COMPLETED: 0,
   });
   const [isOpen, setIsOpen] = useState(false);
   const area = localStorage.getItem('area');
@@ -29,10 +33,13 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       try {
         const response = await fetchReports();
         if (response.success && response.data) {
-          const counts = response.data.reports.reduce((acc: any, report: any) => {
-            acc[report.adminStatus] = (acc[report.adminStatus] || 0) + 1;
-            return acc;
-          }, {});
+          const counts = response.data.reports.reduce(
+            (acc: any, report: any) => {
+              acc[report.adminStatus] = (acc[report.adminStatus] || 0) + 1;
+              return acc;
+            },
+            {}
+          );
           setStatusCounts(counts);
         }
       } catch (error) {
@@ -57,7 +64,7 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       colorClass: 'bg-red-500',
       value: 'REPORT_RECEIVED',
       bgColor: '#FEE2E2',
-      textColor: '#DC2626'
+      textColor: '#DC2626',
     },
     {
       label: '수거접수',
@@ -65,7 +72,7 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       colorClass: 'bg-orange-500',
       value: 'COLLECT_RECEIVED',
       bgColor: '#FFEDD5',
-      textColor: '#EA580C'
+      textColor: '#EA580C',
     },
     {
       label: '수거중',
@@ -73,7 +80,7 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       colorClass: 'bg-yellow-500',
       value: 'COLLECT_PROGRESS',
       bgColor: '#E0F2FE',
-      textColor: '#0284C7'
+      textColor: '#0284C7',
     },
     {
       label: '수거완료',
@@ -81,7 +88,7 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       colorClass: 'bg-blue-500',
       value: 'COLLECT_COMPLETED',
       bgColor: '#DBEAFE',
-      textColor: '#2563EB'
+      textColor: '#2563EB',
     },
     {
       label: '처리완료',
@@ -89,7 +96,7 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       colorClass: 'bg-green-500',
       value: 'REPORT_COMPLETED',
       bgColor: '#DCFCE7',
-      textColor: '#16A34A'
+      textColor: '#16A34A',
     },
   ];
 
@@ -98,13 +105,19 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
       <div className="container mx-auto">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <div className="hidden space-x-8 md:flex">
-            <a href="/adminMainPage" className="text-gray-700 hover:text-gray-900">
+            <a
+              href="/adminMainPage"
+              className="text-gray-700 hover:text-gray-900"
+            >
               신고현황
             </a>
             <a href="/adminmap" className="text-gray-700 hover:text-gray-900">
               지도
             </a>
-            <a href="/accountmanage" className="text-gray-700 hover:text-gray-900">
+            <a
+              href="/accountmanage"
+              className="text-gray-700 hover:text-gray-900"
+            >
               계정관리
             </a>
             <a href="/admininfo" className="text-gray-700 hover:text-gray-900">
@@ -123,7 +136,9 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
               <>
                 {statusItems.map((item, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <div className={`h-2 w-2 rounded-full ${item.colorClass}`}></div>
+                    <div
+                      className={`h-2 w-2 rounded-full ${item.colorClass}`}
+                    ></div>
                     <span>
                       {item.label} {item.count}
                     </span>
@@ -151,7 +166,9 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
+                  d={
+                    isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'
+                  }
                 />
               </svg>
             </button>
@@ -161,16 +178,28 @@ const AdminNavBar: React.FC<{ onDateChange?: (date: string) => void }> = ({ onDa
         {/* 모바일 메뉴 */}
         {isOpen && (
           <div className="mt-2 space-y-2 md:hidden">
-            <a href="/adminMainPage" className="block text-gray-700 hover:text-gray-900">
+            <a
+              href="/adminMainPage"
+              className="block text-gray-700 hover:text-gray-900"
+            >
               신고현황
             </a>
-            <a href="/adminmap" className="block text-gray-700 hover:text-gray-900">
+            <a
+              href="/adminmap"
+              className="block text-gray-700 hover:text-gray-900"
+            >
               지도
             </a>
-            <a href="/accountmanage" className="block text-gray-700 hover:text-gray-900">
+            <a
+              href="/accountmanage"
+              className="block text-gray-700 hover:text-gray-900"
+            >
               계정관리
             </a>
-            <a href="/admininfo" className="block text-gray-700 hover:text-gray-900">
+            <a
+              href="/admininfo"
+              className="block text-gray-700 hover:text-gray-900"
+            >
               공지사항
             </a>
             <input

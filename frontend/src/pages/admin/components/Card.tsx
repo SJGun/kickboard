@@ -12,5 +12,4 @@ export const CardContent: React.FC<{
   className?: string;
 }> = ({ children, className = '' }) => (
   <div className={`p-4 ${className}`}>{children}</div>
-  
 );
